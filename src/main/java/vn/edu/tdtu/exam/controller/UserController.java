@@ -1,26 +1,29 @@
 package vn.edu.tdtu.exam.controller;
 
-import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import vn.edu.tdtu.exam.repository.UserRepository;
+import org.springframework.web.bind.annotation.*;
+import vn.edu.tdtu.exam.dto.UserDTO;
+import vn.edu.tdtu.exam.model.User;
+import vn.edu.tdtu.exam.service.UserService;
 
-@Controller
+@RestController
+@RequestMapping("/users")
 public class UserController {
-        @Autowired
-        private UserRepository userRepository;
 
-        @PostConstruct
-        public void initData() {
-            System.out.println("__________Reset and init data________________");
-        }
+    private final UserService userService;
 
-        @RequestMapping("/")
-        public String listUser(Model model) {
-            model.addAttribute("users", userRepository.findAll());
-            return "index";
-        }
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @PostMapping("/add")
+    public User createUser(@RequestBody UserDTO userDTO) {
+        return userService.add(userDTO);
+    }
 }
+
+
+
+
+

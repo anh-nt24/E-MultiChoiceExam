@@ -1,13 +1,17 @@
 package vn.edu.tdtu.exam.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
 @Inheritance(strategy = InheritanceType.JOINED)
 @Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Account{
     @Id
     @Column(name = "id")

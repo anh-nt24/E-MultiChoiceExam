@@ -3,13 +3,11 @@ package vn.edu.tdtu.exam.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import vn.edu.tdtu.exam.dto.AccountDTO;
 import vn.edu.tdtu.exam.dto.StudentDTO;
 import vn.edu.tdtu.exam.entity.Account;
+import vn.edu.tdtu.exam.entity.Admin;
 import vn.edu.tdtu.exam.entity.Student;
 import vn.edu.tdtu.exam.service.AccountService;
 import vn.edu.tdtu.exam.service.StudentService;
@@ -35,14 +33,17 @@ public class AccountController {
         return "account/login";
     }
 
-    @PostMapping("/login")
-    public Account checkLogin(@RequestBody AccountDTO accountDTO) {
-        String email = accountDTO.getEmail();
-        String password = accountDTO.getPassword();
-        Account account = new Account(email, password);
+    @PostMapping(value = "/login", consumes = "application/x-www-form-urlencoded")
+    public Account checkLogin(@RequestParam String email, @RequestParam String password) {
+        System.out.println(email);
+        System.out.println(password);
+        Account account = new Account();
+        account.setEmail(email);
+        account.setPassword(password);
         accountService.find(account);
         return null;
     }
+
 }
 
 

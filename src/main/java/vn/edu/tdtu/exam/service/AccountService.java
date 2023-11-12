@@ -26,6 +26,7 @@ public class AccountService {
     }
 
     public Boolean find(Account account) {
-        return false;
+        Account foundAccount = accountRepository.findByEmailAndPassword(account.getEmail(), account.getPassword());
+        return foundAccount != null;
     }
 }

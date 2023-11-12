@@ -44,6 +44,11 @@ public class AccountController {
         return null;
     }
 
+    @GetMapping("/student/exam")
+    public String exam() {
+        return "student/exam";
+    }
+
 }
 
 

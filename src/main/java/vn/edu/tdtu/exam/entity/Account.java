@@ -27,7 +27,7 @@ public class Account {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "is_active")
+    @Column(name = "is_active", columnDefinition = "BOOLEAN DEFAULT TRUE")
     private Boolean isActive;
 
     @Column(name = "role")

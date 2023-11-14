@@ -13,7 +13,7 @@ public class Report {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "status")
+    @Column(name = "status", columnDefinition = "BOOLEAN DEFAULT FALSE")
     private Boolean status;
 
     @ManyToOne

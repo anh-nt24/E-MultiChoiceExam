@@ -17,7 +17,6 @@ public class StudentService {
     public Student add(StudentDTO studentDTO) {
         Student student = new Student();
         student.setStudentId(studentDTO.getStudentId());
-        student.setStudentName(studentDTO.getStudentName());
         student.setEmail(studentDTO.getEmail());
         student.setGender(studentDTO.getGender());
         student.setPassword(studentDTO.getPassword());

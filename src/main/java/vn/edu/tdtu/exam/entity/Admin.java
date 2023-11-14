@@ -8,8 +8,5 @@ import java.io.Serializable;
 @Data
 @Entity
 @Table(name = "admin")
-public class Admin extends Account implements Serializable {
-    @Column(name = "admin_name")
-    private String adminName;
-
+public class Admin extends Account {
 }

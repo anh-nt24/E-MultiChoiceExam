@@ -12,7 +12,7 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Account{
+public class Account {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,14 +24,12 @@ public class Account{
     @Column(name = "password", nullable = false)
     private String password;
 
+    @Column(name = "name")
+    private String name;
+
     @Column(name = "is_active")
     private Boolean isActive;
 
-    @Column(name = "is_admin")
-    private Boolean isAdmin;
-
-    public Account(String email, String password) {
-        this.email = email;
-        this.password = password;
-    }
+    @Column(name = "role")
+    private Integer role;
 }

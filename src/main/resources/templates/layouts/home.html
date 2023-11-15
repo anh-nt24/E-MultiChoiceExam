@@ -25,7 +25,7 @@
 <!-- Navigator -->
 <div id="home-nav" th:replace="~{/fragments/navbar :: 'nav-' + ${role}}"></div>
 
-<!-- Main content -->
+<!-- Main content by each role -->
 <div id="home-main-content" th:replace="~{'/fragments/' + ${role} + '/content'}"></div>
 
 <!--Footer -->

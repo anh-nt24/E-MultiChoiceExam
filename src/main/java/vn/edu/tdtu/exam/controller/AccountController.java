@@ -1,5 +1,7 @@
 package vn.edu.tdtu.exam.controller;
 
+import jakarta.servlet.http.HttpSession;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,32 +24,43 @@ public class AccountController {
     public AccountController(AccountService accountService) {
         this.accountService = accountService;
     }
+
+    @GetMapping()
+    public String index(Model model, HttpSession session) {
+        String role = (String) session.getAttribute("role");
+        String email = (String) session.getAttribute("email");
+        model.addAttribute("role", role);
+        model.addAttribute("email", email);
+        System.out.println("ROLE: " + role);
+        return "layouts/home";
+    }
+
     @GetMapping("/login")
-    public String login() {
-        return "account/login";
+    public String loginRequest() {
+        return "login";
     }
 
     @GetMapping("/login/fail")
     public String loginFail(Model model) {
         model.addAttribute("failedMessage", "Invalid email or password");
-        return "account/login";
+        return "login";
     }
 
     @PostMapping(value = "/login", consumes = "application/x-www-form-urlencoded")
-    public Account checkLogin(@RequestParam String email, @RequestParam String password) {
-        System.out.println(email);
-        System.out.println(password);
-        Account account = new Account();
-        account.setEmail(email);
-        account.setPassword(password);
-        accountService.find(account);
-        return null;
+    public String loginPostRequest(@RequestParam String email, @RequestParam String password, HttpSession session) {
+//        After login successfully, check role of user account
+        String role = "teacher";
+        session.setAttribute("role", role);
+        session.setAttribute("email", email);
+        return "redirect:/";
     }
 
     @GetMapping("/student/exam")
     public String exam() {
         return "student/exam";
     }
+
+
 
 }
 

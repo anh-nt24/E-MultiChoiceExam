@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Nav bar</title>
+</head>
+<body>
+<!-- Student Navigator -->
+
+<!-- Teacher Navigator -->
+<ul th:fragment = "nav-teacher">
+    <li><a th:href="@{/}">Home</a></li>
+    <li><a th:href="@{/class}">My classes</a></li>
+    <li><a th:href="@{/bank}">Bank exam</a></li>
+</ul>
+
+<!-- Admin Navigator -->
+    <ul th:fragment = "nav-admin">
+        <li><a th:href="@{/admin/a}">Admin navigation 1</a></li>
+        <li><a th:href="@{/admin/b}">Admin navigation 2</a></li>
+    </ul>
+
+</body>
+</html>

@@ -17,6 +17,41 @@ body {
     font-family: Arial, Helvetica, sans-serif;
 }
 
+nav {
+    float: left;
+    width: 30%;
+    height: 300px;
+    background: #ccc;
+    padding: 20px;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+article {
+    float: left;
+    padding: 20px;
+    width: 70%;
+    background-color: #f1f1f1;
+    height: 300px;
+}
+
+section:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+
+@media ( max-width : 600px) {
+    nav, article {
+        width: 100%;
+        height: auto;
+    }
+}
+
 .sfont {
     font-family: "Courier New", Courier, monospace;
 }
@@ -31,7 +66,6 @@ body {
 }
 
 
-.language > .nav-lang,
 .logo-header,
 .logo-body {
     display: flex;
@@ -58,11 +92,6 @@ body {
     font-weight: var(--main-bold);
     opacity: 1;
 }
-
-.language {
-    display: inline-block;
-}
-
 
 .logo-header > img {
     width: 50px;
@@ -165,10 +194,6 @@ body {
 
 .show {
     display: block !important;
-    /* animation: fadeIn 1s ease;
-    position: absolute;
-    z-index: 99999999999999999999999 !important;
-    background-color: #ccc; */
 }
 
 .hide {
@@ -200,4 +225,20 @@ body {
 
 .zoom:hover {
     transform: scale(1.05);
+}
+
+.main-footer {
+	background: #fff;
+	border-top: 1px solid #dee2e6;
+	color: #869099;
+	padding: 1rem;
+	position: fixed;
+	width: 100%;
+	bottom: 0;
+	left: 0;
+	z-index: 1000;
+}
+
+.main-footer > * {
+	padding: 0 15px;
 }

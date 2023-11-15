@@ -1,5 +1,7 @@
 package vn.edu.tdtu.exam.controller;
 
+import jakarta.servlet.http.HttpSession;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,26 +24,40 @@ public class AccountController {
     public AccountController(AccountService accountService) {
         this.accountService = accountService;
     }
+
+    @GetMapping()
+    public String index(Model model, HttpSession session) {
+        String role = (String) session.getAttribute("role");
+        String name = (String) session.getAttribute("name");
+        Long id = (Long) session.getAttribute("id");
+        model.addAttribute("role", role);
+        model.addAttribute("name", name);
+        model.addAttribute("id", id);
+        System.out.println("ROLE: " + role);
+        return "layouts/home";
+    }
+
     @GetMapping("/login")
-    public String login() {
-        return "account/login";
+    public String loginRequest() {
+        return "login";
     }
 
     @GetMapping("/login/fail")
     public String loginFail(Model model) {
         model.addAttribute("failedMessage", "Invalid email or password");
-        return "account/login";
+        return "login";
     }
 
     @PostMapping(value = "/login", consumes = "application/x-www-form-urlencoded")
-    public Account checkLogin(@RequestParam String email, @RequestParam String password) {
-        System.out.println(email);
-        System.out.println(password);
-        Account account = new Account();
-        account.setEmail(email);
-        account.setPassword(password);
-        accountService.find(account);
-        return null;
+    public String loginPostRequest(@RequestParam String email, @RequestParam String password, HttpSession session) {
+//        After login successfully, check role of user account
+        String role = "teacher";
+        Long id = 1L;
+        String name = "Nguyen Thanh Phong";
+        session.setAttribute("role", role);
+        session.setAttribute("name", name);
+        session.setAttribute("id", id);
+        return "redirect:/";
     }
 
     @GetMapping("/student/exam")
@@ -49,6 +65,7 @@ public class AccountController {
         return "student/exam";
     }
 
+<<<<<<< HEAD
     @GetMapping("/")
     public String admin() {
         return "/admin/home";
@@ -72,6 +89,9 @@ public class AccountController {
     public String userManagement(){
         return "admin/user-management";
     }
+=======
+
+>>>>>>> 9b1f15a1d14c4ab5e1bc8be24325d17ed3354855
 
 }
 

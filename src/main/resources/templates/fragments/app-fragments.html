@@ -1,30 +1,51 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html
+        xmlns:th="http://www.thymeleaf.org"
+>
 <head>
     <meta charset="UTF-8" />
     <title>App Fragments</title>
 </head>
 <body>
 
-<!--Empty element-->
+<!-- Header -->
+<div id="header" class="header" th:fragment="header">
+    <div class="px-5 navbar navbar-brand navbar-expand-lg navbar-light bg-color navbar-custom">
+        <a href="#" class="navbar-brand logo-header">
+            <img th:src="@{/images/web-logo.png}" alt="logo">
+            <br>
+            <span class="sfont" style="padding-left: 0.4em">MultiA</span>
+        </a>
+
+
+        <div class="d-flex">
+            <a th:href="@{?action=profile}" class="btn user__info d-flex align-items-center">
+                <img class="user__info__avatar"
+                     th:src="${avatar} ? 'server/upload/user_avt/' + ${avatar} : @{/images/avatar.jpg}"
+                     alt="account">
+                <span class="sfont user__info__name d-flex align-items-center" th:text="${name != null} ? ${name} : 'User'"><i class="fa fa-solid fa-angle-down"></i></span>
+            </a>
+
+            <span class="pl-1 pr-2" style="color: white"> | </span>
+
+            <a th:href="@{/logout}" class="logout-icon inactive-link">
+                <i class="fa fa-solid fa-sign-out"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Empty element -->
 <div th:fragment = "none">
 </div>
 
-<!-- Default Navigator -->
-<ul th:fragment = "nav-default">
-    <li><a th:href="@{/}">Home</a></li>
-    <li><a th:href="@{/products}">Products</a></li>
-    <li><a th:href="@{/about}">About</a></li>
-</ul>
-
-<!-- Admin Navigator -->
-<ul th:fragment = "nav-admin">
-    <li><a th:href="@{/admin/products}">Admin navigation 1</a></li>
-    <li><a th:href="@{/admin/orders}">Admin navigation 2</a></li>
-</ul>
-
-<div th:fragment="copyright">
-    &copy; o7planning.org
+<!-- Footer -->
+<div th:fragment="footer" class="main-footer">
+    <strong data-original-title="" title="">Copyright © 2023 multia.tdtu.edu.vn</strong>
+    All rights reserved.
+    <div class="float-right d-none d-sm-inline-block" data-original-title="" title="">
+        <b data-original-title="" title="">Version</b> 1.0.0
+    </div>
 </div>
 
 </body>

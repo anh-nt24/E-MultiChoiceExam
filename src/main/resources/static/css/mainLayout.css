@@ -6,6 +6,7 @@
     --sub-bg-color: rgba(20, 75, 170, 0.3);
     --main-bold: 600;
     --main-size: 18px;
+    --list-item-nav: rgb(86,176,70);
 }
 
 * {
@@ -267,8 +268,8 @@ body {
     background-color: var(--sub-bg-color);
 }
 
-.logout-icon,
-.logout-icon:hover {
+.inactive-link,
+.inactive-link:hover {
 	color: #fff;
 	text-decoration: none;
 }

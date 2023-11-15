@@ -31,5 +31,5 @@ public class Account {
     private Boolean isActive;
 
     @Column(name = "role")
-    private Integer role;
+    private String role;
 }

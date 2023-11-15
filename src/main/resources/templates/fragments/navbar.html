@@ -9,9 +9,10 @@
 
 <!-- Teacher Navigator -->
 <ul th:fragment = "nav-teacher">
-    <li><a th:href="@{/}">Home</a></li>
-    <li><a th:href="@{/class}">My classes</a></li>
-    <li><a th:href="@{/bank}">Bank exam</a></li>
+    <li class="pb-2"> <img th:src="@{/images/teacher-space.png}" width="100%"> </li>
+    <li id="/"><a th:href="@{/}">Home</a></li>
+    <li id="class"><a th:href="@{/class}">My classes</a></li>
+    <li id="bank"><a th:href="@{/bank}">Bank exam</a></li>
 </ul>
 
 <!-- Admin Navigator -->

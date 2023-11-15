@@ -10,12 +10,13 @@
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
           crossorigin="anonymous">
     <link type="text/css" th:href="@{/css/mainLayout.css}" rel="stylesheet" />
+    <link rel="shortcut icon" th:href="@{/images/logo.png}">
     <th:block th:replace="${otherStaticResources} ?: ~{}"></th:block>
 </head>
 <body>
 <!--Header section-->
     <header th:insert="${header} ?: ~{}">
-        <h2>Page section</h2>
+        <h2>Header section</h2>
     </header>
 
 <!--Page content section-->

@@ -1,0 +1,34 @@
+nav {
+    float: left;
+    width: 30%;
+    min-height: 500px;
+    background-color: var(--sub-bg-color);
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+article {
+    float: left;
+    padding: 20px;
+    width: 70%;
+    background-color: #f8f8f8;
+    min-height: 500px;
+}
+
+
+section:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+
+@media ( max-width : 600px) {
+    nav, article {
+        width: 100%;
+        height: auto;
+    }
+}

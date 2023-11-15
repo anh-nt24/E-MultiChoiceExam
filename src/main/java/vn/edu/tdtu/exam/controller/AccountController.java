@@ -28,9 +28,11 @@ public class AccountController {
     @GetMapping()
     public String index(Model model, HttpSession session) {
         String role = (String) session.getAttribute("role");
-        String email = (String) session.getAttribute("email");
+        String name = (String) session.getAttribute("name");
+        Long id = (Long) session.getAttribute("id");
         model.addAttribute("role", role);
-        model.addAttribute("email", email);
+        model.addAttribute("name", name);
+        model.addAttribute("id", id);
         System.out.println("ROLE: " + role);
         return "layouts/home";
     }
@@ -50,8 +52,11 @@ public class AccountController {
     public String loginPostRequest(@RequestParam String email, @RequestParam String password, HttpSession session) {
 //        After login successfully, check role of user account
         String role = "teacher";
+        Long id = 1L;
+        String name = "Nguyen Thanh Phong";
         session.setAttribute("role", role);
-        session.setAttribute("email", email);
+        session.setAttribute("name", name);
+        session.setAttribute("id", id);
         return "redirect:/";
     }
 

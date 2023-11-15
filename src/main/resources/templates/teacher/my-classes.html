@@ -23,10 +23,12 @@
 <div id="home-header" th:replace="~{/fragments/app-fragments :: header}"></div>
 
 <!-- Navigator -->
-<div id="home-nav" th:replace="~{/fragments/navbar :: 'nav-' + ${role}}"></div>
+<div id="home-nav" th:replace="~{/fragments/navbar :: nav-teacher}"></div>
 
-<!-- Main content by each role -->
-<div id="home-main-content" th:replace="~{'/' + ${role} + '/home'}"></div>
+<!-- Main content for classes -->
+<div id="home-main-content">
+    My classes
+</div>
 
 <!--Footer -->
 <div id="home-footer" th:replace="~{/fragments/app-fragments :: footer}">

@@ -19,7 +19,4 @@ public class Subject {
 
     @Column(name = "name", nullable = false)
     private String name;
-
-    @ManyToMany(mappedBy = "subjects")
-    private Set<Teacher> teachers = new HashSet<>();
 }

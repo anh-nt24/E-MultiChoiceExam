@@ -1,0 +1,67 @@
+.portlet-box {
+    background-color: #fff;
+    min-height: 300px;
+}
+
+.student-table {
+    width:100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.student-header-table {
+    text-align: center;
+    padding: 8px;
+    font-weight: 600;
+}
+
+.student-id {
+    font-weight: 300;
+    text-align: center;
+}
+
+.student-name {
+    font-weight: 300;
+    text-align: center;
+}
+
+.student-action {
+    font-weight: 300;
+    text-align: center;
+}
+
+.student-action-button {
+    background-color: dodgerblue;
+    border: none;
+    font-size: 16px;
+    font-weight: 300;
+    color: white;
+    border-radius: 4px;
+    text-align: center;
+    padding: 10px 15px;
+}
+
+.student-action-button:hover {
+    background-color: skyblue;
+}
+
+.save-button {
+    margin-top: 15px;
+    margin-left: 82%;
+    background-color: limegreen;
+    color: #fff;
+    border: none;
+    font-size: 20px;
+    font-weight: 300;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 10px 25px;
+}
+
+.save-button:hover {
+    background-color: lightgreen;
+}
+
+.background-round-button {
+    background_color: #fff;
+}

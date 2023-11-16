@@ -12,6 +12,9 @@ public class TeacherSubject {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "schedule")
+    private String schedule;
+
     @ManyToOne
     @JoinColumn(name = "teacher_id")
     private Teacher teacher;

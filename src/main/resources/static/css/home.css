@@ -40,10 +40,8 @@ section:after {
 	position: relative;
 }
 
-#home-nav > ul > li:not(:first-child) a:hover {
-	transition: transform .7s ease;
-	transform: scale(1.03);
-	opacity: 0.8;
+#home-nav > ul > li:not(:first-child):not(.active):hover {
+	background: var(--sub-bg-color);
 }
 
 #home-nav > ul > li:last-child {

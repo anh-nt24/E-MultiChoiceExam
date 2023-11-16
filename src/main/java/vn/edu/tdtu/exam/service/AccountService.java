@@ -9,6 +9,8 @@ import vn.edu.tdtu.exam.entity.Student;
 import vn.edu.tdtu.exam.repository.AccountRepository;
 import vn.edu.tdtu.exam.repository.StudentRepository;
 
+import java.util.Optional;
+
 @Service
 public class AccountService {
     private final AccountRepository accountRepository;
@@ -28,5 +30,13 @@ public class AccountService {
     public Boolean find(Account account) {
         Account foundAccount = accountRepository.findByEmailAndPassword(account.getEmail(), account.getPassword());
         return foundAccount != null;
+    }
+
+    public Account getAccount(Long id) {
+        Optional<Account> optionalAccount = accountRepository.findById(id);
+        if (optionalAccount.isPresent()) {
+            return optionalAccount.get();
+        }
+        return null;
     }
 }

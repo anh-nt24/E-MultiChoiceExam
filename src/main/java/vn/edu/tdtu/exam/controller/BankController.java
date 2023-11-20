@@ -44,9 +44,8 @@ public class BankController {
         } else {
             List<Integer> quantity = new ArrayList<>();
             subjects.forEach(subject -> {
-                quantity.add(
-                        subjectService.getExamPaperOfSubjectQuantity(subject.getId())
-                );
+                List<ExamPaper> tests = testService.getTestsBySubject(subject.getId());
+                quantity.add(tests.size());
             });
             model.addAttribute("subjects", subjects);
             model.addAttribute("quantity", quantity);
@@ -67,13 +66,14 @@ public class BankController {
                         accountService.getTeacherNameById(test.getTeacher().getId())
                 );
                 exams.add(
-                        examService.getExamById(test.getExam().getId())
+                        examService.getExamById(test.getExam().getId()).getName()
                 );
             });
 
             // return attributes to view
             model.addAttribute("isExam", true);
             model.addAttribute("quantity", tests.size());
+            model.addAttribute("subject", subjectId);
             if (tests.size() == 0) {
                 model.addAttribute("errMsg", "This subject does not have any exams");
                 return "teacher/bank-exam";

@@ -35,6 +35,6 @@ public class SubjectService {
     }
 
     public Subject getSubjectById(Long subjectId) {
-        return null;
+        return subjectRepository.findById(subjectId).orElse(null);
     }
 }

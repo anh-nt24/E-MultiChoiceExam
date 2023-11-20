@@ -13,9 +13,9 @@
 <head>
     <title>Homepage</title>
     <th:block id="home-static-resources">
-        <script type="text/javascript" th:src="@{/javascript/home.js}"></script>
+        <script type="text/javascript" th:src="@{/javascript/paper.js}"></script>
         <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}"/>
-        <link rel="stylesheet" type="text/css" th:href="@{/css/exam-paper.css}"/>
+        <link rel="stylesheet" type="text/css" th:href="@{/css/paper.css}"/>
     </th:block>
 </head>
 <body>
@@ -31,7 +31,107 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-                hi
+                <form action="/paper/add" method="post" id="survey-form" enctype="multipart/form-data">
+                    <div class="labels">
+                        <label for="name" id="name-label">Quiz title: *</label>
+                    </div>
+                    <div class="input-tabs">
+                        <input type="text" name="title" class="input-text" id="name" placeholder="Quiz title" required>
+                    </div>
+
+                    <div class="labels">
+                        <label for="subject" id="name-label">Subject: *</label>
+                    </div>
+                    <div class="input-tabs">
+                        <input readonly type="text" th:value="${subject.name}" class="input-text" required>
+                        <input readonly style="display: none" type="text" name="subject" th:value="${subject.id}" class="input-text" id="subject" required>
+                    </div>
+
+                    <div class="labels">
+                        <label for="dropdown" id="exam-label">Exam category: *</label>
+                    </div>
+                    <div class="input-tabs">
+                        <select name="category" id="dropdown" required>
+                            <option disabled selected value="none">Select an exam category</option>
+                            <th:block th:each="exam : ${category}">
+                                <option th:value="${exam.id}" th:text="${exam.name}"></option>
+                            </th:block>
+                        </select>
+                    </div>
+
+                    <div class="labels">
+                        <label for="duration" id="duration-label">Duration: *</label>
+                    </div>
+                    <div class="input-tabs">
+                        <input type="number" name="duration" class="input-text" id="duration" placeholder="Duration (mins)" required>
+                    </div>
+
+                    <div class="labels">
+                        <label for="time-allowed" id="time-label">Times allowed: *</label>
+                    </div>
+                    <div class="input-tabs">
+                        <input type="number" name="timesAllowed" class="input-text" id="time-allowed" placeholder="Times allowed, e.g: 1, 2" required>
+                    </div>
+
+                    <div class="labels">
+                        <label>Show score? *</label>
+                    </div>
+                    <div class="input-tabs">
+                        <input type="radio" name="showScore" id="show-score-yes" value="true">Yes<br>
+                        <input type="radio" name="showScore" id="show-score-no" checked value="false">No<br>
+                    </div>
+
+                    <div class="flash">
+                        <div class="flash__icon">
+                            <i class="icon fa fa-times-circle-o"></i>
+                        </div>
+                        <p class="flash__body">Failure! Times allowed is greater than 1. Choose "No" for Show score.</p>
+                    </div>
+
+                    <div class="labels">
+                        <label>Exam paper content: *</label>
+                    </div>
+
+                    <div class="container">
+                        <div class="file-input-box">
+                            <div class="wrapper-file-input" onclick="openFileInput()">
+                                <div class="input-box">
+                                    <h4>
+                                        <i class="fa fa-upload"></i>
+                                        Choose File to upload
+                                    </h4>
+                                    <input
+                                            id="fileInput"
+                                            type="file"
+                                            hidden
+                                            required
+                                            accept=".csv"
+                                            name="exampaper"
+                                            onchange="handleFileChange(event)"
+                                    />
+                                </div>
+                                <small>CSV support only!</small>
+                            </div>
+
+                            <div class="wrapper-file-section">
+                                <div class="selected-files" id="selectedFiles" v-if="selectedFileNames.length">
+                                    <ul
+                                            class="file-list"
+                                            :style="
+                                selectedFileNames.length ? 'max-height:220px' : 'height:auto'
+                            "
+                                    >
+                                        <!-- JavaScript will populate this list -->
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="submit">
+                        <button type="submit" id="submit">Submit</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

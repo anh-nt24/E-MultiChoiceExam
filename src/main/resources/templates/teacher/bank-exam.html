@@ -46,7 +46,7 @@
             <div class="col-12">
                 <div class="d-flex justify-content-between">
                     <span class="hi" th:text="${quantity} + ' exam(s)'"></span>
-                    <button class="btn add-exam">Add new exam</button>
+                    <a th:href="@{/paper/add/{subjectId}(subjectId=${subject})}" class="btn add-exam">Add new exam</a>
                 </div>
                 <hr>
             </div>

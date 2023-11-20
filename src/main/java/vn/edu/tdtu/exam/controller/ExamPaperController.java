@@ -4,9 +4,10 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import vn.edu.tdtu.exam.dto.ExamPaperDTO;
+import vn.edu.tdtu.exam.entity.Exam;
 import vn.edu.tdtu.exam.entity.ExamPaper;
 import vn.edu.tdtu.exam.entity.Subject;
 import vn.edu.tdtu.exam.service.AccountService;
@@ -35,12 +36,34 @@ public class ExamPaperController {
     @GetMapping("/detail")
     public String showPaperDetail(@RequestParam Long id, Model model) {
         model.addAttribute("paperId", id);
-        return "paper/detail";
+        return "teacher/paper-detail";
     }
 
-    @GetMapping("/add")
-    public String addNewPaper() {
-        return "";
+    @GetMapping("/add/{subjectId}")
+    public String addNewPaper(@PathVariable Long subjectId, Model model) {
+        Subject subject = subjectService.getSubjectById(subjectId);
+        List<Exam> exams = examService.getAllExams();
+
+        model.addAttribute("subject", subject);
+        model.addAttribute("category", exams);
+        return "teacher/exam-paper-form";
+    }
+
+    @PostMapping("/add")
+    public String submitNewPaper(
+            @ModelAttribute ExamPaperDTO form,
+            @RequestParam("exampaper") MultipartFile file,
+            HttpSession session,
+            Model model) {
+
+        Long teacherId = (Long) session.getAttribute("id");
+        if (teacherId == null) {
+            return "redirect:/login";
+        }
+        testService.addTest(teacherId, form, file);
+
+        // handle file upload
+        return "redirect:/bank/exam?s=" + form.getSubject();
     }
 }
 

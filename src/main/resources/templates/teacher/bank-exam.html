@@ -36,11 +36,49 @@
                     <div class="px-2 py-1">
                         <h6 class="subject-name pt-2" th:text="${subject.name}"></h6>
                         <hr />
-                        <!-- Add the quantity logic here if needed -->
-                         <p class="exam-num" th:text="${quantity[index.index]} + ' exam(s) available'"></p>
+                        <p class="exam-num" th:text="${quantity[index.index]} + ' exam(s) available'"></p>
                     </div>
                 </a>
             </div>
+        </div>
+
+        <div class="row" th:if="${isExam == true}">
+            <div class="col-12">
+                <div class="d-flex justify-content-between">
+                    <span class="hi" th:text="${quantity} + ' exam(s)'"></span>
+                    <button class="btn add-exam">Add new exam</button>
+                </div>
+                <hr>
+            </div>
+        </div>
+        <div th:if="${tests != null and tests.size() > 0}" class="row">
+            <table class="col-12 content-table">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Date created</th>
+                        <th>Last modified</th>
+                        <th>Exam</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="test, index : ${tests}">
+                        <td style="text-align: center" th:text="${index.index + 1}"></td>
+                        <td th:text="${test.title}"></td>
+                        <td th:text="${teachers[index.index]}"></td>
+                        <td th:text="${#temporals.format(test.dateCreated, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                        <td th:text="${#temporals.format(test.lastModified, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                        <td th:text="${exams[index.index]}"></td>
+                        <td class="actions">
+                            <a th:href="@{/paper/detail(id=${test.id})}" class="btn btn-warning"><i class="fa fas fa-edit"></i></a>
+                            <button class="btn btn-danger"><i class="fa fa-trash-o"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
         <div th:if="${errMsg != null}">
             <p style="font-size: 20px; font-style: italic" th:text="${errMsg}"></p>

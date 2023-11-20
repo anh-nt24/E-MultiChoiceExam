@@ -39,4 +39,15 @@ public class AccountService {
         }
         return null;
     }
+
+    public String getTeacherNameById(Long teacherId) {
+        Optional<Account> teacherOptional = accountRepository.findById(teacherId);
+
+        if (teacherOptional.isPresent()) {
+            Account teacher = teacherOptional.get();
+            return teacher.getName();
+        } else {
+            return null;
+        }
+    }
 }

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import vn.edu.tdtu.exam.entity.Account;
+import vn.edu.tdtu.exam.entity.ExamPaper;
 import vn.edu.tdtu.exam.entity.Subject;
 import vn.edu.tdtu.exam.service.*;
 
@@ -19,16 +20,16 @@ import java.util.List;
 public class BankController {
 
     @Autowired
-    private TeacherService teacherService;
-
-    @Autowired
     private AccountService accountService;
 
     @Autowired
     private SubjectService subjectService;
 
     @Autowired
-    private StudentService studentService;
+    private ExamPaperService testService;
+
+    @Autowired
+    private ExamService examService;
 
     @GetMapping
     public String showMySubject(Model model, HttpSession session) {
@@ -54,15 +55,32 @@ public class BankController {
     }
 
     @GetMapping("/exam")
-    public String showSubjectExam(@RequestParam(name = "s") Long subjectId, Model model) {
+    public String showExam(@RequestParam(name = "s") Long subjectId, Model model) {
         if (subjectId != null) {
-            Subject subject = subjectService.getSubjectById(subjectId);
+            List<ExamPaper> tests = testService.getTestsBySubject(subjectId);
 
-            if (subject == null) {
+            // set attribute
+            List<String> teachers = new ArrayList<>();
+            List<String> exams = new ArrayList<>();
+            tests.forEach(test -> {
+                teachers.add(
+                        accountService.getTeacherNameById(test.getTeacher().getId())
+                );
+                exams.add(
+                        examService.getExamById(test.getExam().getId())
+                );
+            });
+
+            // return attributes to view
+            model.addAttribute("isExam", true);
+            model.addAttribute("quantity", tests.size());
+            if (tests.size() == 0) {
                 model.addAttribute("errMsg", "This subject does not have any exams");
                 return "teacher/bank-exam";
             }
-            model.addAttribute("subject", subject);
+            model.addAttribute("tests", tests);
+            model.addAttribute("teachers", teachers);
+            model.addAttribute("exams", exams);
             return "teacher/bank-exam";
         }
         return "500";

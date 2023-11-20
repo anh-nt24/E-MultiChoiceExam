@@ -366,3 +366,8 @@ body {
 .main-footer > * {
 	padding: 0 15px;
 }
+
+.portlet-box {
+	background-color: #fff;
+	min-height: 500px;
+}

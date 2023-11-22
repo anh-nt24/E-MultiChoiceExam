@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -17,4 +18,7 @@ public class Exam {
 
     @Column(name = "name", nullable = false)
     private String name;
+
+    @Column(name = "exam_date", nullable = false)
+    private LocalDateTime examDate;
 }

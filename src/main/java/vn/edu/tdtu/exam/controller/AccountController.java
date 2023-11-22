@@ -38,7 +38,7 @@ public class AccountController {
     }
 
     @GetMapping("/login")
-    public String loginRequest() {
+    public String loginGetRequest() {
         return "login";
     }
 
@@ -64,35 +64,6 @@ public class AccountController {
     public String exam() {
         return "student/exam";
     }
-
-<<<<<<< HEAD
-    @GetMapping("/")
-    public String admin() {
-        return "/admin/home";
-    }
-
-    @GetMapping("/list-exam")
-    public String examList(){
-        return "admin/list-exam";
-    }
-
-    @GetMapping("/plans-exam")
-    public String plansExam(){
-        return "admin/plans-exam";
-    }
-    @GetMapping("/reset-password")
-    public String resetPassword(){
-        return "admin/reset-password";
-    }
-
-    @GetMapping("/user-management")
-    public String userManagement(){
-        return "admin/user-management";
-    }
-=======
-
->>>>>>> 56a910912459e5e39a992c72184a014a5726a828
-
 }
 
 

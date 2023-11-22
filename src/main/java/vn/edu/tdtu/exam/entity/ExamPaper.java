@@ -15,8 +15,11 @@ public class ExamPaper {
     @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "date", nullable = false)
-    private LocalDateTime date;
+    @Column(name = "date_created", nullable = false)
+    private LocalDateTime dateCreated;
+
+    @Column(name = "last_modified", nullable = false)
+    private LocalDateTime lastModified;
 
     @Column(name = "duration", nullable = false)
     private Integer duration;
@@ -37,4 +40,8 @@ public class ExamPaper {
     @ManyToOne
     @JoinColumn(name = "teacher_id")
     private Teacher teacher;
+
+    @ManyToOne
+    @JoinColumn(name = "subject_id")
+    private Subject subject;
 }

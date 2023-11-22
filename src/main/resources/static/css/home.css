@@ -1,23 +1,26 @@
 nav {
     float: left;
-    width: 30%;
+    width: 25%;
     min-height: 500px;
-    background-color: var(--sub-bg-color);
+}
+
+article {
+    float: left;
+    padding: 20px;
+    width: 75%;
+    background-color: #f8f8f8;
+    min-height: 500px;
+}
+
+section {
+	background-color: var(--sub-bg-color);
+	margin-bottom: 40px;
 }
 
 nav ul {
     list-style-type: none;
     padding: 0;
 }
-
-article {
-    float: left;
-    padding: 20px;
-    width: 70%;
-    background-color: #f8f8f8;
-    min-height: 500px;
-}
-
 
 section:after {
     content: "";
@@ -40,10 +43,8 @@ section:after {
 	position: relative;
 }
 
-#home-nav > ul > li:not(:first-child) a:hover {
-	transition: transform .7s ease;
-	transform: scale(1.03);
-	opacity: 0.8;
+#home-nav > ul > li:not(:first-child):not(.active):hover {
+	background: var(--sub-bg-color);
 }
 
 #home-nav > ul > li:last-child {

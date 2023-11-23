@@ -57,6 +57,7 @@ public class AccountController {
         session.setAttribute("role", role);
         session.setAttribute("name", name);
         session.setAttribute("id", id);
+        session.setMaxInactiveInterval(3600); // 1 hour
         return "redirect:/";
     }
 

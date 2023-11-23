@@ -18,15 +18,6 @@
         </a>
 
         <div class="d-flex">
-            <a th:href="@{?action=profile}" class="btn user__info d-flex align-items-center">
-                <img class="user__info__avatar"
-                     th:src="${avatar} ? 'server/upload/user_avt/' + ${avatar} : @{/images/avatar.jpg}"
-                     alt="account">
-                <span class="sfont user__info__name d-flex align-items-center" th:text="${name != null} ? ${name} : 'User'"><i class="fa fa-solid fa-angle-down"></i></span>
-            </a>
-
-            <span class="pl-1 pr-2" style="color: white"> | </span>
-
             <a th:href="@{/logout}" class="logout-icon inactive-link">
                 <i class="fa fa-solid fa-sign-out"></i>
             </a>

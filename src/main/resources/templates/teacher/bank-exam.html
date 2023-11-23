@@ -52,6 +52,13 @@
             </div>
         </div>
         <div th:if="${tests != null and tests.size() > 0}" class="row">
+            <div th:if="${flashMessage}" th:class="${'flash ' + flashType}" id="flashMessage">
+                <div th:class="${'flash__icon ' + flashType}">
+                    <i th:if="${flashType == 'failed'}" class="icon fa fa-times-circle-o"></i>
+                    <i th:if="${flashType == 'success'}" class="icon fa fa-check"></i>
+                </div>
+                <p th:text="${flashMessage}"></p>
+            </div>
             <table class="col-12 content-table">
                 <thead>
                     <tr>
@@ -74,7 +81,12 @@
                         <td th:text="${exams[index.index]}"></td>
                         <td class="actions">
                             <a th:href="@{/paper/detail(id=${test.id})}" class="btn btn-warning"><i class="fa fas fa-edit"></i></a>
-                            <button class="btn btn-danger"><i class="fa fa-trash-o"></i></button>
+                            <form method="post" th:action="@{'/paper/delete?id=' + ${test.id}}" onsubmit="return confirmDelete()" style="display: inline">
+                                <input type="hidden" name="subject" th:value="${subject}">
+                                <button type="submit" class="btn btn-danger">
+                                    <i class="fa fa-trash-o"></i>
+                                </button>
+                            </form>
                         </td>
                     </tr>
                 </tbody>

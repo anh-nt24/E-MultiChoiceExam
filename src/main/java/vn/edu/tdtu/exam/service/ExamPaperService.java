@@ -3,6 +3,7 @@ package vn.edu.tdtu.exam.service;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import vn.edu.tdtu.exam.dto.AccountDTO;
@@ -14,6 +15,10 @@ import vn.edu.tdtu.exam.repository.ExamRepository;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,6 +27,9 @@ import java.util.List;
 public class ExamPaperService {
     private static final String CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     private static final int TOKEN_LENGTH = 6;
+
+    @Value("${upload.directory}")
+    private String uploadDirectory;
 
     @Autowired
     private ExamPaperRepository testRepository;
@@ -42,7 +50,23 @@ public class ExamPaperService {
     private OptionService optionService;
 
     public List<ExamPaper> getTestsBySubject(Long subjectId) {
-        return testRepository.findBySubjectId(subjectId);
+        return testRepository.findBySubjectIdAndIsActiveTrue(subjectId);
+    }
+
+    public Boolean updateTest(Long id, ExamPaperDTO form) {
+        ExamPaper existingExamPaper = testRepository.findById(id).orElse(null);
+        if (existingExamPaper != null) {
+            existingExamPaper.setTitle(form.getTitle());
+            existingExamPaper.setLastModified(LocalDateTime.now());
+            existingExamPaper.setDuration(form.getDuration());
+            existingExamPaper.setTimesAllowed(form.getTimesAllowed());
+            existingExamPaper.setShowScore(form.getShowScore());
+            existingExamPaper.setExam(examService.getExamById(form.getCategory()));
+
+            testRepository.save(existingExamPaper);
+            return true;
+        }
+        return false;
     }
 
     public Boolean addTest(Long teacherId, ExamPaperDTO form, MultipartFile file) {
@@ -52,9 +76,35 @@ public class ExamPaperService {
         examPaper.setDateCreated(LocalDateTime.now());
         examPaper.setLastModified(LocalDateTime.now());
         examPaper.setAccessToken(generateRandomToken());
+        examPaper.setIsActive(true);
+
+        // save file to upload directory
+        String fileUrl = saveFile(teacherId, file);
+        examPaper.setFile(fileUrl);
+
         ExamPaper savedPaper = testRepository.save(examPaper);
         Boolean result = readFile(file, savedPaper);
-        return true;
+        return result;
+    }
+
+    private String saveFile(Long teacherId, MultipartFile file) {
+        try {
+            // Ensure the upload directory exists
+            Path uploadPath = Paths.get(uploadDirectory);
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+
+            String filename = "test_" + teacherId + "_" + System.currentTimeMillis() + "_" + file.getOriginalFilename();
+            Path filePath = uploadPath.resolve(filename);
+
+            // Copy the file to the specified path
+            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+            return filename;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "";
+        }
     }
 
     private ExamPaper convertDTOtoEntity(ExamPaperDTO form) {
@@ -89,7 +139,7 @@ public class ExamPaperService {
             }
 
             return true;
-        } catch (IOException | CsvException e) {
+        } catch (IOException e) {
             e.printStackTrace();
             return false;
         }
@@ -107,4 +157,29 @@ public class ExamPaperService {
 
         return token.toString();
     }
+
+    public Boolean deletePaper(Long id) {
+        try {
+            ExamPaper examPaper = testRepository.findById(id).get();
+            // Set isActive to false
+            examPaper.setIsActive(false);
+
+            // Save the updated ExamPaper
+            testRepository.save(examPaper);
+
+            return true; // Deactivation success
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public Boolean checkAuthor(Long id, Long userId) {
+        return testRepository.findTeacherIdByExamPaperId(id) == userId;
+    }
+
+    public ExamPaper getTestsById(Long id) {
+        return testRepository.findById(id).orElse(null);
+    }
+
 }

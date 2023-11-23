@@ -60,11 +60,6 @@ public class AccountController {
         session.setMaxInactiveInterval(3600); // 1 hour
         return "redirect:/";
     }
-
-    @GetMapping("/student/exam")
-    public String exam() {
-        return "student/exam";
-    }
 }
 
 

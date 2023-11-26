@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.Date;
 
 @Inheritance(strategy = InheritanceType.JOINED)
 @Entity
@@ -26,6 +28,21 @@ public class Account {
 
     @Column(name = "name")
     private String name;
+
+    @Column(name = "address")
+    private String address;
+
+    @Column(name = "workplace")
+    private String workplace;
+
+    @Column(name = "phone")
+    private String phone;
+
+    @Column(name = "dob")
+    private LocalDate DoB;
+
+    @Column(name = "avatar")
+    private String avatar;
 
     @Column(name = "is_active", columnDefinition = "BOOLEAN DEFAULT TRUE")
     private Boolean isActive;

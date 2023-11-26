@@ -11,30 +11,54 @@ import vn.edu.tdtu.exam.dto.StudentDTO;
 import vn.edu.tdtu.exam.entity.Account;
 import vn.edu.tdtu.exam.entity.Admin;
 import vn.edu.tdtu.exam.entity.Student;
+import vn.edu.tdtu.exam.entity.Teacher;
 import vn.edu.tdtu.exam.service.AccountService;
 import vn.edu.tdtu.exam.service.StudentService;
+import vn.edu.tdtu.exam.service.TeacherService;
 import vn.edu.tdtu.exam.utils.SecurityUtil;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/")
 public class AccountController {
     private final AccountService accountService;
+    private final TeacherService teacherService;
 
     @Autowired
-    public AccountController(AccountService accountService) {
+    public AccountController(AccountService accountService, TeacherService teacherService) {
         this.accountService = accountService;
+        this.teacherService = teacherService;
     }
 
     @GetMapping()
     public String index(Model model, HttpSession session) {
         String role = (String) session.getAttribute("role");
-        String name = (String) session.getAttribute("name");
         Long id = (Long) session.getAttribute("id");
         model.addAttribute("role", role);
-        model.addAttribute("name", name);
         model.addAttribute("id", id);
         System.out.println("ROLE: " + role);
+        if (role.equals("teacher")) {
+            model = getTeacherInformation(model, id);
+        }
         return "layouts/home";
+    }
+
+    private Model getTeacherInformation(Model model, Long id) {
+        Teacher teacher = teacherService.getTeacher(id);
+        List<String> educational = List.of(teacher.getEducationalBackground().split(";"));
+        model.addAttribute("name", teacher.getName());
+        model.addAttribute("email", teacher.getEmail());
+        model.addAttribute("phone", teacher.getPhone());
+        model.addAttribute("dob", teacher.getDoB());
+        model.addAttribute("address", teacher.getAddress());
+        model.addAttribute("faculty", teacher.getFaculty());
+        model.addAttribute("workplace", teacher.getWorkplace());
+        model.addAttribute("position", teacher.getPosition());
+        model.addAttribute("degree", teacher.getDegree());
+        model.addAttribute("eduBg", educational);
+        model.addAttribute("research", teacher.getField());
+        return model;
     }
 
     @GetMapping("/login")
@@ -52,10 +76,8 @@ public class AccountController {
     public String loginPostRequest(@RequestParam String email, @RequestParam String password, HttpSession session) {
 //        After login successfully, check role of user account
         String role = "teacher";
-        Long id = 1L;
-        String name = "Nguyen Thanh Phong";
+        Long id = 2L;
         session.setAttribute("role", role);
-        session.setAttribute("name", name);
         session.setAttribute("id", id);
         session.setMaxInactiveInterval(3600); // 1 hour
         return "redirect:/";

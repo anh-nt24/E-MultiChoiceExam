@@ -3,9 +3,9 @@
       th:replace="~{/layouts/main-layout :: main-fragment(
                                                 ~{::title},
                                                 ~{:: #student-home-static-resources},
-                                                ~{:: #home-header},
                                                 ~{:: #student-nav},
-                                                ~{:: #home-main-content},
+                                                ~{:: #student-nav},
+                                                ~{:: #exam_list_section},
                                                 ~{:: #home-footer}
                                                )}">
 <head>
@@ -15,8 +15,7 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 
         <link rel="stylesheet" th:href = "@{/css/student_nav.css}">
-        <!-- <script type="text/javascript" th:src="@{/javascript/home.js}"></script>
-        <link rel="stylesheet" type="text/css" th:href="@{/css/admin.css}"/> -->
+        <link rel="stylesheet" th:href="@{/css/student_home.css}">
     </th:block>
 
 </head>
@@ -25,6 +24,297 @@
 <!-- <div id="home-nav" th:replace="~{/fragments/navbar :: nav-admin}"></div> -->
 <div id = "student-nav" th:replace="fragments/student/student_home_navbar.html :: div#student_home_navbar"></div>
 
+<div th:fragment = "exam_list_section" class = "container" id = "exam_list_section">
+    <div class = "row d-flex">
+        <div class = "col-3">
+            <div class="card text-bg-light mb-3" style="max-width: 18rem;">
+                <div class="card-header">Exam Name</div>
+
+                <div class="card-body">
+                  <h4 class="card-title">Subject title</h4>
+                  <p class="card-text">
+                    <table class = "table table-light">
+                        <tbody>
+                            <tr>
+                                <td><strong>Time Start</strong></td>
+
+                                <td class = "in4">7:00</td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>Time End</strong></td>
+
+                                <td class = "in4">8:00</td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>Duration</strong></td>
+
+                                <td class = "in4">1h</td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>Dates</strong></td>
+
+                                <td class = "in4">Mon 26/11/2023</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                  </p>
+
+                  <a href="#" class="btn d-grid">Enter Exam</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class = "col-3">
+            <div class="card text-bg-light mb-3" style="max-width: 18rem;">
+                <div class="card-header">Exam Name</div>
+
+                <div class="card-body">
+                  <h4 class="card-title">Subject title</h4>
+                  <p class="card-text">
+                    <table class = "table table-light">
+                        <tbody>
+                            <tr>
+                                <td><strong>Time Start</strong></td>
+
+                                <td class = "in4">7:00</td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>Time End</strong></td>
+
+                                <td class = "in4">8:00</td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>Duration</strong></td>
+
+                                <td class = "in4">1h</td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>Dates</strong></td>
+
+                                <td class = "in4">Mon 26/11/2023</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                  </p>
+
+                  <a href="#" class="btn d-grid">Enter Exam</a>
+                </div>
+            </div>
+        </div>
+
+        <div class = "col-3">
+            <div class="card text-bg-light mb-3" style="max-width: 18rem;">
+                <div class="card-header">Exam Name</div>
+
+                <div class="card-body">
+                  <h4 class="card-title">Subject title</h4>
+                  <p class="card-text">
+                    <table class = "table table-light">
+                        <tbody>
+                            <tr>
+                                <td><strong>Time Start</strong></td>
+
+                                <td class = "in4">7:00</td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>Time End</strong></td>
+
+                                <td class = "in4">8:00</td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>Duration</strong></td>
+
+                                <td class = "in4">1h</td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>Dates</strong></td>
+
+                                <td class = "in4">Mon 26/11/2023</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                  </p>
+
+                  <a href="#" class="btn d-grid">Enter Exam</a>
+                </div>
+            </div>
+        </div>
+
+        <div class = "col-3">
+            <div class="card text-bg-light mb-3" style="max-width: 18rem;">
+                <div class="card-header">Exam Name</div>
+
+                <div class="card-body">
+                  <h4 class="card-title">Subject title</h4>
+                  <p class="card-text">
+                    <table class = "table table-light">
+                        <tbody>
+                            <tr>
+                                <td><strong>Time Start</strong></td>
+
+                                <td class = "in4">7:00</td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>Time End</strong></td>
+
+                                <td class = "in4">8:00</td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>Duration</strong></td>
+
+                                <td class = "in4">1h</td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>Dates</strong></td>
+
+                                <td class = "in4">Mon 26/11/2023</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                  </p>
+
+                  <a href="#" class="btn d-grid">Enter Exam</a>
+                </div>
+            </div>
+        </div>
+
+        <div class = "col-3">
+            <div class="card text-bg-light mb-3" style="max-width: 18rem;">
+                <div class="card-header">Exam Name</div>
+
+                <div class="card-body">
+                  <h4 class="card-title">Subject title</h4>
+                  <p class="card-text">
+                    <table class = "table table-light">
+                        <tbody>
+                            <tr>
+                                <td><strong>Time Start</strong></td>
+
+                                <td class = "in4">7:00</td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>Time End</strong></td>
+
+                                <td class = "in4">8:00</td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>Duration</strong></td>
+
+                                <td class = "in4">1h</td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>Dates</strong></td>
+
+                                <td class = "in4">Mon 26/11/2023</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                  </p>
+
+                  <a href="#" class="btn d-grid">Enter Exam</a>
+                </div>
+            </div>
+        </div>
+
+        <div class = "col-3">
+            <div class="card text-bg-light mb-3" style="max-width: 18rem;">
+                <div class="card-header">Exam Name</div>
+
+                <div class="card-body">
+                  <h4 class="card-title">Subject title</h4>
+                  <p class="card-text">
+                    <table class = "table table-light">
+                        <tbody>
+                            <tr>
+                                <td><strong>Time Start</strong></td>
+
+                                <td class = "in4">7:00</td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>Time End</strong></td>
+
+                                <td class = "in4">8:00</td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>Duration</strong></td>
+
+                                <td class = "in4">1h</td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>Dates</strong></td>
+
+                                <td class = "in4">Mon 26/11/2023</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                  </p>
+
+                  <a href="#" class="btn d-grid">Enter Exam</a>
+                </div>
+            </div>
+        </div>
+
+        <div class = "col-3">
+            <div class="card text-bg-light mb-3" style="max-width: 18rem;">
+                <div class="card-header">Exam Name</div>
+
+                <div class="card-body">
+                  <h4 class="card-title">Subject title</h4>
+                  <p class="card-text">
+                    <table class = "table table-light">
+                        <tbody>
+                            <tr>
+                                <td><strong>Time Start</strong></td>
+
+                                <td class = "in4">7:00</td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>Time End</strong></td>
+
+                                <td class = "in4">8:00</td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>Duration</strong></td>
+
+                                <td class = "in4">1h</td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>Dates</strong></td>
+
+                                <td class = "in4">Mon 26/11/2023</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                  </p>
+
+                  <a href="#" class="btn d-grid">Enter Exam</a>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
 
 </body>
 </html>

@@ -1,21 +1,22 @@
+#student_schedule{
+    margin-top: 70px;
+}
 .schedule-table table thead tr {
-    background: #86d4f5;
+    background-color: cornflowerblue;
 }
 
 .schedule-table table thead th {
     padding: 25px 50px;
-    color: #fff;
+    color: white;
     text-align: center;
     font-size: 20px;
     font-weight: 800;
-    width: 150px;
-    border: 0;
 }
 
 .schedule-table table tbody td {
-    width: 150px;
+    width: 200px;
     vertical-align: middle;
-    border: 1px solid #e2edf8;
+    border: 1px solid cornflowerblue;
     font-weight: 500;
     padding: 30px;
     text-align: center;
@@ -23,7 +24,7 @@
 
 .schedule-table table tbody td h4 {
     font-weight: 700;
-    color: #000;
+    color: black;
     font-size: 20px;
     margin-bottom: 5px;
 }

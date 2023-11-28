@@ -12,8 +12,8 @@ public class Student extends Account {
     @Column(name = "student_id", nullable = false, unique = true)
     private String studentId;
 
-    @Column(name = "gender")
-    private String gender;
+    @Column(name = "major")
+    private String major;
 
     @Column(name = "enrollment_year")
     private Integer enrollment_year;

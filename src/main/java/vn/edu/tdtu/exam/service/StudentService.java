@@ -18,7 +18,7 @@ public class StudentService {
         Student student = new Student();
         student.setStudentId(studentDTO.getStudentId());
         student.setEmail(studentDTO.getEmail());
-        student.setGender(studentDTO.getGender());
+        student.setMajor(studentDTO.getMajor());
         student.setPassword(studentDTO.getPassword());
         return studentRepository.save(student);
     }

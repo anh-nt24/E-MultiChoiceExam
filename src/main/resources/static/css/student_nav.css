@@ -1,0 +1,27 @@
+#student_home_navba navbar{
+    background-color: var(--sub-bg-color);
+}
+#student_home_navbar img{
+    width: 50px;
+    height: 50px;
+    object-fit: scale-down;
+    justify-content: end;
+}
+li.nav-item{
+    width: 200px;
+    font-size: 20px;
+    justify-content: end;
+}
+#student_home_navbar #navbarSupportedContent{
+    justify-content: end;
+}
+
+@media only screen and (max-width: 768px) {
+    #student_home_navbar #avatar{
+        position: fixed;
+        top: 0;
+        right: 0;
+        margin: 10px 10px 0 0;
+        justify-content: end;
+    }
+}

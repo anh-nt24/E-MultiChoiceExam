@@ -13,6 +13,7 @@
 <head>
     <title>Homepage</title>
     <th:block id="home-static-resources">
+        <script type="text/javascript" th:src="@{/javascript/home.js}"></script>
         <script type="text/javascript" th:src="@{/javascript/paper.js}"></script>
         <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}"/>
         <link rel="stylesheet" type="text/css" th:href="@{/css/paper.css}"/>
@@ -31,12 +32,12 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <form action="/paper/add" method="post" id="survey-form" enctype="multipart/form-data">
+                <form th:if="${test != null}" th:action="@{'/paper/update?id=' + ${test.id}}" method="post" id="survey-form" enctype="multipart/form-data" onsubmit="return confirmUpdate()">
                     <div class="labels">
                         <label for="name" id="name-label">Quiz title: *</label>
                     </div>
                     <div class="input-tabs">
-                        <input type="text" name="title" class="input-text" id="name" placeholder="Quiz title" required>
+                        <input type="text" th:value="${test.title}" th:readonly="${not isAuthor}" name="title" class="input-text" id="name" placeholder="Quiz title" required>
                     </div>
 
                     <div class="labels">
@@ -52,9 +53,9 @@
                     </div>
                     <div class="input-tabs">
                         <select name="category" id="dropdown" required>
-                            <option disabled selected value="none">Select an exam category</option>
+                            <option disabled value="none">Select an exam category</option>
                             <th:block th:each="exam : ${category}">
-                                <option th:value="${exam.id}" th:text="${exam.name}"></option>
+                                <option th:selected="${test.exam.id == exam.id }" th:value="${exam.id}" th:text="${exam.name}"></option>
                             </th:block>
                         </select>
                     </div>
@@ -63,22 +64,22 @@
                         <label for="duration" id="duration-label">Duration: *</label>
                     </div>
                     <div class="input-tabs">
-                        <input type="number" name="duration" class="input-text" id="duration" placeholder="Duration (mins)" required>
+                        <input type="number" th:value="${test.duration}" th:readonly="${not isAuthor}" name="duration" class="input-text" id="duration" placeholder="Duration (mins)" required>
                     </div>
 
                     <div class="labels">
                         <label for="time-allowed" id="time-label">Times allowed: *</label>
                     </div>
                     <div class="input-tabs">
-                        <input type="number" name="timesAllowed" class="input-text" id="time-allowed" placeholder="Times allowed, e.g: 1, 2" required>
+                        <input type="number" th:value="${test.timesAllowed}" th:readonly="${not isAuthor}" name="timesAllowed" class="input-text" id="time-allowed" placeholder="Times allowed, e.g: 1, 2" required>
                     </div>
 
                     <div class="labels">
                         <label>Show score? *</label>
                     </div>
                     <div class="input-tabs">
-                        <input type="radio" name="showScore" id="show-score-yes" value="true">Yes<br>
-                        <input type="radio" name="showScore" id="show-score-no" checked value="false">No<br>
+                        <input type="radio" name="showScore" th:readonly="${not isAuthor}" id="show-score-yes" th:checked="${test.showScore == true}" value="true">Yes<br>
+                        <input type="radio" name="showScore" th:readonly="${not isAuthor}" id="show-score-no" th:checked="${test.showScore == false}" value="false">No<br>
                     </div>
 
                     <div class="flash failed">
@@ -100,15 +101,15 @@
                                         <i class="fa fa-upload"></i>
                                         Choose File to upload
                                     </h4>
-                                    <input
-                                            id="fileInput"
-                                            type="file"
-                                            hidden
-                                            required
-                                            accept=".csv"
-                                            name="exampaper"
-                                            onchange="handleFileChange(event)"
-                                    />
+<!--                                    <input-->
+<!--                                            id="fileInput"-->
+<!--                                            type="file"-->
+<!--                                            hidden-->
+<!--                                            required-->
+<!--                                            accept=".csv"-->
+<!--                                            name="exampaper"-->
+<!--                                            onchange="handleFileChange(event)"-->
+<!--                                    />-->
                                 </div>
                                 <small>CSV support only!</small>
                             </div>
@@ -121,7 +122,9 @@
                                 selectedFileNames.length ? 'max-height:220px' : 'height:auto'
                             "
                                     >
-                                        <!-- JavaScript will populate this list -->
+                                        <li class="item">
+                                            <a class="name" th:href="${'file/' + test.file}" th:text="${test.file}"></a>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>

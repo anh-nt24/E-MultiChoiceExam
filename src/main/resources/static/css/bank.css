@@ -54,6 +54,11 @@
 	color: #fff;
 }
 
+.add-exam:hover {
+	color: #fff;
+	background: var(--sub-bg-color);
+}
+
 .content-table {
 	  border-collapse: collapse;
 	  margin: 25px 0;

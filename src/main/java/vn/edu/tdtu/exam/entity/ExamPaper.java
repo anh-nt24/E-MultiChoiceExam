@@ -33,6 +33,12 @@ public class ExamPaper {
     @Column(name = "showScore", nullable = false)
     private Boolean showScore;
 
+    @Column(name = "is_active", columnDefinition = "BOOLEAN DEFAULT TRUE")
+    private Boolean isActive;
+
+    @Column(name = "file", nullable = false)
+    private String file;
+
     @ManyToOne
     @JoinColumn(name = "exam_id")
     private Exam exam;

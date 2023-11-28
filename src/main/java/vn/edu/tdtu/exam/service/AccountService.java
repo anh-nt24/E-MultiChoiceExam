@@ -10,6 +10,7 @@ import vn.edu.tdtu.exam.entity.Teacher;
 import vn.edu.tdtu.exam.repository.AccountRepository;
 import vn.edu.tdtu.exam.repository.StudentRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -61,5 +62,17 @@ public class AccountService {
         } else {
             return null;
         }
+    }
+    public Optional<Account> findById(Long userId) {
+        return accountRepository.findById(userId);
+    }
+    public Account save(Account account){
+        return accountRepository.save(account);
+    }
+    public List<Account> findAll(){
+        return accountRepository.findAll();
+    }
+    public List<Account> getUsersByRole(String role) {
+        return accountRepository.findByRole(role);
     }
 }

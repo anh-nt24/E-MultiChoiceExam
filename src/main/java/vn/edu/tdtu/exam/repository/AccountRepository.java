@@ -5,7 +5,10 @@ import org.springframework.stereotype.Repository;
 import vn.edu.tdtu.exam.entity.Account;
 import vn.edu.tdtu.exam.entity.Student;
 
+import java.util.List;
+
 @Repository
 public interface AccountRepository extends JpaRepository<Account, Long> {
     Account findByEmailAndPassword(String email, String password);
+    List<Account> findByRole(String role);
 }

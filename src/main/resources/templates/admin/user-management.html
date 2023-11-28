@@ -14,11 +14,43 @@
         <script type="text/javascript" th:src="@{/javascript/home.js}"></script>
         <link rel="stylesheet" type="text/css" th:href="@{/css/admin.css}"/>
     </th:block>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+    </style>
 </head>
 <body>
 <div id="home-header" th:replace="~{/fragments/app-fragments :: header}"></div>
 <div id="home-nav" th:replace="~{/fragments/navbar :: nav-admin}"></div>
-    DANH SACH PHAN QUYEN O DAY
+<div id="home-main-content">
+    <div class="table-responsive">
+        <h2>USER LIST</h2>
+        <table class="table" id="userTable">
+                <th class="table-info">ID</th>
+                <th class="table-info">Name</th>
+                <th class="table-info">Role</th>
+                <th class="table-info">Action</th>
+            <tr th:each="user, start : ${userList}">
+                <td th:text="${start.index + 1}"></td>
+                <td th:text="${user.name}"></td>
+                <td th:text="${user.role}"></td>
+                <td>
+                    <a th:href="@{/admin/update-user-status/{id} (id=${user.id})}" th:onclick="'updateStatus(' + ${user.id} + ', ' + ${user.isActive} + ');'">
+                        <button class="btn btn-info">Edit</button>
+                    </a>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
 <div id="home-footer" th:replace="~{/fragments/app-fragments :: footer}">
     Footer
 </div>

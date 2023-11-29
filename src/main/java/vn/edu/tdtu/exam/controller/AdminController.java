@@ -4,14 +4,17 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import vn.edu.tdtu.exam.entity.Account;
+import vn.edu.tdtu.exam.entity.ResetPassword;
 import vn.edu.tdtu.exam.repository.AccountRepository;
 import vn.edu.tdtu.exam.service.AccountService;
+import vn.edu.tdtu.exam.service.ResetPasswordService;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,6 +36,9 @@ public class AdminController {
     @Autowired
     private AccountRepository accountRepository;
     @Autowired AccountService accountService;
+
+    @Autowired
+    ResetPasswordService resetPasswordService;
     @GetMapping()
     public String admin() {
         return "admin/home";
@@ -46,11 +52,6 @@ public class AdminController {
     @GetMapping("/plans-exam")
     public String plansExam() {
         return "admin/plans-exam";
-    }
-
-    @GetMapping("/reset-password")
-    public String resetPassword() {
-        return "admin/reset-password";
     }
 
     @GetMapping("/user-management")
@@ -150,7 +151,7 @@ public class AdminController {
                 return "error";
             }
         } else {
-            return "/admin/error";
+            return "admin/error";
         }
     }
 

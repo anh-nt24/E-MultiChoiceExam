@@ -105,3 +105,86 @@
 .actions .btn {
 	padding: 2px 4px;
 }
+
+
+.pagination {
+	width: 100%;
+    text-align: center;
+    margin-top: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pages {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 100%;
+    margin: 10px;
+}
+
+.page-number {
+	text-decoration: none;
+    cursor: pointer;
+    background-color: var(--sub-bg-color);
+    color: #666;
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: .4s ease;
+}
+
+a.page-number:hover {
+	text-decoration: none;
+}
+
+.page-number.active {
+    font-size: 1.3em;
+    height: 40px;
+    width: 40px;
+    background-color: #0057b3;
+    color: white;
+}
+
+button {
+    padding: 8px 16px;
+    background-color: #ffffff00;
+    color: #0057b3;
+    border: none;
+    cursor: pointer;
+    margin: 0 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+button:hover {
+    color: #0056b3;
+}
+
+button:disabled {
+    background-color: #ffffff00;
+    color: #ccc;
+    cursor: not-allowed;
+}
+
+#prevPage {
+    margin-right: 20px;
+}
+
+#nextPage {
+    margin-left: 20px;
+}
+
+.arrow {
+    font-size: 1.2em;
+}
+
+.nav-text {
+    font-size: 0.7em;
+    letter-spacing: 0.3em;
+}

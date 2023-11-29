@@ -1,18 +1,16 @@
 package vn.edu.tdtu.exam.service;
 
 import com.opencsv.CSVReader;
-import com.opencsv.exceptions.CsvException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import vn.edu.tdtu.exam.dto.AccountDTO;
 import vn.edu.tdtu.exam.dto.ExamPaperDTO;
 import vn.edu.tdtu.exam.entity.*;
-import vn.edu.tdtu.exam.repository.AccountRepository;
 import vn.edu.tdtu.exam.repository.ExamPaperRepository;
-import vn.edu.tdtu.exam.repository.ExamRepository;
-import com.opencsv.exceptions.CsvException;
 
 
 import java.io.IOException;
@@ -51,8 +49,13 @@ public class ExamPaperService {
     @Autowired
     private OptionService optionService;
 
-    public List<ExamPaper> getTestsBySubject(Long subjectId) {
-        return testRepository.findBySubjectIdAndIsActiveTrue(subjectId);
+    public Page<ExamPaper> getTestsBySubject(Long subjectId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return testRepository.findBySubjectIdAndIsActiveTrue(subjectId, pageable);
+    }
+
+    public Integer getTestQuantityBySubject(Long id) {
+        return testRepository.findBySubjectIdAndIsActiveTrue(id).size();
     }
 
     public Boolean updateTest(Long id, ExamPaperDTO form) {

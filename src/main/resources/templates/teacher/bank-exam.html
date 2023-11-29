@@ -51,7 +51,7 @@
                 <hr>
             </div>
         </div>
-        <div th:if="${tests != null and tests.size() > 0}" class="row">
+        <div th:if="${tests != null and quantity > 0}" class="row">
             <div th:if="${flashMessage}" th:class="${'flash ' + flashType}" id="flashMessage">
                 <div th:class="${'flash__icon ' + flashType}">
                     <i th:if="${flashType == 'failed'}" class="icon fa fa-times-circle-o"></i>
@@ -91,6 +91,27 @@
                     </tr>
                 </tbody>
             </table>
+
+            <!-- Display pagination controls -->
+            <div class="pagination">
+                <a class="arrow" id="prevPage" th:class="${currentPage == 0} ? 'disabled' : ''"
+                   th:href="@{/bank/exam?s={s}(s=${subject}, page=${currentPage - 1}, size=${size})}">
+                    ← <span class="nav-text">PREV</span>
+                </a>
+                <div class="pages" th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}">
+                        <a th:if="${currentPage != pageNumber}"
+                           th:href="@{/bank/exam?s={s}(s=${subject}, page=${pageNumber}, size=${size})}"
+                           th:text="${pageNumber + 1}"
+                           th:class="${currentPage == pageNumber} ? 'page-number active' : 'page-number'"></a>
+                        <span th:if="${currentPage == pageNumber}"
+                           th:text="${pageNumber + 1}"
+                           th:class="${currentPage == pageNumber} ? 'page-number active' : 'page-number'"></span>
+                </div>
+                <a class="arrow" id="nextPage" th:class="${currentPage == totalPages - 1 || quantity < size} ? 'disabled' : ''"
+                   th:href="@{/bank/exam?s={s}(s=${subject}, page=${currentPage + 1}, size=${size})}">
+                    <span class="nav-text">NEXT</span> →
+                </a>
+            </div>
         </div>
         <div th:if="${errMsg != null}">
             <p style="font-size: 20px; font-style: italic" th:text="${errMsg}"></p>

@@ -2,9 +2,11 @@ package vn.edu.tdtu.exam.controller;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import vn.edu.tdtu.exam.entity.Account;
@@ -44,8 +46,9 @@ public class BankController {
         } else {
             List<Integer> quantity = new ArrayList<>();
             subjects.forEach(subject -> {
-                List<ExamPaper> tests = testService.getTestsBySubject(subject.getId());
-                quantity.add(tests.size());
+                quantity.add(
+                        testService.getTestQuantityBySubject(subject.getId())
+                );
             });
             model.addAttribute("subjects", subjects);
             model.addAttribute("quantity", quantity);
@@ -54,9 +57,13 @@ public class BankController {
     }
 
     @GetMapping("/exam")
-    public String showExam(@RequestParam(name = "s") Long subjectId, Model model) {
+    public String showExam(
+            @RequestParam(name = "s") Long subjectId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "1") int size,
+            Model model) {
         if (subjectId != null) {
-            List<ExamPaper> tests = testService.getTestsBySubject(subjectId);
+            Page<ExamPaper> tests = testService.getTestsBySubject(subjectId, page, size);
 
             // set attribute
             List<String> teachers = new ArrayList<>();
@@ -72,15 +79,18 @@ public class BankController {
 
             // return attributes to view
             model.addAttribute("isExam", true);
-            model.addAttribute("quantity", tests.size());
+            model.addAttribute("quantity", tests.getTotalElements());
             model.addAttribute("subject", subjectId);
-            if (tests.size() == 0) {
+            if (tests.getTotalElements() == 0) {
                 model.addAttribute("errMsg", "This subject does not have any exams");
                 return "teacher/bank-exam";
             }
             model.addAttribute("tests", tests);
             model.addAttribute("teachers", teachers);
             model.addAttribute("exams", exams);
+            model.addAttribute("currentPage", tests.getNumber());
+            model.addAttribute("totalPages", tests.getTotalPages());
+            model.addAttribute("size", size);
             return "teacher/bank-exam";
         }
         return "500";

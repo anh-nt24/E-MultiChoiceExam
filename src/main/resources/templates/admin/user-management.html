@@ -33,14 +33,19 @@
 <div id="home-main-content">
     <div class="table-responsive">
         <h2>USER LIST</h2>
+
+        <a th:href="@{/admin/register-account}"><button class="btn btn-danger" style="float: right;">Add User</button></a><br><br>
+
         <table class="table" id="userTable">
                 <th class="table-info">ID</th>
                 <th class="table-info">Name</th>
+                <th class="table-info">Email</th>
                 <th class="table-info">Role</th>
                 <th class="table-info">Action</th>
             <tr th:each="user, start : ${userList}">
                 <td th:text="${start.index + 1}"></td>
                 <td th:text="${user.name}"></td>
+                <td th:text="${user.email}"></td>
                 <td th:text="${user.role}"></td>
                 <td>
                     <a th:href="@{/admin/update-user-status/{id} (id=${user.id})}" th:onclick="'updateStatus(' + ${user.id} + ', ' + ${user.isActive} + ');'">

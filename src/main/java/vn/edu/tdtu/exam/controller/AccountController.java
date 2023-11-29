@@ -18,13 +18,9 @@ import vn.edu.tdtu.exam.service.AccountService;
 import vn.edu.tdtu.exam.service.StudentService;
 import vn.edu.tdtu.exam.service.TeacherService;
 import vn.edu.tdtu.exam.utils.SecurityUtil;
-
-<<<<<<< HEAD
 import java.util.Map;
 import java.util.Optional;
-=======
 import java.util.List;
->>>>>>> e8315c946dda47f7bf4fac2c125f01b1cb127b35
 
 @Controller
 @RequestMapping("/")
@@ -89,10 +85,10 @@ public class AccountController {
         session.setMaxInactiveInterval(3600); // 1 hour
         return "redirect:/";
     }
-    @GetMapping("/student/exam")
-    public String exam() {
-        return "student/exam";
-    }
+//    @GetMapping("/student/exam")
+//    public String exam() {
+//        return "student/exam";
+//    }
 }
 
 

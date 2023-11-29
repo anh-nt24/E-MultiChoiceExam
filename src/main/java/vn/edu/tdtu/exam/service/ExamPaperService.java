@@ -12,6 +12,8 @@ import vn.edu.tdtu.exam.entity.*;
 import vn.edu.tdtu.exam.repository.AccountRepository;
 import vn.edu.tdtu.exam.repository.ExamPaperRepository;
 import vn.edu.tdtu.exam.repository.ExamRepository;
+import com.opencsv.exceptions.CsvException;
+
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -120,25 +122,30 @@ public class ExamPaperService {
 
     private Boolean readFile(MultipartFile file, ExamPaper examPaper) {
         try (CSVReader reader = new CSVReader(new InputStreamReader(file.getInputStream()))) {
-            List<String[]> csvData = reader.readAll();
-            for (String[] row : csvData) {
-                Question question = new Question();
-                question.setContent(row[0]);
-                question.setExamPaper(examPaper);
-                Question savedQuestion = questionService.addQuestion(question);
+            try {
+                List<String[]> csvData = reader.readAll();
+                for (String[] row : csvData) {
+                    Question question = new Question();
+                    question.setContent(row[0]);
+                    question.setExamPaper(examPaper);
+                    Question savedQuestion = questionService.addQuestion(question);
 
-                int correct = Integer.parseInt(row[5]);
-                for(int i=1; i<=4; ++i) {
-                    Boolean isCorrect = (correct == i);
-                    Option option = new Option();
-                    option.setContent(row[i]);
-                    option.setIsCorrect(isCorrect);
-                    option.setQuestion(savedQuestion);
-                    optionService.addOption(option);
+                    int correct = Integer.parseInt(row[5]);
+                    for (int i = 1; i <= 4; ++i) {
+                        Boolean isCorrect = (correct == i);
+                        Option option = new Option();
+                        option.setContent(row[i]);
+                        option.setIsCorrect(isCorrect);
+                        option.setQuestion(savedQuestion);
+                        optionService.addOption(option);
+                    }
                 }
-            }
 
-            return true;
+                return true;
+            }catch (Exception e){
+                e.printStackTrace();
+                return false;
+            }
         } catch (IOException e) {
             e.printStackTrace();
             return false;

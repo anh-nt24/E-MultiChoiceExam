@@ -49,4 +49,16 @@ public class Account {
 
     @Column(name = "role")
     private String role;
+    public Account(String email, String password, String name, String address, String workplace, String phone, LocalDate doB, String avatar, Boolean isActive, String role) {
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.address = address;
+        this.workplace = workplace;
+        this.phone = phone;
+        this.DoB = doB;
+        this.avatar = avatar;
+        this.isActive = true;
+        this.role = role;
+    }
 }

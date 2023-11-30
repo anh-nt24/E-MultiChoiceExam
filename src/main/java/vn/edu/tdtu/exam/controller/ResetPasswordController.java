@@ -26,7 +26,7 @@ public class ResetPasswordController {
     }
     @GetMapping("/admin/reset-password")
     public String resetPassword(Model model) {
-        List<ResetPassword> resetPasswords = resetPasswordService.findAll();
+        List<ResetPassword> resetPasswords = resetPasswordService.findByStatus("not");
         model.addAttribute("reset", resetPasswords);
         return "admin/reset-password";
     }

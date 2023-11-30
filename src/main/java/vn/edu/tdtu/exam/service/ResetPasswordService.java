@@ -24,7 +24,11 @@ public class ResetPasswordService {
 
         resetPasswordOptional.ifPresent(resetPassword -> {
             resetPassword.getAccount().setPassword(newPassword);
+            resetPassword.setStatus("done");
             resetPasswordRepository.save(resetPassword);
         });
+    }
+    public List<ResetPassword> findByStatus(String status) {
+        return resetPasswordRepository.findByStatus(status);
     }
 }

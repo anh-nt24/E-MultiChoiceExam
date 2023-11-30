@@ -13,6 +13,7 @@
     <th:block id="home-static-resources">
         <script type="text/javascript" th:src="@{/javascript/home.js}"></script>
         <link rel="stylesheet" type="text/css" th:href="@{/css/admin.css}"/>
+        <link rel="stylesheet" type="text/css" th:href="@{/css/list-student.css}"/>
     </th:block>
     <style>
         table {
@@ -30,24 +31,24 @@
 <body>
 <div id="home-header" th:replace="~{/fragments/app-fragments :: header}"></div>
 <div id="home-nav" th:replace="~{/fragments/navbar :: nav-admin}"></div>
-<div id="home-main-content">
+<div id="home-main-content" class="portlet-box p-3">
     <div class="table-responsive">
-        <h2>USER LIST</h2>
+        <h2 class="text-center mt-4">USER LIST</h2>
 
         <a th:href="@{/admin/register-account}"><button class="btn btn-danger" style="float: right;">Add User</button></a><br><br>
 
         <table class="table" id="userTable">
-                <th class="table-info">ID</th>
-                <th class="table-info">Name</th>
-                <th class="table-info">Email</th>
-                <th class="table-info">Role</th>
-                <th class="table-info">Action</th>
+                <th class="student-header-table pt-2">ID</th>
+                <th class="student-header-table pt-2">Name</th>
+                <th class="student-header-table pt-2">Email</th>
+                <th class="student-header-table pt-2">Role</th>
+                <th class="student-header-table pt-2">Action</th>
             <tr th:each="user, start : ${userList}">
-                <td th:text="${start.index + 1}"></td>
-                <td th:text="${user.name}"></td>
-                <td th:text="${user.email}"></td>
-                <td th:text="${user.role}"></td>
-                <td>
+                <td class="student-header-table pt-2" th:text="${start.index + 1}"></td>
+                <td class="student-id pt-2" th:text="${user.name}"></td>
+                <td class="student-id pt-2" th:text="${user.email}"></td>
+                <td class="student-id pt-2" th:text="${user.role}"></td>
+                <td class="student-id pt-2">
                     <a th:href="@{/admin/update-user-status/{id} (id=${user.id})}" th:onclick="'updateStatus(' + ${user.id} + ', ' + ${user.isActive} + ');'">
                         <button class="btn btn-info">Edit</button>
                     </a>

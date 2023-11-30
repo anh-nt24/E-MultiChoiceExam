@@ -11,9 +11,10 @@
                                                )}">
 
 <head>
-    <title>Homepage</title>
+    <title>Bank Resource</title>
     <th:block id="home-static-resources">
         <script type="text/javascript" th:src="@{/javascript/home.js}"></script>
+        <script type="text/javascript" th:src="@{/javascript/bank.js}"></script>
         <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}"/>
         <link rel="stylesheet" type="text/css" th:href="@{/css/bank.css}"/>
     </th:block>
@@ -59,6 +60,50 @@
                 </div>
                 <p th:text="${flashMessage}"></p>
             </div>
+            <form class="col-12">
+                <table class="w-100">
+                    <thead>
+                    <tr class="filters">
+                        <th>Title
+                            <input id="title-search" name="title-search" class="form-control">
+                        </th>
+                        <th>Author
+                            <select id="author-filter" name="author-filter" class="form-control">
+                                <option value="*">Any</option>
+<!--                                <th:block th:each="teacher : ${teachers}">-->
+<!--                                    <option th:value="${teacher.id}" th:text="${teacher.name}"></option>-->
+<!--                                </th:block>-->
+                                <th:block th:each="teacher : ${uniqueTeachers}">
+                                    <option th:value="${teacher.id}" th:text="${teacher.name}"></option>
+                                </th:block>
+                            </select>
+                        </th>
+                        <th>Exam
+                            <select id="exam-filter" name="exam-filter" class="form-control">
+                                <option value="*">Any</option>
+                                <th:block th:each="exam : ${uniqueExams}">
+                                    <option th:value="${exam.id}" th:text="${exam.name}"></option>
+                                </th:block>
+                            </select>
+                        </th>
+                        <th>Sort by
+                            <select id="sort-filter" name="sort-filter" class="form-control">
+                                <option value="none">None</option>
+                                <option value="author-asc">Author (asc)</option>
+                                <option value="author-desc">Author (desc)</option>
+                                <option value="created-asc">Date created (asc)</option>
+                                <option value="created-desc">Date created (desc)</option>
+                                <option value="modified-asc">Last modified (asc)</option>
+                                <option value="modified-desc">Last modified (desc)</option>
+                            </select>
+                        </th>
+                    </tr>
+                    </thead>
+                </table>
+            </form>
+        </div>
+        <hr th:if="${tests != null and quantity > 0}" style="border-top: 3px solid #ddd;">
+        <div th:if="${tests != null and quantity > 0}" class="row" style="margin-top: -25px">
             <table class="col-12 content-table">
                 <thead>
                     <tr>
@@ -71,14 +116,14 @@
                         <th>Action</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="tbody">
                     <tr th:each="test, index : ${tests}">
                         <td style="text-align: center" th:text="${index.index + 1}"></td>
                         <td th:text="${test.title}"></td>
-                        <td th:text="${teachers[index.index]}"></td>
+                        <td th:author="${teachers[index.index].id}" th:text="${teachers[index.index].name}"></td>
                         <td th:text="${#temporals.format(test.dateCreated, 'yyyy-MM-dd HH:mm:ss')}"></td>
                         <td th:text="${#temporals.format(test.lastModified, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                        <td th:text="${exams[index.index]}"></td>
+                        <td th:exam="${exams[index.index].id}" th:text="${exams[index.index].name}"></td>
                         <td class="actions">
                             <a th:href="@{/paper/detail(id=${test.id})}" class="btn btn-warning"><i class="fa fas fa-edit"></i></a>
                             <form method="post" th:action="@{'/paper/delete?id=' + ${test.id}}" onsubmit="return confirmDelete()" style="display: inline">

@@ -5,17 +5,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import vn.edu.tdtu.exam.entity.Account;
-import vn.edu.tdtu.exam.entity.ExamPaper;
-import vn.edu.tdtu.exam.entity.Subject;
+import org.springframework.web.bind.annotation.*;
+import vn.edu.tdtu.exam.entity.*;
 import vn.edu.tdtu.exam.service.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/bank")
@@ -23,6 +20,9 @@ public class BankController {
 
     @Autowired
     private AccountService accountService;
+
+    @Autowired
+    private TeacherService teacherService;
 
     @Autowired
     private SubjectService subjectService;
@@ -60,20 +60,20 @@ public class BankController {
     public String showExam(
             @RequestParam(name = "s") Long subjectId,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "1") int size,
+            @RequestParam(defaultValue = "2") int size,
             Model model) {
         if (subjectId != null) {
             Page<ExamPaper> tests = testService.getTestsBySubject(subjectId, page, size);
 
             // set attribute
-            List<String> teachers = new ArrayList<>();
-            List<String> exams = new ArrayList<>();
+            List<Teacher> teachers = new ArrayList<>();
+            List<Exam> exams = new ArrayList<>();
             tests.forEach(test -> {
                 teachers.add(
-                        accountService.getTeacherNameById(test.getTeacher().getId())
+                        accountService.getTeacher(test.getTeacher().getId())
                 );
                 exams.add(
-                        examService.getExamById(test.getExam().getId()).getName()
+                        examService.getExamById(test.getExam().getId())
                 );
             });
 
@@ -91,9 +91,37 @@ public class BankController {
             model.addAttribute("currentPage", tests.getNumber());
             model.addAttribute("totalPages", tests.getTotalPages());
             model.addAttribute("size", size);
+            model.addAttribute("uniqueTeachers", getUniqueTeachers(teachers));
+            model.addAttribute("uniqueExams", getUniqueExams(exams));
             return "teacher/bank-exam";
         }
         return "500";
+    }
+
+    private Set<Exam> getUniqueExams(List<Exam> exams) {
+        Set<String> uniqueExamNames = new HashSet<>();
+        Set<Exam> uniqueExams = new HashSet<>();
+
+        for (Exam exam : exams) {
+            if (uniqueExamNames.add(exam.getName())) {
+                uniqueExams.add(exam);
+            }
+        }
+
+        return uniqueExams;
+    }
+
+    private Set<Teacher> getUniqueTeachers(List<Teacher> teachers) {
+        Set<String> uniqueTeacherNames = new HashSet<>();
+        Set<Teacher> uniqueTeachers = new HashSet<>();
+
+        for (Teacher teacher : teachers) {
+            if (uniqueTeacherNames.add(teacher.getName())) {
+                uniqueTeachers.add(teacher);
+            }
+        }
+
+        return uniqueTeachers;
     }
 }
 

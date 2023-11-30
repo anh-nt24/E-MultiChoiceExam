@@ -67,7 +67,9 @@ public class ExamPaperController {
         Subject subject = subjectService.getSubjectById(test.getSubject().getId());
         model.addAttribute("subject", subject);
 
-        model.addAttribute("isAuthor", testService.checkAuthor(userId, test.getTeacher().getId()));
+        model.addAttribute("isAuthor", testService.checkAuthor(test.getId(), test.getTeacher().getId()));
+//        System.out.println(userId + " " + test.getTeacher().getId());
+//        System.out.println(testService.checkAuthor(userId, test.getTeacher().getId()));
         return "teacher/exam-paper-detail";
     }
 

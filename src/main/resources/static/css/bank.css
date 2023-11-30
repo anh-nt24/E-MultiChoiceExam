@@ -89,7 +89,8 @@
   	background-color: #f8f8f8;
 }
 
-.content-table tbody tr:last-of-type {
+.content-table tbody tr:last-of-type,
+.tbody {
   border-bottom: 2px solid var(--main-bg-color);
 }
 
@@ -110,7 +111,7 @@
 .pagination {
 	width: 100%;
     text-align: center;
-    margin-top: 40px;
+    margin-top: 15px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -150,6 +151,11 @@ a.page-number:hover {
     color: white;
 }
 
+a.disabled {
+	pointer-events: none;
+    color: #555;
+}
+
 button {
     padding: 8px 16px;
     background-color: #ffffff00;
@@ -187,4 +193,9 @@ button:disabled {
 .nav-text {
     font-size: 0.7em;
     letter-spacing: 0.3em;
+}
+
+.filters th {
+	padding: 8px;
+	width: calc(100%/4);
 }

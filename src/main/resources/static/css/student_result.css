@@ -36,8 +36,8 @@ td.in4{
 
 }
 
-#result_section div.card-body a{
-    width: 240px;
+#result_section div.card-body a.details{
+    margin-right: 10px;
     text-transform: uppercase;
     font-weight: bold;
     color: white;

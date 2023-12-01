@@ -1,7 +1,13 @@
 package vn.edu.tdtu.exam.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "report")
 public class Report {
@@ -23,5 +29,12 @@ public class Report {
     @ManyToOne
     @JoinColumn(name = "student_id")
     private Student student;
+
+    public Report(ExamPaper examPaper, Student student, String description){
+        this.examPaper = examPaper;
+        this.student = student;
+        this.description = description;
+        this.status = false;
+    }
 }
 

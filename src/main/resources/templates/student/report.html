@@ -22,6 +22,8 @@
         <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}"/>
         <script type="text/javascript" th:src="@{/javascript/home.js}"></script>
         <link rel="stylesheet" th:href="@{/css/student_report.css}">
+        <script type="text/javascript" th:src="@{/javascript/report.js}"></script>
+
     </th:block>
 </head>
 
@@ -36,241 +38,45 @@
 <div th:fragment = "student_report" id = "student_report">
     <div class="event-schedule-area-two bg-color pad100">
         <div class="container">
-            <div class="row">
+            <div class="row" >
                 <div class="col-lg-12">
-                    <div class="section-title text-center">
-                        <div class="title-text">
-                            <h2>Report</h2>
-                        </div>
-                        <p>
-                            In ludus latine mea, eos paulo quaestio an. Meis possit ea sit. Vidisse molestie<br />
-                            cum te, sea lorem instructior at.
-                        </p>
-                    </div>
-                </div>
-                <!-- /.col end-->
-            </div>
-            <!-- row end-->
-            <div class="row">
-                <div class="col-lg-12">
-                    <ul class="nav custom-tab" id="myTab" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active show" id="home-taThursday" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">All</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="indivudial-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Individual</a>
-                        </li>
-                        <!-- <li class="nav-item">
-                            <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Day 3</a>
-                        </li>
-                        <li class="nav-item d-none d-lg-block">
-                            <a class="nav-link" id="sunday-tab" data-toggle="tab" href="#sunday" role="tab" aria-controls="sunday" aria-selected="false">Day 4</a>
-                        </li>
-                        <li class="nav-item mr-0 d-none d-lg-block">
-                            <a class="nav-link" id="monday-tab" data-toggle="tab" href="#monday" role="tab" aria-controls="monday" aria-selected="false">Day 5</a>
-                        </li> -->
-                    </ul>
                     <div class="tab-content" id="myTabContent">
-                        <div class="tab-pane fade " id="home" role="tabpanel">
-                            <div class="table-responsive">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th class="text-center" scope="col">ID</th>
-                                            <th class="text-center" scope="col">Subject</th>
-                                            <th class="text-center" scope="col">Content</th>
-                                            <th class="text-center" scope="col">Date Created</th>
-                                            <th class="text-center" scope="col">Status</th>
-                                            <th class="text-center" scope="col">Answer</th>
-                                            <th class="text-center" scope="col">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-    
-                                        <tr class="inner-box">
-                                            <th scope="row">
-                                                <div class="event-date">
-                                                    <span>16</span>
-                                                    <p>Novembar</p>
-                                                </div>
-                                            </th>
-                                            <td>
-                                                <h2>Exam Name</h2>
-                                            </td>
-                                            <td>
-                                                <div class="event-wrap">
-                                                    <h3><a href="#">Subject Name</a></h3>
-                                                    <div class="meta">
-                                                        <div class="time">
-                                                            <span>Start-Time</span>
-                                                            <span>End-Time</span>
-                                                            <span>Duration</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="r-no">
-                                                    <span>Time Started</span>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="primary-btn">
-                                                    <a class="btn btn-primary" href="#">Enter Exam</a>
-                                                </div>
-                                            </td>
-                                        </tr>
-    
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-    
-    
-    
-                        <div class="tab-pane fade active show" id="indivudial" role="tabpanel" aria-labelledby="indivudial-tab">
-                            <div class="table-responsive">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Monday</th>
-                                            <th scope="col">Tuesday</th>
-                                            <th scope="col">Wednesday</th>
-                                            <th scope="col">Thursday</th>
-                                            <th scope="col">Friday</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr class="inner-box">
-                                            <th scope="row">
-                                                <div class="event-date">
-                                                    <span>16</span>
-                                                    <p>Novembar</p>
-                                                </div>
-                                            </th>
-                                            <td>
-                                                <div class="event-img">
-                                                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" />
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="event-wrap">
-                                                    <h3><a href="#">Harman Kardon</a></h3>
-                                                    <div class="meta">
-                                                        <div class="organizers">
-                                                            <a href="#">Aslan Lingker</a>
-                                                        </div>
-                                                        <div class="categories">
-                                                            <a href="#">Inspire</a>
-                                                        </div>
-                                                        <div class="time">
-                                                            <span>05:35 AM - 08:00 AM 2h 25'</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="r-no">
-                                                    <span>Room B3</span>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="primary-btn">
-                                                    <a class="btn btn-primary" href="#">Read More</a>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr class="inner-box">
-                                            <th scope="row">
-                                                <div class="event-date">
-                                                    <span>18</span>
-                                                    <p>Novembar</p>
-                                                </div>
-                                            </th>
-                                            <td>
-                                                <div class="event-img">
-                                                    <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="" />
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="event-wrap">
-                                                    <h3><a href="#">Toni Duggan</a></h3>
-                                                    <div class="meta">
-                                                        <div class="organizers">
-                                                            <a href="#">Aslan Lingker</a>
-                                                        </div>
-                                                        <div class="categories">
-                                                            <a href="#">Inspire</a>
-                                                        </div>
-                                                        <div class="time">
-                                                            <span>05:35 AM - 08:00 AM 2h 25'</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="r-no">
-                                                    <span>Room B3</span>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="primary-btn">
-                                                    <a class="btn btn-primary" href="#">Read More</a>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr class="inner-box border-bottom-0">
-                                            <th scope="row">
-                                                <div class="event-date">
-                                                    <span>20</span>
-                                                    <p>Novembar</p>
-                                                </div>
-                                            </th>
-                                            <td>
-                                                <div class="event-img">
-                                                    <img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="" />
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="event-wrap">
-                                                    <h3><a href="#">Billal Hossain</a></h3>
-                                                    <div class="meta">
-                                                        <div class="organizers">
-                                                            <a href="#">Aslan Lingker</a>
-                                                        </div>
-                                                        <div class="categories">
-                                                            <a href="#">Inspire</a>
-                                                        </div>
-                                                        <div class="time">
-                                                            <span>05:35 AM - 08:00 AM 2h 25'</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="r-no">
-                                                    <span>Room B3</span>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="primary-btn">
-                                                    <a class="btn btn-primary" href="#">Read More</a>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Exam</th>
+                                        <th scope="col">Description</th>
+                                        <th scope="col">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="inner-box" th:if="${reports.size() > 0}" th:each="report: ${reports}">
+                                        <th  class ="col-1">
+                                            <h5 th:text="${report.id}">ID</h5>
+                                        </th>
+                                        <td class ="col-3">
+                                            <h5 th:text="${report.examPaper.exam.name}">Exam Name</h5>
+                                        </td>
+                                        <td class ="col-4 overflow-auto">
+                                            <div class = "fs-5 overflow-auto" th:text="${report.description}">Description</div>
+                                        </td>
+                                        <td class = "col-2">
+                                            <h5 th:text="${report.status} ? 'SOVLED' : 'UNSOLVED'">SOLVED</h5>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                     
                 </div>
-                <!-- /col end-->
             </div>
-            <!-- /row end-->
         </div>
     </div>
 </div>
+
 
 <!--Footer -->
 <div id="home-footer" th:replace="~{/fragments/app-fragments :: footer}">

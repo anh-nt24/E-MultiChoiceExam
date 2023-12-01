@@ -111,7 +111,11 @@
                             </table>
                           </p>
     
-                          <a href="#" class="btn d-grid">Details</a>
+                          <div class = "d-flex justify-content-end">
+                            <a href="#" class="details btn d-grid">Details</a>
+                            <a th:href="${'/student/add_report/' + results.get(result).id}" class ="btn btn-danger">Report</a>
+                          </div>
+                          
                         </div>
                     </div>
                 </div>

@@ -4,9 +4,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import vn.edu.tdtu.exam.dto.StudentDTO;
 import vn.edu.tdtu.exam.entity.*;
 import vn.edu.tdtu.exam.repository.StudentRepository;
@@ -50,9 +48,30 @@ public class StudentController {
         return "student/exam";
     }
 
-    @GetMapping("/report")
-    public String report() {
+    @GetMapping("/reports")
+    public String reports(HttpSession session, Model model) {
+        Long id = (Long) session.getAttribute("id");
+        Student student = studentService.getStudentById(id);
+        List<Report> reports = reportService.getAllStudentReport(student);
+        model.addAttribute("reports", reports);
         return "student/report";
+    }
+    @GetMapping("/add_report/{id}")
+    public String report(HttpSession session, Model model, @PathVariable Long id){
+        ExamPaper examPaper = examPaperService.getTestsById(id);
+        model.addAttribute("examPaperId", examPaper.getId());
+        model.addAttribute("examTitle", examPaper.getTitle());
+        model.addAttribute("subjectName", examPaper.getExam().getName());
+        return "student/report_form";
+    }
+
+    @PostMapping("/add_report/{id}")
+    public String createReport(@PathVariable Long id, String description, HttpSession session){
+        Long studentId = (Long)session.getAttribute("id");
+        ExamPaper examPaper = examPaperService.getTestsById(id);
+        Student student = studentService.getStudentById(studentId);
+        Report report = reportService.add(new Report(examPaper, student, description));
+        return "redirect:/student/reports";
     }
 
     @GetMapping("/results")
@@ -76,7 +95,11 @@ public class StudentController {
     }
 
     @GetMapping("/update_info")
-    public String getDetails(HttpSession session, @ModelAttribute StudentDTO studentDTO){
+    public String getInfo(){
+        return "info_form";
+    }
+    @PostMapping("/update_info")
+    public String updateInfo(HttpSession session, @ModelAttribute StudentDTO studentDTO){
         Long id = (Long)session.getAttribute("id");
         StudentDTO student = studentService.updateStudent(id, studentDTO);
         return "redirect:/";

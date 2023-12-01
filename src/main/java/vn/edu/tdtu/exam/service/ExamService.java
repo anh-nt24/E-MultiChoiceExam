@@ -3,6 +3,7 @@ package vn.edu.tdtu.exam.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import vn.edu.tdtu.exam.entity.Account;
 import vn.edu.tdtu.exam.entity.Exam;
 import vn.edu.tdtu.exam.entity.ExamPaper;
 import vn.edu.tdtu.exam.repository.AccountRepository;
@@ -33,5 +34,15 @@ public class ExamService {
     public List<Exam> getAllExams() {
         Sort sortByDateDesc = Sort.by(Sort.Direction.DESC, "examDate");
         return examRepository.findAll(sortByDateDesc);
+    }
+
+    public List<Exam> getAll(){
+        return examRepository.findAll();
+    }
+    public Exam save(Exam exam){
+        return examRepository.save(exam);
+    }
+    public Optional<Exam> findById(Long id) {
+        return examRepository.findById(id);
     }
 }

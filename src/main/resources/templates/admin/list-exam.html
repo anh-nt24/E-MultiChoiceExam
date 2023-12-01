@@ -23,20 +23,19 @@
     <div class="table-responsive">
         <h2 class="text-center mt-4">EXAM LIST</h2>
         <form style="display:flex" method="get" action="/admin/list-exam/filter">
-            <div style="margin: 0 10px; text-align: initial;">
-                <label style="color:black">Subject</label>
-                <select class="custom-select"  name="subject">
-                    <option>All</option>
-                    <span th:each="sub : ${subject}">
-                <option th:text="${sub.name}" th:if="${choSubject == sub.name}" th:value="${sub.name}" selected></option>
-                <option th:text="${sub.name}" th:unless="${choSubject == sub.name}" th:value="${sub.name}"></option>
-            </span>
-                </select>
+            <div>
+                <p style="color:black">Subject:&emsp;</p>
             </div>
             <div>
-                <br>
-                <button class="btn btn-outline-info" type="submit">Search</button>
-            </div>
+                <select class="custom-select" name="subject">
+                    <option>All</option>
+                    <span th:each="sub : ${subject}">
+                    <option th:text="${sub.name}" th:if="${choSubject == sub.name}" th:value="${sub.name}" selected></option>
+                    <option th:text="${sub.name}" th:unless="${choSubject == sub.name}" th:value="${sub.name}"></option>
+                </span>
+                </select>
+            </div>&emsp;
+            <button class="btn btn-outline-info" type="submit">Search</button>
         </form>
 
         <br>
@@ -52,7 +51,7 @@
                 <td class="student-id pt-2" th:text="${s.subject.name}"></td>
             </tr>
         </table>
-        <button class="btn btn-primary">Export File</button>
+        <a th:href="@{/admin/list-exam/export-csv}" class="btn btn-primary">Export CSV</a>
     </div>
 </div>
 <div id="home-footer" th:replace="~{/fragments/app-fragments :: footer}">

@@ -24,7 +24,7 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <h2>Edit User</h2>
+                <h2 class="text-center mt-4">Edit User</h2>
                 <form th:action="@{/admin/update-user-status/} + ${account.id}" method="post" th:object="${account}" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="email">Email:</label>

@@ -21,4 +21,9 @@ public class Exam {
 
     @Column(name = "exam_date", nullable = false)
     private LocalDateTime examDate;
+    public Exam(String name, LocalDateTime examDate){
+        this.name = name;
+        this.examDate = examDate;
+    }
+    public Exam(){}
 }

@@ -1,24 +1,19 @@
 package vn.edu.tdtu.exam.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import vn.edu.tdtu.exam.entity.Account;
-import vn.edu.tdtu.exam.entity.ResetPassword;
-import vn.edu.tdtu.exam.entity.StudentSubject;
-import vn.edu.tdtu.exam.entity.Subject;
+import vn.edu.tdtu.exam.entity.*;
 import vn.edu.tdtu.exam.repository.AccountRepository;
-import vn.edu.tdtu.exam.service.AccountService;
-import vn.edu.tdtu.exam.service.ResetPasswordService;
-import vn.edu.tdtu.exam.service.StudentSubjectService;
-import vn.edu.tdtu.exam.service.SubjectService;
+import vn.edu.tdtu.exam.service.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,12 +22,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -48,17 +42,22 @@ public class AdminController {
     StudentSubjectService studentSubjectService;
     @Autowired
     SubjectService subjectService;
+    private final JavaMailSender javaMailSender;
+    @Autowired
+    ExamService examService;
 
     @Autowired
-    public AdminController(StudentSubjectService studentSubjectService, SubjectService subjectService) {
+    public AdminController(StudentSubjectService studentSubjectService, SubjectService subjectService, JavaMailSender javaMailSender) {
         this.studentSubjectService = studentSubjectService;
         this.subjectService = subjectService;
+        this.javaMailSender = javaMailSender;
     }
     @GetMapping()
     public String admin() {
         return "admin/home";
     }
 
+// ------------------------- Danh sách sinh viên dự thi + Export file csv ----------------------
     @GetMapping("/list-exam")
     public String examList(Model model) {
         List<StudentSubject> studentSubjects = studentSubjectService.findByBanned(false);
@@ -84,13 +83,117 @@ public class AdminController {
 
         return "admin/list-exam";
     }
+    @GetMapping("/admin/list-exam/export-csv")
+    public void exportCsv(@RequestParam(required = false) String subject, HttpServletResponse response) throws IOException {
+        List<StudentSubject> studentSubjects;
 
+        if ("All".equals(subject) || subject == null) {
+            studentSubjects = studentSubjectService.findByBanned(false);
+        } else {
+            studentSubjects = studentSubjectService.filterBySubject(subject);
+        }
 
+        response.setContentType("text/csv");
+        response.setHeader("Content-Disposition", "attachment; filename=exam_list.csv");
+
+        int index = 1;
+        for (StudentSubject studentSubject : studentSubjects) {
+            response.getWriter().println(
+                    index++ + "," +
+                            studentSubject.getStudent().getId() + "," +
+                            studentSubject.getStudent().getName() + "," +
+                            studentSubject.getSubject().getName()
+            );
+        }
+    }
+
+// ------------------------- Quản lý kế hoạch thi --------------------------
     @GetMapping("/plans-exam")
-    public String plansExam() {
+    public String plansExam(Model model) {
+        List<Exam> examsPlans = examService.getAllExams();
+        model.addAttribute("plans", examsPlans);
         return "admin/plans-exam";
     }
 
+    @GetMapping("/add-plan")
+    public String addPlan(){
+        return "admin/add-plan";
+    }
+
+    @RequestMapping(value = "/add-plan", method = RequestMethod.POST)
+    public String addPlan(Model model, @RequestParam("name") String name, @RequestParam("date") LocalDateTime date){
+        Exam exam = new Exam(name, date);
+        examService.save(exam);
+        return "redirect:/admin/plans-exam";
+
+    }
+    @GetMapping("/update-plan/{id}")
+    public String updatePlan(Model model, HttpServletRequest request, @PathVariable Long id){
+        Optional<Exam> optionalExam = examService.findById(id);
+        if(optionalExam.isPresent()){
+            Exam exam = optionalExam.get();
+            model.addAttribute("exam", exam);
+            return "admin/update-plan";
+        }
+        return "admin/error";
+
+    }
+
+    @RequestMapping(value = "/update-plan/{id}", method = RequestMethod.POST)
+    public String updatePlan(Model model, @PathVariable Long id,
+                             @RequestParam("name") String name, @RequestParam("date") LocalDateTime date){
+        Optional<Exam> optionalExam = examService.findById(id);
+        if(optionalExam.isPresent()){
+            Exam exam = optionalExam.get();
+            exam.setName(name);
+            exam.setExamDate(date);
+            examService.save(exam);
+            return "redirect:/admin/plans-exam";
+        }
+        return "admin/error";
+
+    }
+// ------------------------- Quản lý yêu cầu khôi phục mật khẩu --------------------------
+    @GetMapping("/reset-password")
+    public String resetPassword(Model model) {
+        List<ResetPassword> resetPasswords = resetPasswordService.findByStatus("not");
+        model.addAttribute("reset", resetPasswords);
+        return "admin/reset-password";
+    }
+
+    @PostMapping("/reset-password/send")
+    public String sendResetPassword(@RequestParam("email") String email) {
+        String newPassword = generateRandomPassword();
+
+        sendEmail(email, newPassword);
+
+        resetPasswordService.updatePasswordByEmail(email, newPassword);
+
+        return "redirect:/admin/reset-password";
+    }
+    private static final String ALL_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    public static String generateRandomPassword() {
+        StringBuilder password = new StringBuilder();
+        SecureRandom random = new SecureRandom();
+
+        for (int i = 0; i < 9; i++) {
+            int index = random.nextInt(ALL_CHARS.length());
+            password.append(ALL_CHARS.charAt(index));
+        }
+
+        return password.toString();
+    }
+
+    private void sendEmail(String to, String newPassword) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(to);
+        message.setSubject("Password Reset");
+        message.setText("Your new password is: " + newPassword);
+
+        javaMailSender.send(message);
+    }
+
+// ------------------------- Quản lý các tài khoản người dùng ---------------------------
     @GetMapping("/user-management")
     public String userManagement(Model model) {
         List<Account> userList = accountRepository.findAll();
@@ -191,7 +294,6 @@ public class AdminController {
             return "admin/error";
         }
     }
-
     @GetMapping("/update-user-status/{id}")
     public String updateAccount(Model model, HttpServletRequest request, @PathVariable Long id){
         Optional<Account> optionalAccount = accountService.findById(id);

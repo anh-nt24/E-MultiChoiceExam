@@ -75,4 +75,8 @@ public class AccountService {
     public List<Account> getUsersByRole(String role) {
         return accountRepository.findByRole(role);
     }
+
+    public Account getUserByEmail(String email) {
+        return accountRepository.findByEmail(email);
+    }
 }

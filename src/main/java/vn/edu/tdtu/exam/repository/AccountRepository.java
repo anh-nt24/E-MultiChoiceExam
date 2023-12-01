@@ -11,4 +11,6 @@ import java.util.List;
 public interface AccountRepository extends JpaRepository<Account, Long> {
     Account findByEmailAndPassword(String email, String password);
     List<Account> findByRole(String role);
+
+    Account findByEmail(String email);
 }

@@ -25,5 +25,10 @@ default_btn.addEventListener("click",()=>{
         question_layout.remove()
         q_section.innerHTML += simple_layout;
     }
-    
 })
+$(document).ready(function(){
+    function checkToken(){
+        
+    }
+}) 
+

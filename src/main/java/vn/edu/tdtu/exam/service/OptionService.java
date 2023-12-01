@@ -5,6 +5,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import vn.edu.tdtu.exam.entity.Exam;
 import vn.edu.tdtu.exam.entity.Option;
+import vn.edu.tdtu.exam.entity.Question;
 import vn.edu.tdtu.exam.repository.AccountRepository;
 import vn.edu.tdtu.exam.repository.ExamRepository;
 import vn.edu.tdtu.exam.repository.OptionRepository;
@@ -20,5 +21,9 @@ public class OptionService {
 
     public Option addOption(Option option) {
         return optionRepository.save(option);
+    }
+
+    public List<Option> getOptionByQuestion(Question question){
+        return optionRepository.findAllOptionByQuestion(question);
     }
 }

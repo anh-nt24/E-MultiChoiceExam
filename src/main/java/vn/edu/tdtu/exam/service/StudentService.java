@@ -3,7 +3,9 @@ package vn.edu.tdtu.exam.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import vn.edu.tdtu.exam.dto.StudentDTO;
+import vn.edu.tdtu.exam.entity.Account;
 import vn.edu.tdtu.exam.entity.Student;
+import vn.edu.tdtu.exam.repository.AccountRepository;
 import vn.edu.tdtu.exam.repository.StudentRepository;
 
 import java.util.List;
@@ -12,10 +14,14 @@ import java.util.Optional;
 @Service
 public class StudentService {
     private final StudentRepository studentRepository;
+    private final AccountRepository accountRepository;
+    @Autowired
+    private AccountService accountService;
 
     @Autowired
-    public StudentService(StudentRepository studentRepository) {
+    public StudentService(StudentRepository studentRepository, AccountRepository accountRepository) {
         this.studentRepository = studentRepository;
+        this.accountRepository = accountRepository;
     }
     public Student add(StudentDTO studentDTO) {
         return studentRepository.save(convertDTOtoEntity(studentDTO));

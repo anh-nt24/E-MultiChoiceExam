@@ -17,7 +17,8 @@ import java.util.List;
 @Controller
 @RequestMapping("/student")
 public class StudentController {
-
+    @Autowired
+    private AccountService accountService;
     @Autowired
     private StudentService studentService;
     @Autowired
@@ -30,6 +31,8 @@ public class StudentController {
     private SubjectService subjectService;
     @Autowired
     private ExamResultService examResultService;
+    @Autowired
+    private StudentSubjectService studentSubjectService;
 
     @GetMapping("/exam_list")
     public String getExamList(Model model) {
@@ -42,10 +45,6 @@ public class StudentController {
         System.out.println(exam_list);
         model.addAttribute("exams", exam_list);
         return "student/exam_list";
-    }
-    @GetMapping("/exam")
-    public String joinExam() {
-        return "student/exam";
     }
 
     @GetMapping("/reports")

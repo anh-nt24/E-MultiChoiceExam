@@ -5,6 +5,9 @@ import org.springframework.stereotype.Repository;
 import vn.edu.tdtu.exam.entity.Option;
 import vn.edu.tdtu.exam.entity.Question;
 
+import java.util.List;
+
 @Repository
 public interface OptionRepository extends JpaRepository<Option, Long> {
+    List<Option> findAllOptionByQuestion(Question question);
 }

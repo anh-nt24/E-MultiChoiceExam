@@ -51,7 +51,7 @@
                 <td class="student-id pt-2" th:text="${s.subject.name}"></td>
             </tr>
         </table>
-        <a th:href="@{/admin/list-exam/export-csv}" class="btn btn-primary">Export CSV</a>
+        <a th:href="@{/admin/list-exam/export-csv}"><button class="btn btn-primary">Export File</button></a><br><br>
     </div>
 </div>
 <div id="home-footer" th:replace="~{/fragments/app-fragments :: footer}">

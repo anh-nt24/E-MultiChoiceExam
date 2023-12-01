@@ -83,7 +83,7 @@ public class AdminController {
 
         return "admin/list-exam";
     }
-    @GetMapping("/admin/list-exam/export-csv")
+    @GetMapping("/list-exam/export-csv")
     public void exportCsv(@RequestParam(required = false) String subject, HttpServletResponse response) throws IOException {
         List<StudentSubject> studentSubjects;
 

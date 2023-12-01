@@ -44,25 +44,25 @@
                         </tr>
                         <tr class="answer">
                             <td th:with="answer=${questions.get(question)[0].content}">
-                                <input type = "radio" th:id = "answer" th:attr="name='question.content'" th:value ="${answer}">
+                                <input type = "radio" th:id = "${answer}" th:attr="name='question.content'" th:value ="${answer}">
                                 <label th:for="${answer}" th:text="${answer}"></label>
                             </td>
                         </tr>
                         <tr>
                             <td th:with="answer=${questions.get(question)[1].content}">
-                                <input type = "radio" th:id = "answer" th:attr="name='question.content'" th:value ="${answer}">
+                                <input type = "radio" th:id = "${answer}" th:attr="name='question.content'" th:value ="${answer}">
                                 <label th:for="${answer}" th:text="${answer}"></label>
                             </td>
                         </tr>
                         <tr>
-                            <td th:with="answer=${questions.get(question)[1].content}">
-                                <input type = "radio" th:id = "answer" th:attr="name='question.content'" th:value ="${answer}">
+                            <td th:with="answer=${questions.get(question)[2].content}">
+                                <input type = "radio" th:id = "${answer}" th:attr="name='question.content'" th:value ="${answer}">
                                 <label th:for="${answer}" th:text="${answer}"></label>
                             </td>
                         </tr>
                         <tr>
-                            <td th:with="answer=${questions.get(question)[1].content}">
-                                <input type = "radio" th:id = "answer" th:attr="name='question.content'" th:value ="${answer}">
+                            <td th:with="answer=${questions.get(question)[3].content}">
+                                <input type = "radio" th:id = "${answer}" th:attr="name='question.content'" th:value ="${answer}">
                                 <label th:for="${answer}" th:text="${answer}"></label>
                             </td>
                         </tr>

@@ -47,3 +47,8 @@
 .a{
     font-size: 20px;
 }
+
+#q_section tr th{
+    font-size: 18px;
+    padding-bottom: 10px;
+}

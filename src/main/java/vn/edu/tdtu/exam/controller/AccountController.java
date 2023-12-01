@@ -27,11 +27,13 @@ import java.util.List;
 public class AccountController {
     private final AccountService accountService;
     private final TeacherService teacherService;
+    private final StudentService studentService;
 
     @Autowired
-    public AccountController(AccountService accountService, TeacherService teacherService) {
+    public AccountController(AccountService accountService, TeacherService teacherService, StudentService studentService) {
         this.accountService = accountService;
         this.teacherService = teacherService;
+        this.studentService = studentService;
     }
 
     @GetMapping()
@@ -43,6 +45,9 @@ public class AccountController {
         System.out.println("ROLE: " + role);
         if (role.equals("teacher")) {
             model = getTeacherInformation(model, id);
+        }
+        else if(role.equals("student")){
+            model = getStudentInformation(model, id);
         }
         return "layouts/home";
     }
@@ -63,6 +68,19 @@ public class AccountController {
         model.addAttribute("research", teacher.getField());
         return model;
     }
+    private Model getStudentInformation(Model model, Long id){
+        StudentDTO student = studentService.getStudentDTOById(id);
+        model.addAttribute("name", student.getStudentName());
+        model.addAttribute("email", student.getEmail());
+        model.addAttribute("phone", student.getPhone());
+        model.addAttribute("address", student.getAddress());
+        model.addAttribute("workplace", student.getWorkplace());
+        model.addAttribute("dob", student.getDoB());
+        model.addAttribute("avatar", student.getAvatar());
+        model.addAttribute("major", student.getMajor());
+        model.addAttribute("enrollment_year", student.getEnrollment_year());
+        return model;
+    }
 
     @GetMapping("/login")
     public String loginGetRequest() {
@@ -78,17 +96,22 @@ public class AccountController {
     @PostMapping(value = "/login", consumes = "application/x-www-form-urlencoded")
     public String loginPostRequest(@RequestParam String email, @RequestParam String password, HttpSession session) {
 //        After login successfully, check role of user account
-        String role = "teacher";
-        Long id = 2L;
-        session.setAttribute("role", role);
-        session.setAttribute("id", id);
-        session.setMaxInactiveInterval(3600); // 1 hour
-        return "redirect:/";
+        if(accountService.find(new Account(email, password))){
+            Account account = accountService.getAccountByEmailAndPassword(email, password);
+            session.setAttribute("role", account.getRole());
+            session.setAttribute("id", account.getId());
+            session.setMaxInactiveInterval(3600); // 1 hour
+
+            return "redirect:/";
+        }
+        return "error";
     }
-//    @GetMapping("/student/exam")
-//    public String exam() {
-//        return "student/exam";
-//    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session){
+        session.invalidate();
+        return "redirect:/login";
+    }
 }
 
 

@@ -61,4 +61,8 @@ public class Account {
         this.isActive = true;
         this.role = role;
     }
+    public Account(String email, String password){
+        this.email = email;
+        this.password = password;
+    }
 }

@@ -21,9 +21,10 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
-@Service
+@Service("ExamPaperService")
 public class ExamPaperService {
     private static final String CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     private static final int TOKEN_LENGTH = 6;
@@ -192,4 +193,16 @@ public class ExamPaperService {
         return testRepository.findById(id).orElse(null);
     }
 
+    public ExamPaper getTestByExamId(Long id){
+        return testRepository.findExamPaperByExamId(id);
+    }
+    public LocalTime getTimeStart(Exam exam) {
+        LocalDateTime time = exam.getExamDate();
+        return time.toLocalTime();
+    }
+    public LocalDateTime getTimeEnd(Exam exam, ExamPaper examPaper) {
+        LocalDateTime time = exam.getExamDate();
+        int duration = examPaper.getDuration();
+        return time.plusMinutes(duration);
+    }
 }

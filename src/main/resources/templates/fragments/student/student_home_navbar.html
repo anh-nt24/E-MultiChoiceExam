@@ -6,41 +6,41 @@
     <link rel="stylesheet" href="../../../static/css/student_nav.css">
 </head>
 <body>
-    <div th:fragment="student_navbar" id = "student_home_navbar">
-        <nav class="navbar fixed-top navbar-expand-lg d-flex">
-            <div class="container-fluid">
+<div th:fragment="student_navbar" id = "student_home_navbar">
+    <nav class="navbar fixed-top navbar-expand-lg d-flex">
+        <div class="container-fluid">
 
-                <a href="/student/home" class="navbar-brand logo-header">
-                    <img th:src="@{/images/web-logo.png}" alt="logo">
-                    <br>
-                    <span class="sfont" style="padding-left: 0.4em">MultiA</span>
-                </a>
+            <a href="/student/home" class="navbar-brand logo-header">
+                <img th:src="@{/images/web-logo.png}" alt="logo">
+                <br>
+                <span class="sfont" style="padding-left: 0.4em">MultiA</span>
+            </a>
 
 
-                <div class="collapse navbar-collapse d-flex" id="navbarSupportedContent">
-                    <ul class="navbar-nav mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="/student/home">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="/student/report">Report</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/student/result">Result</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/student/schedule">Schedule</a>
-                        </li>
-                    </ul>
-                </div>
-
-                <button class="navbar-toggler d-flex" type="button" >
-                    <img class = "d-flex rounded navbar-toggler" th:src = "@{/images/avatar.jpg}" alt="avatar"
-                    data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" id = "avatar">
-                </button>
- 
+            <div class="collapse navbar-collapse d-flex" id="navbarSupportedContent">
+                <ul class="navbar-nav mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/student/home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="/student/report">Report</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/student/result">Result</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/student/schedule">Schedule</a>
+                    </li>
+                </ul>
             </div>
-        </nav>
-    </div>
+
+            <button class="navbar-toggler d-flex" type="button" >
+                <img class = "d-flex rounded navbar-toggler" th:src = "@{/images/avatar.jpg}" alt="avatar"
+                     data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" id = "avatar">
+            </button>
+
+        </div>
+    </nav>
+</div>
 </body>
 </html>

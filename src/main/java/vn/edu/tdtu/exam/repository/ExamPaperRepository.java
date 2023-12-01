@@ -19,4 +19,6 @@ public interface ExamPaperRepository extends JpaRepository<ExamPaper, Long> {
 
     @Query("SELECT e.teacher.id FROM ExamPaper e WHERE e.id = :examPaperId")
     Long findTeacherIdByExamPaperId(@Param("examPaperId") Long examPaperId);
+
+    ExamPaper findExamPaperByExamId(Long id);
 }

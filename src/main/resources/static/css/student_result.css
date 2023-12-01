@@ -1,6 +1,10 @@
 #search_bar{
     margin-top: 70px;
 }
+#result_section div.col-4{
+    max-width: 300px !important;
+    margin: 20px 35px 0px 35px;
+}
 td.in4{
     text-align: center;
 }
@@ -33,6 +37,7 @@ td.in4{
 }
 
 #result_section div.card-body a{
+    width: 240px;
     text-transform: uppercase;
     font-weight: bold;
     color: white;

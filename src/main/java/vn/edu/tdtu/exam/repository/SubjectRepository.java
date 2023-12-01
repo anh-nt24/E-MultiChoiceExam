@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import vn.edu.tdtu.exam.entity.Account;
 import vn.edu.tdtu.exam.entity.ExamPaper;
+import vn.edu.tdtu.exam.entity.Student;
 import vn.edu.tdtu.exam.entity.Subject;
 
 import java.util.List;
@@ -21,4 +22,7 @@ public interface SubjectRepository extends JpaRepository<Subject, Long> {
 
     @Query(value = "SELECT COUNT(DISTINCT e.subject.id) FROM ExamPaper e WHERE e.subject.id = :subjectId")
     Integer findExamPaperQuantity(Long subjectId);
+
+    Subject findByName(String name);
+
 }

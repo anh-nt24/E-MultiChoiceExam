@@ -37,4 +37,12 @@ public class SubjectService {
     public Subject getSubjectById(Long subjectId) {
         return subjectRepository.findById(subjectId).orElse(null);
     }
+    public List<Subject> findAllSubject(){
+        return subjectRepository.findAll();
+    }
+    public Long findSubjectIdByName(String subjectName) {
+        Subject subject = subjectRepository.findByName(subjectName);
+        return (subject != null) ? subject.getId() : null;
+    }
+
 }

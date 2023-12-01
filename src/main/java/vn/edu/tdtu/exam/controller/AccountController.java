@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import vn.edu.tdtu.exam.dto.AccountDTO;
 import vn.edu.tdtu.exam.dto.StudentDTO;
 import vn.edu.tdtu.exam.entity.Account;
@@ -87,30 +88,46 @@ public class AccountController {
         return "login";
     }
 
-    @GetMapping("/login/fail")
-    public String loginFail(Model model) {
-        model.addAttribute("failedMessage", "Invalid email or password");
-        return "login";
-    }
-
-    @PostMapping(value = "/login", consumes = "application/x-www-form-urlencoded")
-    public String loginPostRequest(@RequestParam String email, @RequestParam String password, HttpSession session) {
-//        After login successfully, check role of user account
-        if(accountService.find(new Account(email, password))){
-            Account account = accountService.getAccountByEmailAndPassword(email, password);
-            session.setAttribute("role", account.getRole());
-            session.setAttribute("id", account.getId());
-            session.setMaxInactiveInterval(3600); // 1 hour
-
-            return "redirect:/";
-        }
-        return "error";
-    }
-
     @GetMapping("/logout")
     public String logout(HttpSession session){
         session.invalidate();
         return "redirect:/login";
+    }
+
+    @PostMapping(value = "/login", consumes = "application/x-www-form-urlencoded")
+    public String loginPostRequest(
+            @RequestParam String email,
+            @RequestParam String password,
+            RedirectAttributes redirectAttributes,
+            HttpSession session) {
+        Account user = accountService.getUserByEmail(email);
+        if (user == null) {
+            redirectAttributes.addFlashAttribute("flashMessage", "User not existed");
+            redirectAttributes.addFlashAttribute("flashType", "failed");
+            return "redirect:/login";
+        }
+        if (!user.getPassword().equals(password)) {
+            redirectAttributes.addFlashAttribute("flashMessage", "Incorrect password");
+            redirectAttributes.addFlashAttribute("flashType", "failed");
+            return "redirect:/login";
+        }
+        // login successfully
+        String role = user.getRole();
+        Long id = user.getId();
+        session.setAttribute("role", role);
+        session.setAttribute("id", id);
+        session.setMaxInactiveInterval(3600); // 1 hour
+        return "redirect:/";
+    }
+
+    @GetMapping("/password")
+    public String getPassword() {
+        return "password";
+    }
+
+    @PostMapping("/password")
+    public String changePassword() {
+        return "...";
     }
 }
 

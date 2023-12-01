@@ -12,9 +12,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import vn.edu.tdtu.exam.entity.Account;
 import vn.edu.tdtu.exam.entity.ResetPassword;
+import vn.edu.tdtu.exam.entity.StudentSubject;
+import vn.edu.tdtu.exam.entity.Subject;
 import vn.edu.tdtu.exam.repository.AccountRepository;
 import vn.edu.tdtu.exam.service.AccountService;
 import vn.edu.tdtu.exam.service.ResetPasswordService;
+import vn.edu.tdtu.exam.service.StudentSubjectService;
+import vn.edu.tdtu.exam.service.SubjectService;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,6 +30,7 @@ import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -34,20 +39,52 @@ import java.util.Optional;
 @RequestMapping("/admin")
 public class AdminController {
     @Autowired
-    private AccountRepository accountRepository;
+    AccountRepository accountRepository;
     @Autowired AccountService accountService;
 
     @Autowired
     ResetPasswordService resetPasswordService;
+    @Autowired
+    StudentSubjectService studentSubjectService;
+    @Autowired
+    SubjectService subjectService;
+
+    @Autowired
+    public AdminController(StudentSubjectService studentSubjectService, SubjectService subjectService) {
+        this.studentSubjectService = studentSubjectService;
+        this.subjectService = subjectService;
+    }
     @GetMapping()
     public String admin() {
         return "admin/home";
     }
 
     @GetMapping("/list-exam")
-    public String examList() {
+    public String examList(Model model) {
+        List<StudentSubject> studentSubjects = studentSubjectService.findByBanned(false);
+        List<Subject> subject = subjectService.findAllSubject();
+        model.addAttribute("st", studentSubjects);
+        model.addAttribute("subject", subject);
         return "admin/list-exam";
     }
+    @GetMapping("/list-exam/filter")
+    public String filter(Model model, @RequestParam(required = false) String subject) {
+        model.addAttribute("choSubject", subject);
+        List<StudentSubject> studentSubjects;
+
+        if ("All".equals(subject) || subject == null) {
+            studentSubjects = studentSubjectService.findByBanned(false);
+        } else {
+            studentSubjects = studentSubjectService.filterBySubject(subject);
+        }
+
+        List<Subject> subjectList = subjectService.findAllSubject();
+        model.addAttribute("st", studentSubjects);
+        model.addAttribute("subject", subjectList);
+
+        return "admin/list-exam";
+    }
+
 
     @GetMapping("/plans-exam")
     public String plansExam() {

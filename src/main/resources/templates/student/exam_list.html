@@ -29,48 +29,57 @@
 
     <!--Main Content-->
     <div th:fragment = "exam_list_section" class = "container" id = "exam_list_section">
-    <div th:if="${exams.size() > 0}" class = "row d-flex" th:each="exam: ${exams.keySet()}">
-        <div class = "col-4" th:each="examPaper : ${exams.get(exam)}" >
-            <div class="card text-bg-light mb-3" style="max-width: 18rem;">
-                <div class="card-header" th:text="${exam.name}">Exam Name</div>
+    <div th:if="${exams.size() > 0}" class = "row d-flex" th:each="subject: ${exams.keySet()}">
+       <div class = "col">
+           <div class = "row">
+               <h4 class="text-bg-light" th:text="${subject.name}">Subject Name</h4>
+               <!--            <div class = "col-6" th:text="${subject.name}"></div>-->
+           </div>
+           <div class ="row d-flex">
+               <div class = "col-4" th:each="examPaper : ${exams.get(subject)}" >
+                   <div class="card text-bg-light mb-3" style="max-width: 18rem;">
+                       <div class="card-header" th:text="${subject.name}">Subject title</div>
 
-                <div class="card-body">
-                    <h4 class="card-title" th:text="${examPaper.subject.name}">Subject title</h4>
-                    <div class="card-text">
-                        <table class = "table table-light">
-                            <tbody>
-                            <tr>
-                                <td><strong>Time Start</strong></td>
+                       <div class="card-body">
+                           <h4 class="card-title" th:text="${examPaper.exam.name}">Exam Name</h4>
+                           <div class="card-text">
+                               <table class = "table table-light">
+                                   <tbody>
+                                   <tr>
+                                       <td><strong>Time Start</strong></td>
 
-                                <td class = "in4" th:text="${#temporals.format(@ExamPaperService.getTimeStart(exam), 'HH:mm')}">7:00</td>
-                            </tr>
+                                       <td class = "in4" th:text="${#temporals.format(@ExamPaperService.getTimeStart(examPaper.exam), 'HH:mm')}">7:00</td>
+                                   </tr>
 
-                            <tr>
-                                <td><strong>Time End</strong></td>
+                                   <tr>
+                                       <td><strong>Time End</strong></td>
 
-                                <td class = "in4" th:text="${#temporals.format(@ExamPaperService.getTimeEnd(exam, examPaper), 'HH:mm')}">8:00</td>
-                            </tr>
+                                       <td class = "in4" th:text="${#temporals.format(@ExamPaperService.getTimeEnd(examPaper.exam, examPaper), 'HH:mm')}">8:00</td>
+                                   </tr>
 
-                            <tr>
-                                <td><strong>Duration</strong></td>
+                                   <tr>
+                                       <td><strong>Duration</strong></td>
 
-                                <td class = "in4" th:text="${examPaper.duration+' minutes'}">1h</td>
-                            </tr>
+                                       <td class = "in4" th:text="${examPaper.duration+' minutes'}">1h</td>
+                                   </tr>
 
-                            <tr>
-                                <td><strong>Dates</strong></td>
+                                   <tr>
+                                       <td><strong>Dates</strong></td>
 
-                                <td class = "in4" th:text="${#temporals.format(exam.examDate, 'dd/MM/yyyy')}">Mon 26/11/2023</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                        <a th:href="${'/exam/exam_enroll/' + examPaper.id}" class="btn justify-self-center">Enter Exam</a>
-                    </div>
+                                       <td class = "in4" th:text="${#temporals.format(examPaper.exam.examDate, 'dd/MM/yyyy')}">Mon 26/11/2023</td>
+                                   </tr>
+                                   </tbody>
+                               </table>
+                               <a th:href="${'/exam/exam_enroll/' + examPaper.id}" class="btn justify-self-center">Enter Exam</a>
+                           </div>
 
-                </div>
-            </div>
+                       </div>
+                   </div>
 
-        </div>
+               </div>
+           </div>
+       </div>
+
 
     </div>
 </div>

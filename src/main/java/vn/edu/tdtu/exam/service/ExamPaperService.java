@@ -194,8 +194,12 @@ public class ExamPaperService {
     }
 
     public List<ExamPaper> getAllTestByExamId(Long id){
-        return testRepository.findAllExamPaperByExamId(id);
+        return testRepository.findAllExamPaperByExamIdAndIsActiveTrue(id);
     }
+    public List<ExamPaper> getAllTestBySubject(Subject subject){
+        return testRepository.findAllExamPaperBySubjectAndIsActiveTrue(subject);
+    }
+
     public LocalTime getTimeStart(Exam exam) {
         LocalDateTime time = exam.getExamDate();
         return time.toLocalTime();

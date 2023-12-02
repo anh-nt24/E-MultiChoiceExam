@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import vn.edu.tdtu.exam.entity.Account;
 import vn.edu.tdtu.exam.entity.Exam;
 import vn.edu.tdtu.exam.entity.ExamPaper;
+import vn.edu.tdtu.exam.entity.Subject;
 import vn.edu.tdtu.exam.repository.AccountRepository;
 import vn.edu.tdtu.exam.repository.ExamRepository;
 

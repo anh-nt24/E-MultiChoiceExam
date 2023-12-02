@@ -35,14 +35,19 @@ public class StudentController {
     private StudentSubjectService studentSubjectService;
 
     @GetMapping("/exam_list")
-    public String getExamList(Model model) {
-        HashMap<Exam, List<ExamPaper>> exam_list = new HashMap<>();
-        List<Exam> exams = examService.getAllExams();
-        for(Exam exam: exams){
-            List<ExamPaper> examPaper = examPaperService.getAllTestByExamId(exam.getId());
-            if(examPaper != null)
-                exam_list.put(exam, examPaper);
+    public String getExamList(Model model, HttpSession session) {
+        Long id = (Long) session.getAttribute("id");
+        Student student = studentService.getStudentById(id);
+
+        List<StudentSubject> studentSubjects = studentSubjectService.getStudentSubjectByStudent(student);
+
+        HashMap<Subject, List<ExamPaper>> exam_list = new HashMap<>();
+        for(StudentSubject subject : studentSubjects){
+            List<ExamPaper> examPapers = examPaperService.getAllTestBySubject(subject.getSubject());
+
+            exam_list.put(subject.getSubject(), examPapers);
         }
+
         System.out.println(exam_list);
         model.addAttribute("exams", exam_list);
         return "student/exam_list";

@@ -6,8 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import vn.edu.tdtu.exam.entity.Account;
 import vn.edu.tdtu.exam.entity.ExamPaper;
+import vn.edu.tdtu.exam.entity.Subject;
 
 import java.util.List;
 
@@ -20,5 +20,8 @@ public interface ExamPaperRepository extends JpaRepository<ExamPaper, Long> {
     @Query("SELECT e.teacher.id FROM ExamPaper e WHERE e.id = :examPaperId")
     Long findTeacherIdByExamPaperId(@Param("examPaperId") Long examPaperId);
 
+    List<ExamPaper> findAllExamPaperByExamIdAndIsActiveTrue(Long id);
     List<ExamPaper> findAllExamPaperByExamId(Long id);
+    List<ExamPaper> findAllExamPaperBySubjectAndIsActiveTrue(Subject subject);
+
 }

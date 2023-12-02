@@ -4,10 +4,8 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.*;
 import vn.edu.tdtu.exam.entity.*;
 import vn.edu.tdtu.exam.service.*;
 
@@ -46,6 +44,8 @@ public class ExamController {
             questionList.put(q, optionService.getOptionByQuestion(q));
         }
         model.addAttribute("questions", questionList);
+        model.addAttribute("duration", examPaper.getDuration());
+        model.addAttribute("exam", examPaperId);
         return "student/exam";
     }
     @GetMapping("/exam_enroll/{id}")
@@ -55,9 +55,14 @@ public class ExamController {
 
         Student student = studentService.getStudentById(studentId);
         ExamPaper examPaper = examPaperService.getTestsById(id);
-        StudentSubject studentSubject = studentSubjectService.getStudentSubjectByStudent(student);
 
-        if(!studentSubject.getBanned() && examPaper.getIsActive()) {
+        StudentSubject studentSubject = studentSubjectService.getStudentSubjectByStudentAndSubject(student, examPaper.getSubject());
+
+        System.out.println(student);
+        System.out.println(examPaper);
+        System.out.println(studentSubject);
+
+        if(studentSubject != null && !studentSubject.getBanned() && examPaper.getIsActive()) {
             model.addAttribute("examPaperId", id);
             model.addAttribute("examTitle", examPaper.getExam().getName());
             model.addAttribute("subjectName", examPaper.getSubject().getName());
@@ -77,4 +82,11 @@ public class ExamController {
         return "redirect:/exam_enroll/"+id;
     }
 
+    @PostMapping(value = "exam/submit/{id}", consumes = "application/x-www-form-urlencoded")
+    public void calculateScore(@PathVariable Long examId, @RequestBody MultiValueMap<String, List<String>> formData, @RequestParam String body){
+        System.out.println("YAS");
+        System.out.println(formData);
+        System.out.println(formData);
+        System.out.println(body);
+    }
 }

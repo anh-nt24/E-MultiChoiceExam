@@ -50,6 +50,7 @@ public class ExamController {
     }
     @GetMapping("/exam_enroll/{id}")
     public String tokenEnroll(@PathVariable Long id, HttpSession session, Model model){
+        session.removeAttribute("examPaperId");
         Long studentId = (Long)session.getAttribute("id");
 
         Student student = studentService.getStudentById(studentId);

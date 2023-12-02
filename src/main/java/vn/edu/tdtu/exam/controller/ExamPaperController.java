@@ -91,7 +91,7 @@ public class ExamPaperController {
             RedirectAttributes redirectAttributes) {
 
         Long teacherId = (Long) session.getAttribute("id");
-        if (session.getAttribute("role") != "teacher") {
+        if (!session.getAttribute("role").equals("teacher")) {
             return "/login";
         }
         Boolean result = testService.addTest(teacherId, form, file);
@@ -115,7 +115,7 @@ public class ExamPaperController {
             HttpSession session,
             RedirectAttributes redirectAttributes) {
 
-        if (session.getAttribute("role") != "teacher") {
+        if (!session.getAttribute("role").equals("teacher")) {
             return "/login";
         }
         Boolean result = testService.updateTest(id, form);
@@ -137,7 +137,7 @@ public class ExamPaperController {
             RedirectAttributes redirectAttributes,
             HttpSession session) {
 
-        if (session.getAttribute("role") != "teacher") {
+        if (!session.getAttribute("role").equals("teacher")) {
             return "/login";
         }
 

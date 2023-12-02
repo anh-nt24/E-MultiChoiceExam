@@ -1,34 +1,32 @@
-var default_btn = document.getElementById("default_btn")
-var simple_btn = document.getElementById("simple_btn")
-var q_section = document.getElementById("q_section")
-
-default_btn.addEventListener("click",()=>{
-    var default_layout = `<div id = "question_layout" th:replace="fragments/student/question_layout.html :: div#default_exam_layout"></div>`
-
-    var question_layout = document.getElementById("question_layout")
-    if(question_layout == null){
-        q_section.innerHTML += default_layout;
-    }else{
-        question_layout.remove()
-        q_section.innerHTML += default_layout;
-    }
-    
-})
-
-default_btn.addEventListener("click",()=>{
-    var simple_layout = `<div id = "question_layout" th:replace="fragments/student/question_layout.html :: div#simple_exam_layout"></div>`
-
-    var question_layout = document.getElementById("question_layout")
-    if(question_layout == null){
-        q_section.innerHTML += simple_layout;
-    }else{
-        question_layout.remove()
-        q_section.innerHTML += simple_layout;
-    }
-})
 $(document).ready(function(){
-    function checkToken(){
-        
-    }
+    const start = window.confirm("Are Sure To Start The Text Now?")
+    console.log(start)
+
+    var countDownDate = new Date("Jan 5, 2024 15:37:25").getTime();
+
+    // Update the count down every 1 second
+    var x = setInterval(function() {
+
+    // Get today's date and time
+        var now = new Date().getTime();
+
+        // Find the distance between now and the count down date
+        var distance = countDownDate - now;
+
+        // Time calculations for days, hours, minutes and seconds
+        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        document.getElementById("timer").textContent = days + "d " + hours + "h "
+        + minutes + "m " + seconds + "s ";
+
+        // If the count down is finished, write some text
+        if (distance < 0) {
+            clearInterval(x);
+            document.getElementById("timer").textContent = "EXPIRED";
+        }
+    }, 1000);
 }) 
 

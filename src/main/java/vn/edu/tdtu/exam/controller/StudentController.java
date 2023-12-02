@@ -36,11 +36,12 @@ public class StudentController {
 
     @GetMapping("/exam_list")
     public String getExamList(Model model) {
-        HashMap<Exam, ExamPaper> exam_list = new HashMap<>();
+        HashMap<Exam, List<ExamPaper>> exam_list = new HashMap<>();
         List<Exam> exams = examService.getAllExams();
         for(Exam exam: exams){
-            ExamPaper examPaper = examPaperService.getTestByExamId(exam.getId());
-            exam_list.put(exam, examPaper);
+            List<ExamPaper> examPaper = examPaperService.getAllTestByExamId(exam.getId());
+            if(examPaper != null)
+                exam_list.put(exam, examPaper);
         }
         System.out.println(exam_list);
         model.addAttribute("exams", exam_list);

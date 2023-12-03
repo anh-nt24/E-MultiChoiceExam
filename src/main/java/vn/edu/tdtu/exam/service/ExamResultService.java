@@ -61,4 +61,8 @@ public class ExamResultService {
         }
         return true;
     }
+
+    public List<Double> getScoresTestId(Long testId) {
+        return examResultRepository.findScoresByExamPaperId(testId);
+    }
 }

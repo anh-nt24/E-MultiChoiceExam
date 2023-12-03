@@ -209,4 +209,12 @@ public class ExamPaperService {
         int duration = examPaper.getDuration();
         return time.plusMinutes(duration);
     }
+
+    public List<Exam> getExamByTeacherAndSubject(Long userId, Long id) {
+        return testRepository.findExamIdsByTeacherIdAndSubjectId(userId, id);
+    }
+
+    public Long getTestForStatistic(Long subject, Long exam, Long teacher) {
+        return testRepository.findExamPaperIdByAttributes(subject, exam, teacher).orElse(null);
+    }
 }

@@ -37,24 +37,24 @@
 
     <!--Main Content-->
     <th:block id = "student_result_layout">
-        <div class = "container" id = "search_bar">
-            <form>
-                <div class = "row">
-                    <div class = "col-2">
-                        <select class="form-select">
-                            <option selected>Năm học</option>
-                            <option value = "1">2023 - 2024</option>
-                        </select>
-                    </div>
-                    <div class = "col-3">
-                        <input class = "form-control" type = "text" placeholder="Môn học">
-                    </div>
-                    <div class = "col-2">
-                        <button type = "submit" class = "btn btn-primary"><strong>TÌM KIẾM</strong></button>
-                    </div>
-                </div>
-            </form>
-        </div>
+<!--        <div class = "container" id = "search_bar">-->
+<!--            <form>-->
+<!--                <div class = "row">-->
+<!--                    <div class = "col-2">-->
+<!--                        <select class="form-select">-->
+<!--                            <option selected>Năm học</option>-->
+<!--                            <option value = "1">2023 - 2024</option>-->
+<!--                        </select>-->
+<!--                    </div>-->
+<!--                    <div class = "col-3">-->
+<!--                        <input class = "form-control" type = "text" placeholder="Môn học">-->
+<!--                    </div>-->
+<!--                    <div class = "col-2">-->
+<!--                        <button type = "submit" class = "btn btn-primary"><strong>TÌM KIẾM</strong></button>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </form>-->
+<!--        </div>-->
     
         <div class = "container" id = "result_section">
             <div class = "row" th:if="${results.size() > 0}">
@@ -68,13 +68,13 @@
                             <table class = "table table-light">
                                 <tbody>
                                     <tr>
-                                        <td><strong>Time Start</strong></td>
+                                        <td><strong>Test Start</strong></td>
 
                                         <td class = "in4" th:text="${#temporals.format(@ExamPaperService.getTimeStart(results.get(result).exam), 'HH:mm')}">8:00</td>
                                     </tr>
 
                                     <tr>
-                                        <td><strong>Time End</strong></td>
+                                        <td><strong>Test End</strong></td>
 
                                         <td class = "in4" th:text="${#temporals.format(@ExamPaperService.getTimeEnd(results.get(result).exam, results.get(result)), 'HH:mm')}">9:00</td>
                                     </tr>
@@ -99,7 +99,7 @@
                                     <tr>
                                         <td><strong>Time Taken</strong></td>
 
-                                        <td class = "in4" th:text="${result.takenTime}">45</td>
+                                        <td class = "in4" th:text="${result.takenTime} + ' min'">45</td>
                                     </tr>
     
                                     <tr>

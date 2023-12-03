@@ -10,4 +10,8 @@ import java.util.List;
 @Repository
 public interface OptionRepository extends JpaRepository<Option, Long> {
     List<Option> findAllOptionByQuestion(Question question);
+    Option findOptionByisCorrectTrueAndQuestion(Question question);
+    Option findOptionByIdAndQuestion(Long id, Question question);
+
+
 }

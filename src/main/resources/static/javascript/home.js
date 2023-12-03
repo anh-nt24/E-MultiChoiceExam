@@ -21,10 +21,10 @@ document.addEventListener("DOMContentLoaded", function () {
 		// Apply the animation class
 		flashElement.classList.add("animate--drop-in-fade-out");
 
-		// Remove the animation class after 2 seconds (adjust as needed)
+		// Remove the animation class after 3 seconds (adjust as needed)
 		setTimeout(function() {
 			flashElement.classList.remove("animate--drop-in-fade-out");
-		}, 2000);
+		}, 3000);
 	}
 
 

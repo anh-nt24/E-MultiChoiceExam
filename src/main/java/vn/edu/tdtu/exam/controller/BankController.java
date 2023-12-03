@@ -37,7 +37,7 @@ public class BankController {
     public String showMySubject(Model model, HttpSession session) {
         String role = (String) session.getAttribute("role");
         if (!role.equals("teacher")) {
-            return "404";
+            return "redirect:/login";
         }
         List<Subject> subjects = subjectService.getSubjectOfTeacher((Long) session.getAttribute("id"));
         if (subjects == null) {

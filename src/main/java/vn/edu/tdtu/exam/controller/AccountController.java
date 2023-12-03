@@ -117,6 +117,7 @@ public class AccountController {
 
         session.setAttribute("id", user.getId());
         session.setAttribute("jwt", jwtToken);
+        session.setAttribute("role", user.getRole());
         return "redirect:/";
     }
 

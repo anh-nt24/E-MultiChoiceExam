@@ -52,7 +52,7 @@
                         <label for="dropdown" id="exam-label">Exam category: *</label>
                     </div>
                     <div class="input-tabs">
-                        <select name="category" id="dropdown" required>
+                        <select name="category" id="dropdown" required th:disabled="${not isAuthor}">
                             <option disabled value="none">Select an exam category</option>
                             <th:block th:each="exam : ${category}">
                                 <option th:selected="${test.exam.id == exam.id }" th:value="${exam.id}" th:text="${exam.name}"></option>
@@ -78,8 +78,8 @@
                         <label>Show score? *</label>
                     </div>
                     <div class="input-tabs">
-                        <input type="radio" name="showScore" th:readonly="${not isAuthor}" id="show-score-yes" th:checked="${test.showScore == true}" value="true">Yes<br>
-                        <input type="radio" name="showScore" th:readonly="${not isAuthor}" id="show-score-no" th:checked="${test.showScore == false}" value="false">No<br>
+                        <input type="radio" name="showScore" th:disabled="${not isAuthor}" id="show-score-yes" th:checked="${test.showScore == true}" value="true">Yes<br>
+                        <input type="radio" name="showScore" th:disabled="${not isAuthor}" id="show-score-no" th:checked="${test.showScore == false}" value="false">No<br>
                     </div>
 
                     <div class="flash failed">

@@ -185,8 +185,8 @@ public class ExamPaperService {
         }
     }
 
-    public Boolean checkAuthor(Long id, Long userId) {
-        return testRepository.findTeacherIdByExamPaperId(id) == userId;
+    public Boolean checkAuthor(Long testId, Long userId) {
+        return testRepository.findTeacherIdByExamPaperId(testId).equals(userId);
     }
 
     public ExamPaper getTestsById(Long id) {

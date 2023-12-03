@@ -53,8 +53,8 @@ public class ExamPaperController {
 
     @GetMapping("/detail")
     public String showPaperDetail(@RequestParam Long id, Model model, HttpSession session) {
-        if (session.getAttribute("role") != "teacher") {
-            return "/login";
+        if (!session.getAttribute("role").equals("teacher")) {
+            return "login";
         }
 
         Long userId = (Long) session.getAttribute("id");
@@ -67,7 +67,7 @@ public class ExamPaperController {
         Subject subject = subjectService.getSubjectById(test.getSubject().getId());
         model.addAttribute("subject", subject);
 
-        model.addAttribute("isAuthor", testService.checkAuthor(test.getId(), test.getTeacher().getId()));
+        model.addAttribute("isAuthor", testService.checkAuthor(test.getId(), userId));
 //        System.out.println(userId + " " + test.getTeacher().getId());
 //        System.out.println(testService.checkAuthor(userId, test.getTeacher().getId()));
         return "teacher/exam-paper-detail";
@@ -116,7 +116,7 @@ public class ExamPaperController {
             RedirectAttributes redirectAttributes) {
 
         if (!session.getAttribute("role").equals("teacher")) {
-            return "/login";
+            return "login";
         }
         Boolean result = testService.updateTest(id, form);
         if (result) {

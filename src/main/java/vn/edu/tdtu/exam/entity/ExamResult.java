@@ -1,11 +1,15 @@
 package vn.edu.tdtu.exam.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "exam_result")
 public class ExamResult {
@@ -32,4 +36,13 @@ public class ExamResult {
 
     @Column(name = "attempt")
     private Integer attempt;
+
+    public ExamResult (Student student, ExamPaper examPaper, Double score, LocalDateTime startTime, Integer takenTime, Integer attempt){
+        this.student = student;
+        this.examPaper = examPaper;
+        this.score = score;
+        this.startTime = startTime;
+        this.takenTime = takenTime;
+        this.attempt = attempt;
+    }
 }

@@ -44,11 +44,9 @@ public class StudentController {
         HashMap<Subject, List<ExamPaper>> exam_list = new HashMap<>();
         for(StudentSubject subject : studentSubjects){
             List<ExamPaper> examPapers = examPaperService.getAllTestBySubject(subject.getSubject());
-
             exam_list.put(subject.getSubject(), examPapers);
         }
 
-        System.out.println(exam_list);
         model.addAttribute("exams", exam_list);
         return "student/exam_list";
     }
@@ -88,7 +86,8 @@ public class StudentController {
         List<ExamResult> examResults = examResultService.getAllStudentExamResult(student);
         for(ExamResult examResult : examResults){
             ExamPaper examPaper = examPaperService.getTestsById(examResult.getExamPaper().getId());
-            results.put(examResult, examPaper);
+            if(examPaper.getShowScore() == true)
+                results.put(examResult, examPaper);
         }
         model.addAttribute("results",results);
         return "student/result";

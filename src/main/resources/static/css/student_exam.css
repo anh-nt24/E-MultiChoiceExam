@@ -69,3 +69,10 @@
 #exam_sidebar .row button{
     font-weight: bold;
 }
+
+#dashboard{
+    width: 25%;
+}
+.question{
+    font-size: 20px;
+}

@@ -5,12 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import vn.edu.tdtu.exam.dto.StudentDTO;
 import vn.edu.tdtu.exam.entity.*;
-import vn.edu.tdtu.exam.repository.StudentRepository;
 import vn.edu.tdtu.exam.service.*;
 
-import java.net.http.HttpClient;
 import java.util.HashMap;
 import java.util.List;
 
@@ -34,21 +33,70 @@ public class StudentController {
     @Autowired
     private StudentSubjectService studentSubjectService;
 
+    @GetMapping()
+    public String home (HttpSession session, Model model) {
+        Long id = (Long) session.getAttribute("id");
+
+        Student student = studentService.getStudentById(id);
+        model.addAttribute("name", student.getName());
+        model.addAttribute("email", student.getEmail());
+        model.addAttribute("phone", student.getPhone());
+        model.addAttribute("dob", student.getDoB());
+        model.addAttribute("address", student.getAddress());
+        model.addAttribute("workplace", student.getWorkplace());
+        model.addAttribute("major", student.getMajor());
+        model.addAttribute("enrollment_year", student.getEnrollment_year());
+
+        return "layouts/home";
+    }
+
     @GetMapping("/exam_list")
     public String getExamList(Model model, HttpSession session) {
         Long id = (Long) session.getAttribute("id");
+        Long examPaperId = (Long)session.getAttribute("examPaperId");
+
         Student student = studentService.getStudentById(id);
+        ExamPaper examPaper = examPaperService.getTestsById(examPaperId);
 
-        List<StudentSubject> studentSubjects = studentSubjectService.getStudentSubjectByStudent(student);
-
-        HashMap<Subject, List<ExamPaper>> exam_list = new HashMap<>();
-        for(StudentSubject subject : studentSubjects){
-            List<ExamPaper> examPapers = examPaperService.getAllTestBySubject(subject.getSubject());
-            exam_list.put(subject.getSubject(), examPapers);
-        }
-
-        model.addAttribute("exams", exam_list);
+        model.addAttribute("examPaper", examPaper);
         return "student/exam_list";
+    }
+    @GetMapping("/exam_enroll")
+    public String tokenEnroll(Model model, HttpSession session){
+        String jwtToken = (String) session.getAttribute("jwt");
+        System.out.println(jwtToken);
+        model.addAttribute("token", jwtToken);
+        return "student/exam_enroll";
+    }
+
+    @PostMapping(value = "/exam_enroll", consumes = "application/x-www-form-urlencoded")
+    public String joinExam(@RequestParam String token,  HttpSession session, RedirectAttributes redirectAttributes){
+        System.out.println(token);
+
+        ExamPaper examPaper = examPaperService.getTestByAccessToken(token);
+        Long studentId = (Long)session.getAttribute("id");
+        Student student = studentService.getStudentById(studentId);
+
+        System.out.println(examPaper);
+        //Check Access Token
+        if(examPaper == null){
+            redirectAttributes.addAttribute("flashMessage", "Wrong Token");
+            redirectAttributes.addAttribute("flashType", "failed");
+            return "redirect:/student/exam_enroll/";
+        }
+        //---------------------
+        
+        //Check if student is banned from class subject
+        StudentSubject studentSubject = studentSubjectService.getStudentSubjectByStudentAndSubject(student, examPaper.getSubject());
+
+
+        if(studentSubject == null || studentSubject.getBanned() || !examPaper.getIsActive()) {
+            redirectAttributes.addFlashAttribute("flashMessage", "You are not allowed to enroll the test");
+            redirectAttributes.addFlashAttribute("flashType", "failed");
+            return "redirect:/student/exam_enroll/";
+        }
+        session.setAttribute("examPaperId", examPaper.getId());
+        return "redirect:/student/exam_list";
     }
 
     @GetMapping("/reports")

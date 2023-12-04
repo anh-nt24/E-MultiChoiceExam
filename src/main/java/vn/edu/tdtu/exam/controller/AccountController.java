@@ -17,8 +17,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import vn.edu.tdtu.exam.entity.Account;
+import vn.edu.tdtu.exam.entity.Student;
 import vn.edu.tdtu.exam.entity.Teacher;
 import vn.edu.tdtu.exam.service.AccountService;
+import vn.edu.tdtu.exam.service.StudentService;
 import vn.edu.tdtu.exam.service.TeacherService;
 import vn.edu.tdtu.exam.utils.TokenManager;
 
@@ -27,6 +29,8 @@ import java.util.List;
 @Controller
 @RequestMapping("/")
 public class AccountController {
+    @Autowired
+    private StudentService studentService;
     @Autowired
     private AccountService accountService;
     @Autowired
@@ -63,7 +67,8 @@ public class AccountController {
         } else if (role.equals("admin")) {
             return "admin/home";
         } else if (role.equals("student")) {
-            return "";
+            model = getStudent(model, id);
+            return "layouts/home";
         }
         return "login";
     }
@@ -82,6 +87,18 @@ public class AccountController {
         model.addAttribute("degree", teacher.getDegree());
         model.addAttribute("eduBg", educational);
         model.addAttribute("research", teacher.getField());
+        return model;
+    }
+    private Model getStudent(Model model, Long id) {
+        Student student = studentService.getStudentById(id);
+        model.addAttribute("name", student.getName());
+        model.addAttribute("email", student.getEmail());
+        model.addAttribute("phone", student.getPhone());
+        model.addAttribute("dob", student.getDoB());
+        model.addAttribute("address", student.getAddress());
+        model.addAttribute("workplace", student.getWorkplace());
+        model.addAttribute("major", student.getMajor());
+        model.addAttribute("enrollment_year", student.getEnrollment_year());
         return model;
     }
 
@@ -114,7 +131,7 @@ public class AccountController {
         }
         Account user = accountService.getUserByEmail(email);
         String jwtToken = tokenManager.generateJwtToken(user);
-
+        System.out.println(jwtToken);
         session.setAttribute("id", user.getId());
         session.setAttribute("jwt", jwtToken);
         session.setAttribute("role", user.getRole());

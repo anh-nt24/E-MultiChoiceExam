@@ -72,49 +72,6 @@ public class ExamController {
 
         return "student/exam";
     }
-    @GetMapping("/exam_enroll/{id}")
-    public String tokenEnroll(@PathVariable Long id, HttpSession session, Model model,
-                              RedirectAttributes redirectAttributes){
-        session.removeAttribute("examPaperId"); //remove if existed
-        Long studentId = (Long)session.getAttribute("id");
-
-        Student student = studentService.getStudentById(studentId);
-        ExamPaper examPaper = examPaperService.getTestsById(id);
-
-        //Check if student is banned from class subject
-        StudentSubject studentSubject = studentSubjectService.getStudentSubjectByStudentAndSubject(student, examPaper.getSubject());
-
-        if(studentSubject != null && !studentSubject.getBanned() && examPaper.getIsActive()) {
-            model.addAttribute("examPaperId", id);
-            model.addAttribute("examTitle", examPaper.getExam().getName());
-            model.addAttribute("subjectName", examPaper.getSubject().getName());
-            return "student/exam_enroll";
-        }
-        redirectAttributes.addFlashAttribute("flashMessage", "You are banned from enrolling the test");
-        redirectAttributes.addFlashAttribute("flashType", "failed");
-        //-----------------------------------------------------
-        return "redirect:/student/exam_list";
-    }
-
-    @PostMapping("/exam_enroll/{id}")
-    public String joinExam(@PathVariable Long id, String token,  HttpSession session, RedirectAttributes redirectAttributes){
-        ExamPaper examPaper = examPaperService.getTestsById(id);
-
-        Long studentId = (Long)session.getAttribute("id");
-
-        //Check Access Token
-        if(token.equals(examPaper.getAccessToken())){
-            //Set examPaper to the session
-            //To store examPaper id for exam rendering
-            session.setAttribute("examPaperId", examPaper.getId());
-            return "redirect:/exam";
-        }
-        //---------------------
-
-        redirectAttributes.addFlashAttribute("flashMessage", "Wrong Token");
-        redirectAttributes.addFlashAttribute("flashType", "failed");
-        return "redirect:/exam/exam_enroll/"+id;
-    }
 
     @PostMapping(value = "/submit/{id}", consumes = "application/x-www-form-urlencoded")
     public String submitExam(@PathVariable Long id, @RequestBody MultiValueMap<String, String> formData,

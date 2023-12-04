@@ -25,6 +25,7 @@ public interface ExamPaperRepository extends JpaRepository<ExamPaper, Long> {
     List<ExamPaper> findAllExamPaperByExamIdAndIsActiveTrue(Long id);
     List<ExamPaper> findAllExamPaperByExamId(Long id);
     List<ExamPaper> findAllExamPaperBySubjectAndIsActiveTrue(Subject subject);
+    Optional<ExamPaper> findExamPaperByAccessToken(String accessToken);
 
     @Query("SELECT e.exam FROM ExamPaper e WHERE e.teacher.id = :teacherId AND e.subject.id = :subjectId")
     List<Exam> findExamIdsByTeacherIdAndSubjectId(
@@ -34,4 +35,5 @@ public interface ExamPaperRepository extends JpaRepository<ExamPaper, Long> {
 
     @Query("SELECT e.id FROM ExamPaper e WHERE e.subject.id = :subject AND e.exam.id = :exam AND e.teacher.id = :teacher ORDER BY e.id ASC")
     Optional<Long> findExamPaperIdByAttributes(@Param("subject") Long subject, @Param("exam") Long exam, @Param("teacher") Long teacher);
+
 }

@@ -16,13 +16,12 @@ public interface ExamResultRepository extends JpaRepository<ExamResult, Long> {
 
     List<ExamResult> findAllExamResultByStudent (Student student);
     Optional<ExamResult> findExamResultByIdAndStudent(Long id, Student student);
-//<<<<<<< HEAD
 
     @Query("SELECT e.score FROM ExamResult e WHERE e.examPaper.id = :examPaperId")
     List<Double> findScoresByExamPaperId(@Param("examPaperId") Long examPaperId);
-//=======
+
     List<ExamResult> findByExamPaperAndStudent(ExamPaper examPaper, Student student);
     Optional<ExamResult> findByExamPaperAndStudentAndAttempt(ExamPaper examPaper, Student student, Integer attempt);
-//>>>>>>> refs/remotes/origin/main
+
 
 }

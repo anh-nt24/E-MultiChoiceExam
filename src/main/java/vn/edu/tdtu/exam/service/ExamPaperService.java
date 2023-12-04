@@ -23,6 +23,7 @@ import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service("ExamPaperService")
 public class ExamPaperService {
@@ -192,6 +193,13 @@ public class ExamPaperService {
     public ExamPaper getTestsById(Long id) {
         return testRepository.findById(id).orElse(null);
     }
+    public ExamPaper getTestByAccessToken(String token) {
+        Optional<ExamPaper> examPaper = testRepository.findExamPaperByAccessToken(token);
+        if(examPaper.isPresent()){
+            return examPaper.get();
+        }
+        return null;
+    }
 
     public List<ExamPaper> getAllTestByExamId(Long id){
         return testRepository.findAllExamPaperByExamIdAndIsActiveTrue(id);
@@ -209,7 +217,6 @@ public class ExamPaperService {
         int duration = examPaper.getDuration();
         return time.plusMinutes(duration);
     }
-
     public List<Exam> getExamByTeacherAndSubject(Long userId, Long id) {
         return testRepository.findExamIdsByTeacherIdAndSubjectId(userId, id);
     }

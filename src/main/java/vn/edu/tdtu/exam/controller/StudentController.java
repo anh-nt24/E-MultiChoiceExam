@@ -10,6 +10,7 @@ import vn.edu.tdtu.exam.dto.StudentDTO;
 import vn.edu.tdtu.exam.entity.*;
 import vn.edu.tdtu.exam.service.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -63,39 +64,39 @@ public class StudentController {
     }
     @GetMapping("/exam_enroll")
     public String tokenEnroll(Model model, HttpSession session){
+
         String jwtToken = (String) session.getAttribute("jwt");
-        System.out.println(jwtToken);
         model.addAttribute("token", jwtToken);
         return "student/exam_enroll";
     }
 
     @PostMapping(value = "/exam_enroll", consumes = "application/x-www-form-urlencoded")
-    public String joinExam(@RequestParam String token,  HttpSession session, RedirectAttributes redirectAttributes){
-        System.out.println(token);
+    public String joinExam(@RequestParam String token,  HttpSession session, Model model){
+        session.removeAttribute("status");
 
         ExamPaper examPaper = examPaperService.getTestByAccessToken(token);
         Long studentId = (Long)session.getAttribute("id");
         Student student = studentService.getStudentById(studentId);
 
-        System.out.println(examPaper);
         //Check Access Token
         if(examPaper == null){
-            redirectAttributes.addAttribute("flashMessage", "Wrong Token");
-            redirectAttributes.addAttribute("flashType", "failed");
-            return "redirect:/student/exam_enroll/";
+            model.addAttribute("flashMessage", "Wrong access token!");
+            model.addAttribute("flashType", "failed");
+            return "student/exam_enroll";
         }
         //---------------------
-        
+
         //Check if student is banned from class subject
         StudentSubject studentSubject = studentSubjectService.getStudentSubjectByStudentAndSubject(student, examPaper.getSubject());
 
 
         if(studentSubject == null || studentSubject.getBanned() || !examPaper.getIsActive()) {
-            redirectAttributes.addFlashAttribute("flashMessage", "You are not allowed to enroll the test");
-            redirectAttributes.addFlashAttribute("flashType", "failed");
-            return "redirect:/student/exam_enroll/";
+            model.addAttribute("flashMessage", "Sorry, you are not allowed to enroll the test.");
+            model.addAttribute("flashType", "failed");
+            return "student/exam_enroll";
         }
         session.setAttribute("examPaperId", examPaper.getId());
+
         return "redirect:/student/exam_list";
     }
 
@@ -142,7 +143,35 @@ public class StudentController {
     }
 
     @GetMapping("/schedule")
-    public String schedule() {
+    public String schedule(HttpSession session, Model model) {
+        Long id = (Long) session.getAttribute("id");
+        Student student = studentService.getStudentById(id);
+
+        //---------------------------Lịch thi riêng của sv----------------------------
+//        //Lấy list các môn học mà sv tham gia
+//        List<Exam> exams = new ArrayList<>();
+//        List<ExamPaper> examPaperList = new ArrayList<>();
+//        List<StudentSubject> subjects = studentSubjectService.getStudentSubjectByStudent(student);
+//        for(StudentSubject ss : subjects){
+//            // Lấy các bài kiểm tra của môn học mà sv tham gia
+//            List<ExamPaper> examPapers = examPaperService.getAllTestBySubject(ss.getSubject());
+//            for(ExamPaper examPaper : examPapers){
+//                Exam exam = examPaper.getExam();
+//                if(!exams.contains(exam)){
+//                    exams.add(exam);
+//                    examPaperList.add(examPaper);
+//                }
+//            }
+//        }
+//        model.addAttribute("exams", examPaperList);
+
+        //--------------------------------------------------------------------
+
+        //---------------------------Lịch thi chung----------------------------
+        List<Exam> exams = examService.getAllExams();
+        model.addAttribute("exams", exams);
+        //--------------------------------------------------------------------
+
         return "student/schedule";
     }
 

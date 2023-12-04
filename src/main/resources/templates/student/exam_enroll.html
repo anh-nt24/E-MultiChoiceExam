@@ -15,37 +15,6 @@
     <th:block id="home-static-resources">
         <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}"/>
         <script type="text/javascript" th:src="@{/javascript/home.js}"></script>
-
-        <!-- <script th:inline="javascript">
-            /*<![CDATA[*/
-            var exam = /*[[${token}]]*/ 'exam' //Get exam number in model to update link
-            /*]]>*/
-            //------------
-    
-            $("#send_token").on("click", (e)=>{
-                e.preventDefault()
-    
-                var header ='Bearer ' + exam
-                var token = $("#token").val()
-                $.ajax({
-                    url: '/exam_enroll',
-                    headers: {
-                        'Authorization':header,
-                    },
-                    method: 'POST',
-                    data: {
-                        token: token
-                    },
-                    beforeSend: function (xhr) {
-                        xhr.setRequestHeader('Authorization', header);
-                    },
-                    success: function(data){
-                        console.log('succes: '+data);
-                    }
-                });
-            })
-            
-        </script> -->
     </th:block>
 </head>
 <body>
@@ -55,7 +24,7 @@
 <!-- Navigator -->
 <div id="home-nav" th:replace="~{/fragments/navbar :: nav-student}"></div>
 
-<div th:fragment = "exam_enroll_layout" id = "exam_enroll_layout" class = "container border border-3">
+<div th:fragment = "exam_enroll_layout" id = "exam_enroll_layout" class = "container bg-light">
     <div th:if="${flashMessage}" th:class="${'flash ' + flashType}" id="flashMessage">
         <div th:class="${'flash__icon ' + flashType}">
             <i th:if="${flashType == 'failed'}" class="icon fa fa-times-circle-o"></i>
@@ -64,9 +33,9 @@
         <p th:text="${flashMessage}"></p>
     </div>
 
-    <form method ="post" th:action="@{/student/exam_enroll}">
+    <form method ="post" th:action="@{/student/exam_enroll}" id="exam_enroll_form" class = "shadow p-3 mb-5 bg-body rounded">
         <div class="form-group">
-            <label for="token">Token Key</label>
+            <label for="token" class ="text-danger"><h3><strong>Token Key</strong></h3></label>
             <input type="text" class="form-control" id="token" name="token">
         </div>
         <div class="form-group d-flex justify-content-end">

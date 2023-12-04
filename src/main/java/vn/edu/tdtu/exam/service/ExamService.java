@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-@Service
+@Service("ExamService")
 public class ExamService {
 
     @Autowired
@@ -46,4 +46,16 @@ public class ExamService {
     public Optional<Exam> findById(Long id) {
         return examRepository.findById(id);
     }
+
+    public String getDayOfWeek(Exam exam){
+        return exam.getExamDate().getDayOfWeek().name();
+    }
+    public String getTime(Exam exam){
+        LocalDateTime date = exam.getExamDate();
+        return date.getHour() + "";
+    }
+    public String getDate(Exam exam){
+        return exam.getExamDate().getDayOfWeek().name();
+    }
+
 }

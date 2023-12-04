@@ -59,8 +59,8 @@
         <div class = "container" id = "result_section">
             <div class = "row" th:if="${results.size() > 0}">
                 <div class = "col-4" th:each="result: ${results.keySet()}">
-                    <div class="card text-bg-light mb-3" style="max-width: 18rem;">
-                        <div class="card-header" th:text="${results.get(result).exam.name}">Exam Name</div>
+                    <div class="card text-bg-light mb-3 shadow rounded"  style="max-width: 18rem;">
+                        <div class="card-header shadow-sm" th:text="${results.get(result).exam.name}">Exam Name</div>
     
                         <div class="card-body">
                           <h4 class="card-title" th:text="${results.get(result).subject.name}">Subject title</h4>
@@ -112,7 +112,6 @@
                           </p>
     
                           <div class = "d-flex justify-content-end">
-                            <a href="#" class="details btn d-grid">Details</a>
                             <a th:href="${'/student/add_report/' + results.get(result).id}" class ="btn btn-danger">Report</a>
                           </div>
                           

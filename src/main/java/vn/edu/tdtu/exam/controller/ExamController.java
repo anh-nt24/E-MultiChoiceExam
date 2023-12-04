@@ -75,7 +75,7 @@ public class ExamController {
 
     @PostMapping(value = "/submit/{id}", consumes = "application/x-www-form-urlencoded")
     public String submitExam(@PathVariable Long id, @RequestBody MultiValueMap<String, String> formData,
-                             HttpSession session, RedirectAttributes redirectAttributes){
+                             HttpSession session, Model model){
 
         Long examPaperId = (Long)session.getAttribute("examPaperId");
         Long studentId = (Long)session.getAttribute("id");
@@ -103,9 +103,9 @@ public class ExamController {
         List<ExamResult> check = examResultService.getExamResultByExamPaperAndStudent(examPaper, student);
 
         if(check.size()+1 > examPaper.getTimesAllowed()){
-            redirectAttributes.addFlashAttribute("flashMessage", "You have already submitted the test");
-            redirectAttributes.addFlashAttribute("flashType", "failed");
-            return "redirect:/student/results";
+            model.addAttribute("flashMessage", "You have already submitted the test");
+            model.addAttribute("flashType", "failed");
+            return "layouts/home";
         }
 
         //save Exam_Result

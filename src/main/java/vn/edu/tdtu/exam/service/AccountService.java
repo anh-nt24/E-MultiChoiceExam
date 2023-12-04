@@ -6,12 +6,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import vn.edu.tdtu.exam.dto.AccountDTO;
-import vn.edu.tdtu.exam.dto.StudentDTO;
 import vn.edu.tdtu.exam.entity.Account;
-import vn.edu.tdtu.exam.entity.Student;
 import vn.edu.tdtu.exam.entity.Teacher;
 import vn.edu.tdtu.exam.repository.AccountRepository;
-import vn.edu.tdtu.exam.repository.StudentRepository;
 
 import java.util.List;
 import java.util.Optional;

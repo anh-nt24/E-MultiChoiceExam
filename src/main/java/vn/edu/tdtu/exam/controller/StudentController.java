@@ -176,13 +176,28 @@ public class StudentController {
     }
 
     @GetMapping("/update_info")
-    public String getInfo(){
-        return "info_form";
+    public String getInfo(HttpSession session, Model model){
+        Long id = (Long) session.getAttribute("id");
+
+        Student student = studentService.getStudentById(id);
+        model.addAttribute("name", student.getName());
+        model.addAttribute("email", student.getEmail());
+        model.addAttribute("phone", student.getPhone());
+        model.addAttribute("dob", student.getDoB());
+        model.addAttribute("address", student.getAddress());
+        model.addAttribute("workplace", student.getWorkplace());
+        model.addAttribute("major", student.getMajor());
+        model.addAttribute("enrollment_year", student.getEnrollment_year());
+
+        return "student/info_form";
     }
     @PostMapping("/update_info")
     public String updateInfo(HttpSession session, @ModelAttribute StudentDTO studentDTO){
         Long id = (Long)session.getAttribute("id");
+        System.out.println(studentDTO);
+
         StudentDTO student = studentService.updateStudent(id, studentDTO);
+        System.out.println(student);
         return "redirect:/";
     }
 }

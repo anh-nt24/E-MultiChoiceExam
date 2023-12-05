@@ -34,6 +34,8 @@ public class EMultiChoiceExamApplication implements CommandLineRunner {
 			account.setRole("admin");
 			accountRepository.save(account);
 		}
+//		String password = passwordEncoder.encode("123");
+//		System.out.println(passwordEncoder.matches("123", password));
 	}
 
 	@Override

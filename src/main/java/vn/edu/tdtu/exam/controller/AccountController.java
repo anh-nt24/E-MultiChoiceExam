@@ -16,9 +16,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import vn.edu.tdtu.exam.dto.ResetPasswordDTO;
 import vn.edu.tdtu.exam.entity.Account;
 import vn.edu.tdtu.exam.entity.Student;
 import vn.edu.tdtu.exam.entity.Teacher;
+import vn.edu.tdtu.exam.repository.AccountRepository;
 import vn.edu.tdtu.exam.service.AccountService;
 import vn.edu.tdtu.exam.service.StudentService;
 import vn.edu.tdtu.exam.service.TeacherService;
@@ -35,6 +37,9 @@ public class AccountController {
     private AccountService accountService;
     @Autowired
     private TeacherService teacherService;
+
+    @Autowired
+    private AccountRepository accountRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -144,8 +149,18 @@ public class AccountController {
     }
 
     @PostMapping("/password")
-    public String changePassword() {
-        return "...";
+    public String changePassword(@ModelAttribute ResetPasswordDTO resetPasswordDTO, HttpSession httpSession) {
+        Long id =(Long) httpSession.getAttribute("id");
+        Account account = accountService.findById(id).orElse(null);
+        if(account!=null) {
+            String oldPassword = resetPasswordDTO.getOldpassword();
+            String newPassword = resetPasswordDTO.getNewpassword();
+            if(passwordEncoder.matches(oldPassword, account.getPassword())) {
+                account.setPassword(passwordEncoder.encode(newPassword));
+                accountRepository.save(account);
+            }
+        }
+        return "redirect:/";
     }
 }
 

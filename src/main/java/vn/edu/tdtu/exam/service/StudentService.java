@@ -99,4 +99,8 @@ public class StudentService {
 
         return studentDTO;
     }
+
+    public  List<Student> getListStudent(Long id) {
+        return studentRepository.findListStudent(id);
+    }
 }

@@ -16,6 +16,7 @@
         <script type="text/javascript" th:src="@{/javascript/home.js}"></script>
         <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}"/>
         <link rel="stylesheet" type="text/css" th:href="@{/css/my-classes.css}"/>
+        <link rel="stylesheet" type="text/css" th:href="@{/css/list-student.css}"/>
     </th:block>
 </head>
 <body>
@@ -30,8 +31,8 @@
 <div id="home-main-content" class="portlet-box p-3">
     <div class="container">
         <div th:if="${listClass != null and listClass.size() >0}"  class="row">
-            <div th:each="a, index : ${listClass}" class="col-4">
-                <div th:href="@{'/class/listClass?s=' + ${a.id}}" class="zoom d-block classroom">
+            <div th:each="a, index : ${listClass}" class="col-4 mt-3">
+                <a th:href="@{'/class/listClass?s=' + ${a.id}}" class="inactive-link zoom d-block classroom">
                     <div th:text="${schedule[index.index]}" class="classroom-banner"></div>
                     <div class="px-2 py-1">
                         <h6 th:text="${a.getName()}" class="classroom-name pt-2"></h6>
@@ -39,27 +40,51 @@
                         <p th:text="${numberOfStudent[index.index] + ' students'}" class="classroom-student">
                         </p>
                     </div>
-                </div>
+                </a>
             </div>
-            <div class="col-4">
-                <div class="zoom d-block classroom">
-                    <div class="classroom-banner"> Thursday, shift 1 </div>
-                    <div class="px-2 py-1">
-                        <h6 class="classroom-name pt-2">Multiply and Divide exponents review</h6>
-                        <hr />
-                        <p class="classroom-student">30 students</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-4">
-                <div class="zoom d-block classroom">
-                    <div class="classroom-banner"> Thursday, shift 1 </div>
-                    <div class="px-2 py-1">
-                        <h6 class="classroom-name pt-2">Multiply and Divide exponents review</h6>
-                        <hr />
-                        <p class="classroom-student">30 students</p>
-                    </div>
-                </div>
+        </div>
+        <div th:if="${listStudent != null}"  class="row">
+            <div class="col-12">
+                <h2 class="text-center mt-4">Danh sách sinh viên</h2>
+
+                <table class="col-12 content-table">
+                    <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Mã số sinh viên</th>
+                        <th>Họ và tên</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody class="tbody">
+                        <tr th:each="student, i: ${listStudent}">
+                            <td th:text="${i.index+1}" class="pt-2"></td>
+                            <td th:text="${student.getStudentId()}" class="student-id pt-2"></td>
+                            <td th:text="${student.getName()}" class="student-name pt-2"></td>
+                            <td class="student-action pt-2">
+                                <form method="post" th:action="@{'/class/unbanned?id=' + ${student.getId()}}" onsubmit="return confirmUnBanned()" style="display: inline">
+                                    <input type="hidden" name="subject" th:value="${subject}">
+                                    <th:block th:if="${showBanned[i.index]==true}">
+                                        <button type="submit" class="btn btn-danger">
+                                            <i class="fa fa-trash-o"></i>
+                                            Hủy cấm thi
+                                        </button>
+                                    </th:block>
+                                </form>
+
+                                <form method="post" th:action="@{'/class/banned?id=' + ${student.getId()}}" onsubmit="return confirmBanned()" style="display: inline">
+                                    <input type="hidden" name="subject" th:value="${subject}">
+                                    <th:block th:if="${showBanned[i.index]==false}">
+                                        <button type="submit" class="btn btn-danger">
+                                            <i class="fa fa-trash-o"></i>
+                                            Cấm thi
+                                        </button>
+                                    </th:block>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

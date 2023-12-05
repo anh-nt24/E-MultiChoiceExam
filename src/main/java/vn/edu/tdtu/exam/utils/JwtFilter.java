@@ -42,7 +42,7 @@ public class JwtFilter extends OncePerRequestFilter {
                 System.out.println("JWT Token has expired");
             }
         } else {
-            System.out.println("Bearer String not found in token");
+//            System.out.println("Bearer String not found in token");
         }
         if (null != username && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);

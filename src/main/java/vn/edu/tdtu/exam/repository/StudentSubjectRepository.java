@@ -20,4 +20,10 @@ public interface StudentSubjectRepository extends JpaRepository<StudentSubject, 
     List<StudentSubject> findAllStudentSubjectByStudent (Student student);
 
     StudentSubject findByStudentAndSubject(Student student, Subject subject);
+
+    @Query("SELECT ss FROM StudentSubject ss where ss.student.id = :ssid and ss.subject.id = :subid")
+    StudentSubject selectStudent(@Param("ssid") Long ssid, @Param("subid") Long subid);
+
+    @Query("SELECT s.banned FROM StudentSubject s where s.student.id = :id and s.subject.id = :ssid")
+    Boolean findBannedStudent(@Param("id") Long sid, Long ssid);
 }

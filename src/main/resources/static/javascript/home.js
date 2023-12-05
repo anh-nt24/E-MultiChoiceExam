@@ -65,6 +65,16 @@ function confirmDelete() {
     return confirmDelete;
 }
 
+function confirmBanned() {
+	var confirmBanned = confirm("Are you sure you want to banned this person?");
+	return confirmBanned;
+}
+
+function confirmUnBanned() {
+	var confirmUnBanned = confirm("Are you sure you want to unbanned this person?");
+	return confirmUnBanned;
+}
+
 function confirmUpdate() {
     var confirmDelete = confirm("Are you sure you want to update this?");
     return confirmDelete;

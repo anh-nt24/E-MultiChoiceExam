@@ -45,6 +45,10 @@
     background-color: skyblue;
 }
 
+.student-action-button:focus, student-action-button:focus.active {
+    outline: none;
+}
+
 .save-button {
     margin-top: 15px;
     margin-left: 82%;
@@ -64,4 +68,56 @@
 
 .background-round-button {
     background_color: #fff;
+}
+
+.save-button:focus, save-button:focus.active {
+    outline: none;
+}
+
+.content-table {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    min-width: 400px;
+    border-radius: 5px 5px 0 0;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.content-table thead tr {
+    background-color: var(--main-bg-color);
+    color: #ffffff;
+    text-align: center;
+    font-weight: bold;
+}
+
+.content-table th,
+.content-table td {
+    padding: 12px 10px;
+}
+
+.content-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.content-table tbody tr:nth-of-type(even) {
+    background-color: #f8f8f8;
+}
+
+.content-table tbody tr:last-of-type,
+.tbody {
+    border-bottom: 2px solid var(--main-bg-color);
+}
+
+.content-table tbody tr:nth-child(2n) {
+    font-weight: bold;
+    color: var(--main-bg-color);
+}
+
+.content-table tbody tr:hover {
+    cursor: pointer;
+}
+
+.actions .btn {
+    padding: 2px 4px;
 }

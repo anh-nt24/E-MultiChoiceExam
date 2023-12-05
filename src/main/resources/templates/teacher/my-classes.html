@@ -29,14 +29,15 @@
 <!-- Main content for classes -->
 <div id="home-main-content" class="portlet-box p-3">
     <div class="container">
-        <div class="row">
-            <div class="col-4">
-                <div class="zoom d-block classroom">
-                    <div class="classroom-banner"> Thursday, shift 1 </div>
+        <div th:if="${listClass != null and listClass.size() >0}"  class="row">
+            <div th:each="a, index : ${listClass}" class="col-4">
+                <div th:href="@{'/class/listClass?s=' + ${a.id}}" class="zoom d-block classroom">
+                    <div th:text="${schedule[index.index]}" class="classroom-banner"></div>
                     <div class="px-2 py-1">
-                        <h6 class="classroom-name pt-2">Multiply and Divide exponents review</h6>
+                        <h6 th:text="${a.getName()}" class="classroom-name pt-2"></h6>
                         <hr />
-                        <p class="classroom-student">30 students</p>
+                        <p th:text="${numberOfStudent[index.index] + ' students'}" class="classroom-student">
+                        </p>
                     </div>
                 </div>
             </div>

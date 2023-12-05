@@ -7,12 +7,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import vn.edu.tdtu.exam.entity.Account;
+import vn.edu.tdtu.exam.entity.Subject;
 import vn.edu.tdtu.exam.entity.Teacher;
-import vn.edu.tdtu.exam.service.AccountService;
-import vn.edu.tdtu.exam.service.ClassService;
-import vn.edu.tdtu.exam.service.StudentService;
-import vn.edu.tdtu.exam.service.TeacherService;
+import vn.edu.tdtu.exam.service.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -26,19 +25,36 @@ public class ClassesController {
     private AccountService accountService;
 
     @Autowired
-    private ClassService classService;
+    private SubjectService subjectService;
 
     @Autowired
     private StudentService studentService;
 
+
     @GetMapping
     public String showMyClasses(Model model, HttpSession session) {
-        System.out.println(session.getAttribute("id"));
-//        Account account = accountService.getAccount(session.getAttribute("id"));
-//
-//        List<Class> activeClasses = classService.getActiveClassesByTeacher(account);
-//
-//        model.addAttribute("activeClasses", activeClasses);
+        String role = (String) session.getAttribute("role");
+        if (!role.equals("teacher")) {
+            return "404";
+        }
+
+        List<Subject> subjects = subjectService.getSubjectOfTeacher((Long) session.getAttribute("id"));
+        List<String> schedules = new ArrayList<>();
+        List<Integer> students = new ArrayList<>();
+
+        subjects.forEach(subject -> {
+            String schedule = subjectService.getScheduleOfTeacher(subject.getId());
+            Integer student = subjectService.findStudentInSubject((subject.getId()));
+
+            schedules.add(schedule);
+            students.add(student);
+
+        });
+
+        model.addAttribute("listClass", subjects);
+        model.addAttribute("schedule", schedules);
+        model.addAttribute("numberOfStudent", students);
+
         return "teacher/my-classes";
     }
 }

@@ -7,6 +7,7 @@ import vn.edu.tdtu.exam.entity.Account;
 import vn.edu.tdtu.exam.entity.Subject;
 import vn.edu.tdtu.exam.repository.AccountRepository;
 import vn.edu.tdtu.exam.repository.SubjectRepository;
+import vn.edu.tdtu.exam.repository.TeacherSubjectRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +21,9 @@ public class SubjectService {
     @Autowired
     private AccountRepository accountRepository;
 
+    @Autowired
+    private TeacherSubjectRepository teacherSubjectRepository;
+
     public List<Subject> getSubjectOfTeacher(Long id) {
         Optional<Account> optionalAccount = accountRepository.findById(id);
         if (optionalAccount.isPresent()) {
@@ -28,6 +32,11 @@ public class SubjectService {
             return subjectList;
         }
         return null;
+    }
+
+    public String getScheduleOfTeacher(Long id) {
+        String scheduleList = teacherSubjectRepository.findScheduleIdBySubjectId(id);
+        return scheduleList;
     }
 
     public Integer getExamPaperOfSubjectQuantity(Long id) {
@@ -45,4 +54,7 @@ public class SubjectService {
         return (subject != null) ? subject.getId() : null;
     }
 
+    public Integer findStudentInSubject(Long subjectID) {
+        return subjectRepository.countStudent(subjectID);
+    }
 }

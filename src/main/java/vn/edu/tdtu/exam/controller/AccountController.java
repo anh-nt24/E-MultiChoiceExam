@@ -1,56 +1,76 @@
 package vn.edu.tdtu.exam.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import vn.edu.tdtu.exam.dto.AccountDTO;
-import vn.edu.tdtu.exam.dto.StudentDTO;
 import vn.edu.tdtu.exam.entity.Account;
-import vn.edu.tdtu.exam.entity.Admin;
 import vn.edu.tdtu.exam.entity.Student;
 import vn.edu.tdtu.exam.entity.Teacher;
 import vn.edu.tdtu.exam.service.AccountService;
 import vn.edu.tdtu.exam.service.StudentService;
 import vn.edu.tdtu.exam.service.TeacherService;
-import vn.edu.tdtu.exam.utils.SecurityUtil;
-import java.util.Map;
-import java.util.Optional;
+import vn.edu.tdtu.exam.utils.TokenManager;
+
 import java.util.List;
 
 @Controller
 @RequestMapping("/")
 public class AccountController {
-    private final AccountService accountService;
-    private final TeacherService teacherService;
-    private final StudentService studentService;
+    @Autowired
+    private StudentService studentService;
+    @Autowired
+    private AccountService accountService;
+    @Autowired
+    private TeacherService teacherService;
 
     @Autowired
-    public AccountController(AccountService accountService, TeacherService teacherService, StudentService studentService) {
-        this.accountService = accountService;
-        this.teacherService = teacherService;
-        this.studentService = studentService;
-    }
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private TokenManager tokenManager;
 
     @GetMapping()
-    public String index(Model model, HttpSession session) {
-        String role = (String) session.getAttribute("role");
+    public String index(@RequestHeader(value = "Authorization", required = false) String jwt,
+                        HttpSession session,
+                        Model model) {
+        if (jwt == null &&
+            session.getAttribute("id") == null &&
+            session.getAttribute("jwt") == null) {
+            return "redirect:/login";
+        }
         Long id = (Long) session.getAttribute("id");
+        String jwtToken = (String) session.getAttribute("jwt");
+
+        String role = accountService.getAccount(id).getRole();
+        model.addAttribute("jwt", jwtToken);
         model.addAttribute("role", role);
-        model.addAttribute("id", id);
         System.out.println("ROLE: " + role);
         if (role.equals("teacher")) {
             model = getTeacherInformation(model, id);
+            return "layouts/home";
+        } else if (role.equals("admin")) {
+            return "admin/home";
+        } else if (role.equals("student")) {
+            model = getStudent(model, id);
+            return "layouts/home";
         }
-        else if(role.equals("student")){
-            model = getStudentInformation(model, id);
-        }
-        return "layouts/home";
+        return "login";
     }
 
     private Model getTeacherInformation(Model model, Long id) {
@@ -69,29 +89,22 @@ public class AccountController {
         model.addAttribute("research", teacher.getField());
         return model;
     }
-    private Model getStudentInformation(Model model, Long id){
-        StudentDTO student = studentService.getStudentDTOById(id);
-        model.addAttribute("name", student.getStudentName());
+    private Model getStudent(Model model, Long id) {
+        Student student = studentService.getStudentById(id);
+        model.addAttribute("name", student.getName());
         model.addAttribute("email", student.getEmail());
         model.addAttribute("phone", student.getPhone());
+        model.addAttribute("dob", student.getDoB());
         model.addAttribute("address", student.getAddress());
         model.addAttribute("workplace", student.getWorkplace());
-        model.addAttribute("dob", student.getDoB());
-        model.addAttribute("avatar", student.getAvatar());
         model.addAttribute("major", student.getMajor());
         model.addAttribute("enrollment_year", student.getEnrollment_year());
         return model;
     }
 
     @GetMapping("/login")
-    public String loginGetRequest() {
+    public String loginGetRequest(HttpSession session) {
         return "login";
-    }
-
-    @GetMapping("/logout")
-    public String logout(HttpSession session){
-        session.invalidate();
-        return "redirect:/login";
     }
 
     @PostMapping(value = "/login", consumes = "application/x-www-form-urlencoded")
@@ -100,23 +113,28 @@ public class AccountController {
             @RequestParam String password,
             RedirectAttributes redirectAttributes,
             HttpSession session) {
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(email, password)
+            );
+        } catch (DisabledException e) {
+            redirectAttributes.addFlashAttribute("flashMessage", "Account disabled");
+            redirectAttributes.addFlashAttribute("flashType", "failed");
+            return "redirect:/login";
+        } catch (BadCredentialsException e) {
+            redirectAttributes.addFlashAttribute("flashMessage", "Incorrect email or password");
+            redirectAttributes.addFlashAttribute("flashType", "failed");
+            return "redirect:/login";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "500";
+        }
         Account user = accountService.getUserByEmail(email);
-        if (user == null) {
-            redirectAttributes.addFlashAttribute("flashMessage", "User not existed");
-            redirectAttributes.addFlashAttribute("flashType", "failed");
-            return "redirect:/login";
-        }
-        if (!user.getPassword().equals(password)) {
-            redirectAttributes.addFlashAttribute("flashMessage", "Incorrect password");
-            redirectAttributes.addFlashAttribute("flashType", "failed");
-            return "redirect:/login";
-        }
-        // login successfully
-        String role = user.getRole();
-        Long id = user.getId();
-        session.setAttribute("role", role);
-        session.setAttribute("id", id);
-        session.setMaxInactiveInterval(3600); // 1 hour
+        String jwtToken = tokenManager.generateJwtToken(user);
+        System.out.println(jwtToken);
+        session.setAttribute("id", user.getId());
+        session.setAttribute("jwt", jwtToken);
+        session.setAttribute("role", user.getRole());
         return "redirect:/";
     }
 

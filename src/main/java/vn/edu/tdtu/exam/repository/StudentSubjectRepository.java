@@ -6,9 +6,9 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import vn.edu.tdtu.exam.entity.Student;
 import vn.edu.tdtu.exam.entity.StudentSubject;
+import vn.edu.tdtu.exam.entity.Subject;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface StudentSubjectRepository extends JpaRepository<StudentSubject, Long> {
@@ -17,5 +17,7 @@ public interface StudentSubjectRepository extends JpaRepository<StudentSubject, 
     @Query("SELECT s FROM StudentSubject s WHERE s.subject.name = :name AND s.banned = false")
     List<StudentSubject> searchBySubjectName(@Param("name") String name);
 
-    Optional<StudentSubject> findStudentSubjectByStudent (Student student);
+    List<StudentSubject> findAllStudentSubjectByStudent (Student student);
+
+    StudentSubject findByStudentAndSubject(Student student, Subject subject);
 }

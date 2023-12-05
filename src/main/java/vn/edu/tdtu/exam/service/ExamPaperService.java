@@ -23,6 +23,7 @@ import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service("ExamPaperService")
 public class ExamPaperService {
@@ -185,17 +186,28 @@ public class ExamPaperService {
         }
     }
 
-    public Boolean checkAuthor(Long id, Long userId) {
-        return testRepository.findTeacherIdByExamPaperId(id) == userId;
+    public Boolean checkAuthor(Long testId, Long userId) {
+        return testRepository.findTeacherIdByExamPaperId(testId).equals(userId);
     }
 
     public ExamPaper getTestsById(Long id) {
         return testRepository.findById(id).orElse(null);
     }
-
-    public ExamPaper getTestByExamId(Long id){
-        return testRepository.findExamPaperByExamId(id);
+    public ExamPaper getTestByAccessToken(String token) {
+        Optional<ExamPaper> examPaper = testRepository.findExamPaperByAccessToken(token);
+        if(examPaper.isPresent()){
+            return examPaper.get();
+        }
+        return null;
     }
+
+    public List<ExamPaper> getAllTestByExamId(Long id){
+        return testRepository.findAllExamPaperByExamIdAndIsActiveTrue(id);
+    }
+    public List<ExamPaper> getAllTestBySubject(Subject subject){
+        return testRepository.findAllExamPaperBySubjectAndIsActiveTrue(subject);
+    }
+
     public LocalTime getTimeStart(Exam exam) {
         LocalDateTime time = exam.getExamDate();
         return time.toLocalTime();
@@ -204,5 +216,12 @@ public class ExamPaperService {
         LocalDateTime time = exam.getExamDate();
         int duration = examPaper.getDuration();
         return time.plusMinutes(duration);
+    }
+    public List<Exam> getExamByTeacherAndSubject(Long userId, Long id) {
+        return testRepository.findExamIdsByTeacherIdAndSubjectId(userId, id);
+    }
+
+    public Long getTestForStatistic(Long subject, Long exam, Long teacher) {
+        return testRepository.findExamPaperIdByAttributes(subject, exam, teacher).orElse(null);
     }
 }

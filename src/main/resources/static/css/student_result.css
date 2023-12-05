@@ -15,7 +15,7 @@ td.in4{
 
 #result_section div.card{
     width: 500px;
-    margin-top: 50px;
+    /* margin-top: 20px; */
 }
 
 #result_section div.card-header{
@@ -33,7 +33,6 @@ td.in4{
     text-align: center;
     color: red;
     text-shadow: 1px 1px 0 crimson;
-
 }
 
 #result_section div.card-body a.details{

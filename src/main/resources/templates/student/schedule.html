@@ -38,10 +38,11 @@
 
     <!--Main Content-->
     <div th:fragment="student_schedule" class = "container" id = "student_schedule">
+        <div class="row d-flex justify-content-center text-danger" id = "schedule_title"><h1><strong>LỊCH THI CHUNG</strong></h1></div>
         <div class="row">
             <div class="col-md-12">
                 <div class="schedule-table table">
-                    <table>
+                    <table class = "shadow p-3 mb-5 bg-body rounded">
                         <thead>
                             <tr>
                                 <th>Mon</th>
@@ -54,29 +55,94 @@
                             </tr>
                         </thead>
     
-                        <tbody>
+                        <tbody th:each="exam : ${exams}">
                         <tr>
-                            <td></td>
-    
-                            <td>
-                                <h4>Weight Loss</h4>
-                                <p>10 am - 11 am</p>
+                            <td th:if="${@ExamService.getDayOfWeek(exam)} == 'MONDAY'">
+
+                                <h4 th:text="${exam.name}"></h4>
+                                <p th:text="'AT: ' + ${#temporals.format(exam.examDate, 'HH:mm')}"></p>
+                                <p th:text="${#temporals.format(exam.examDate, 'dd/MM/yyyy')}"></p>
+                            </td>
+                            <td th:unless="${@ExamService.getDayOfWeek(exam)} == 'MONDAY'">
+                                <h4></h4>
+                                <p></p>
+                                <p></p>
+                                <p></p>
                             </td>
     
-                            <td></td>
-    
-                            <td>
-                                <h4>Yoga</h4>
-                                <p>03 pm - 04 pm</p>
+                            <td
+                                th:if="${@ExamService.getDayOfWeek(exam)} == 'TUESDAY'">
+                                <h4 th:text="${exam.name}"></h4>
+                                <p th:text="'AT: ' + ${#temporals.format(exam.examDate, 'HH:mm')}"></p>
+                                <p th:text="${#temporals.format(exam.examDate, 'dd/MM/yyyy')}"></p>
+                            </td>
+                            <td th:unless="${@ExamService.getDayOfWeek(exam)} == 'TUESDAY'">
+                                <h4></h4>
+                                <p></p>
+                                <p></p>
+                                <p></p>
                             </td>
     
-                            <td>
-                                <h4>Boxing</h4>
-                                <p>05 pm - 06 pm</p>
+                            <td th:if="${@ExamService.getDayOfWeek(exam)} == 'WEDNESDAY'">
+                                <h4 th:text="${exam.name}"></h4>
+                                <p th:text="'AT: ' + ${#temporals.format(exam.examDate, 'HH:mm')}"></p>
+                                <p th:text="${#temporals.format(exam.examDate, 'dd/MM/yyyy')}"></p>
+                            </td>
+                            <td th:unless="${@ExamService.getDayOfWeek(exam)} == 'WEDNESDAY'">
+                                <h4></h4>
+                                <p></p>
+                                <p></p>
+                                <p></p>
                             </td>
     
-                            <td></td>
-                            <td></td>
+                            <td th:if="${@ExamService.getDayOfWeek(exam)} == 'THURSDAY'">
+                                <h4 th:text="${exam.name}"></h4>
+                                <p th:text="'AT: ' + ${#temporals.format(exam.examDate, 'HH:mm')}"></p>
+                                <p th:text="${#temporals.format(exam.examDate, 'dd/MM/yyyy')}"></p>
+
+                            </td>
+                            <td th:unless="${@ExamService.getDayOfWeek(exam)} == 'THURSDAY'">
+                                <h4></h4>
+                                <p></p>
+                                <p></p>
+                                <p></p>
+                            </td>
+    
+                            <td th:if="${@ExamService.getDayOfWeek(exam)} == 'FRIDAY'">
+                                <h4 th:text="${exam.name}"></h4>
+                                <p th:text="'AT: ' + ${#temporals.format(exam.examDate, 'HH:mm')}"></p>
+                                <p th:text="${#temporals.format(exam.examDate, 'dd/MM/yyyy')}"></p>
+                            </td>
+                            <td th:unless="${@ExamService.getDayOfWeek(exam)} == 'FRIDAY'">
+                                <h4></h4>
+                                <p></p>
+                                <p></p>
+                                <p></p>
+                            </td>
+    
+                            <td th:if="${@ExamService.getDayOfWeek(exam)} == 'SATURDAY'">
+                                <h4 th:text="${exam.name}"></h4>
+                                <p th:text="'AT: ' + ${#temporals.format(exam.examDate, 'HH:mm')}"></p>
+                                <p th:text="${#temporals.format(exam.examDate, 'dd/MM/yyyy')}"></p>
+                            </td>
+                            <td th:unless="${@ExamService.getDayOfWeek(exam)} == 'SATURDAY'">
+                                <h4></h4>
+                                <p></p>
+                                <p></p>
+                                <p></p>
+                            </td>
+
+                            <td th:if="${@ExamService.getDayOfWeek(exam)} == 'SUNDAY'">
+                                <h4 th:text="${exam.name}"></h4>
+                                <p th:text="'AT: ' + ${#temporals.format(exam.examDate, 'HH:mm')}"></p>
+                                <p th:text="${#temporals.format(exam.examDate, 'dd/MM/yyyy')}"></p>
+                            </td>
+                            <td th:unless="${@ExamService.getDayOfWeek(exam)} == 'SUNDAY'">
+                                <h4></h4>
+                                <p></p>
+                                <p></p>
+                                <p></p>
+                            </td>
                         </tr>
 
                         </tbody>

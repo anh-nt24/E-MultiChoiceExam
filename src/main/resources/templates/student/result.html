@@ -37,30 +37,30 @@
 
     <!--Main Content-->
     <th:block id = "student_result_layout">
-        <div class = "container" id = "search_bar">
-            <form>
-                <div class = "row">
-                    <div class = "col-2">
-                        <select class="form-select">
-                            <option selected>Năm học</option>
-                            <option value = "1">2023 - 2024</option>
-                        </select>
-                    </div>
-                    <div class = "col-3">
-                        <input class = "form-control" type = "text" placeholder="Môn học">
-                    </div>
-                    <div class = "col-2">
-                        <button type = "submit" class = "btn btn-primary"><strong>TÌM KIẾM</strong></button>
-                    </div>
-                </div>
-            </form>
-        </div>
+<!--        <div class = "container" id = "search_bar">-->
+<!--            <form>-->
+<!--                <div class = "row">-->
+<!--                    <div class = "col-2">-->
+<!--                        <select class="form-select">-->
+<!--                            <option selected>Năm học</option>-->
+<!--                            <option value = "1">2023 - 2024</option>-->
+<!--                        </select>-->
+<!--                    </div>-->
+<!--                    <div class = "col-3">-->
+<!--                        <input class = "form-control" type = "text" placeholder="Môn học">-->
+<!--                    </div>-->
+<!--                    <div class = "col-2">-->
+<!--                        <button type = "submit" class = "btn btn-primary"><strong>TÌM KIẾM</strong></button>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </form>-->
+<!--        </div>-->
     
         <div class = "container" id = "result_section">
             <div class = "row" th:if="${results.size() > 0}">
                 <div class = "col-4" th:each="result: ${results.keySet()}">
-                    <div class="card text-bg-light mb-3" style="max-width: 18rem;">
-                        <div class="card-header" th:text="${results.get(result).exam.name}">Exam Name</div>
+                    <div class="card text-bg-light mb-3 shadow rounded"  style="max-width: 18rem;">
+                        <div class="card-header shadow-sm" th:text="${results.get(result).exam.name}">Exam Name</div>
     
                         <div class="card-body">
                           <h4 class="card-title" th:text="${results.get(result).subject.name}">Subject title</h4>
@@ -68,13 +68,13 @@
                             <table class = "table table-light">
                                 <tbody>
                                     <tr>
-                                        <td><strong>Time Start</strong></td>
+                                        <td><strong>Test Start</strong></td>
 
                                         <td class = "in4" th:text="${#temporals.format(@ExamPaperService.getTimeStart(results.get(result).exam), 'HH:mm')}">8:00</td>
                                     </tr>
 
                                     <tr>
-                                        <td><strong>Time End</strong></td>
+                                        <td><strong>Test End</strong></td>
 
                                         <td class = "in4" th:text="${#temporals.format(@ExamPaperService.getTimeEnd(results.get(result).exam, results.get(result)), 'HH:mm')}">9:00</td>
                                     </tr>
@@ -99,7 +99,7 @@
                                     <tr>
                                         <td><strong>Time Taken</strong></td>
 
-                                        <td class = "in4" th:text="${result.takenTime}">45</td>
+                                        <td class = "in4" th:text="${result.takenTime} + ' min'">45</td>
                                     </tr>
     
                                     <tr>
@@ -112,7 +112,6 @@
                           </p>
     
                           <div class = "d-flex justify-content-end">
-                            <a href="#" class="details btn d-grid">Details</a>
                             <a th:href="${'/student/add_report/' + results.get(result).id}" class ="btn btn-danger">Report</a>
                           </div>
                           

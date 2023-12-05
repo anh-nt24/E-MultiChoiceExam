@@ -50,13 +50,14 @@ public class StudentService {
         Optional<Student> result = studentRepository.findById(id);
         if(result.isPresent()){
             Student student = result.get();
+            student.setName(studentDTO.getStudentName());
             student.setEmail(studentDTO.getEmail());
             student.setMajor(studentDTO.getMajor());
-            student.setPassword(studentDTO.getPassword());
             student.setEnrollment_year(studentDTO.getEnrollment_year());
             student.setAddress(studentDTO.getAddress());
             student.setPhone(studentDTO.getPhone());
             student.setWorkplace(studentDTO.getWorkplace());
+            student.setDoB(studentDTO.getDoB());
 
             Student savedStudent = studentRepository.save(student);
             return convertEntityToDTO(savedStudent);
@@ -74,7 +75,6 @@ public class StudentService {
         student.setName(studentDTO.getStudentName());
         student.setEmail(studentDTO.getEmail());
         student.setMajor(studentDTO.getMajor());
-        student.setPassword(studentDTO.getPassword());
         student.setEnrollment_year(studentDTO.getEnrollment_year());
         student.setAddress(studentDTO.getAddress());
         student.setPhone(studentDTO.getPhone());
@@ -90,7 +90,6 @@ public class StudentService {
         studentDTO.setStudentName(student.getName());
         studentDTO.setEmail(student.getEmail());
         studentDTO.setMajor(student.getMajor());
-        studentDTO.setPassword(student.getPassword());
         studentDTO.setEnrollment_year(student.getEnrollment_year());
         studentDTO.setAddress(student.getAddress());
         studentDTO.setPhone(student.getPhone());

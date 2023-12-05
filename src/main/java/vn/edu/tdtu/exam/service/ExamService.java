@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import vn.edu.tdtu.exam.entity.Account;
 import vn.edu.tdtu.exam.entity.Exam;
 import vn.edu.tdtu.exam.entity.ExamPaper;
+import vn.edu.tdtu.exam.entity.Subject;
 import vn.edu.tdtu.exam.repository.AccountRepository;
 import vn.edu.tdtu.exam.repository.ExamRepository;
 
@@ -14,7 +15,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-@Service
+@Service("ExamService")
 public class ExamService {
 
     @Autowired
@@ -45,4 +46,16 @@ public class ExamService {
     public Optional<Exam> findById(Long id) {
         return examRepository.findById(id);
     }
+
+    public String getDayOfWeek(Exam exam){
+        return exam.getExamDate().getDayOfWeek().name();
+    }
+    public String getTime(Exam exam){
+        LocalDateTime date = exam.getExamDate();
+        return date.getHour() + "";
+    }
+    public String getDate(Exam exam){
+        return exam.getExamDate().getDayOfWeek().name();
+    }
+
 }

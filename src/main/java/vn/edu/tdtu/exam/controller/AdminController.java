@@ -31,6 +31,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Controller
 @RequestMapping("/admin")
@@ -57,6 +58,8 @@ public class AdminController {
     StudentSubjectService studentSubjectService;
     @Autowired
     SubjectService subjectService;
+
+    @Autowired ExamPaperService testService;
     private final JavaMailSender javaMailSender;
     @Autowired
     ExamService examService;
@@ -117,15 +120,28 @@ public class AdminController {
         response.setContentType("text/csv");
         response.setHeader("Content-Disposition", "attachment; filename=exam_list.csv");
 
+
         int index = 1;
         for (StudentSubject studentSubject : studentSubjects) {
+            List<String> tokens = testService.getToken(studentSubject.getSubject().getId());
+            String randomToken = getRandomToken(tokens);
             response.getWriter().println(
-                    index++ + "," +
+                    (index++) + "," +
                             studentSubject.getStudent().getId() + "," +
                             studentSubject.getStudent().getName() + "," +
-                            studentSubject.getSubject().getName()
+                            studentSubject.getSubject().getName() + "," +
+                            randomToken
             );
         }
+    }
+
+    private String getRandomToken(List<String> tokens) {
+        if (tokens == null || tokens.isEmpty()) {
+            throw new IllegalArgumentException("List of tokens is empty or null");
+        }
+        Random random = new Random();
+        int randomIndex = random.nextInt(tokens.size());
+        return tokens.get(randomIndex);
     }
 
 // ------------------------- Quản lý kế hoạch thi --------------------------
@@ -372,22 +388,23 @@ public class AdminController {
             try {
                 String fileName = StringUtils.cleanPath(image.getOriginalFilename());
 
-                String uploadDir = "src" + File.separator + "main" + File.separator + "resources" + File.separator + "static" + File.separator + "uploads";
-                Path uploadPath = Paths.get(uploadDir);
+//                String uploadDir = "src" + File.separator + "main" + File.separator + "resources" + File.separator + "static" + File.separator + "uploads";
+                Path uploadPath = Paths.get(uploadDirectory);
 
                 if (!Files.exists(uploadPath)) {
                     Files.createDirectories(uploadPath);
                 }
 
+                String uniqueFileName = "default-avatar.jpg";
                 try (InputStream inputStream = image.getInputStream()) {
-                    String uniqueFileName = generateUniqueFileName(fileName);
+                    uniqueFileName = generateUniqueFileName(fileName);
                     Path filePath = uploadPath.resolve(uniqueFileName);
                     Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
                 } catch (IOException ioe) {
                     throw new IOException("Could not save image file: " + fileName, ioe);
                 }
 
-                String imagePath = "/uploads/" + fileName;
+                String imagePath = uniqueFileName;
                 account.setAvatar(imagePath);
                 accountService.save(account);
 

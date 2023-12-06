@@ -12,6 +12,6 @@ import java.util.List;
 @Repository
 public interface TeacherSubjectRepository extends JpaRepository<TeacherSubject, Long> {
 
-    @Query("SELECT ts.schedule FROM TeacherSubject ts WHERE ts.subject.id = :subjectId")
-    String findScheduleIdBySubjectId(@Param("subjectId") Long subjectId);
+    @Query("SELECT ts.schedule FROM TeacherSubject ts WHERE ts.subject.id = :subjectId AND ts.teacher.id = :teacherId")
+    String findScheduleIdBySubjectId(@Param("subjectId") Long subjectId, @Param("teacherId") Long teacherId);
 }

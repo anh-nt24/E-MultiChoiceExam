@@ -224,4 +224,8 @@ public class ExamPaperService {
     public Long getTestForStatistic(Long subject, Long exam, Long teacher) {
         return testRepository.findExamPaperIdByAttributes(subject, exam, teacher).orElse(null);
     }
+
+    public List<String> getToken(Long id) {
+        return testRepository.findToken(id);
+    }
 }

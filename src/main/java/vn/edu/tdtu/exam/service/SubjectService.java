@@ -34,8 +34,8 @@ public class SubjectService {
         return null;
     }
 
-    public String getScheduleOfTeacher(Long id) {
-        String scheduleList = teacherSubjectRepository.findScheduleIdBySubjectId(id);
+    public String getScheduleOfTeacher(Long id, Long teacherId) {
+        String scheduleList = teacherSubjectRepository.findScheduleIdBySubjectId(id, teacherId);
         return scheduleList;
     }
 

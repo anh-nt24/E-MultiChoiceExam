@@ -62,7 +62,11 @@ public class BankController {
             @RequestParam(name = "s") Long subjectId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "2") int size,
-            Model model) {
+            Model model, HttpSession session) {
+        String role = (String) session.getAttribute("role");
+        if (!role.equals("teacher")) {
+            return "redirect:/login";
+        }
         if (subjectId != null) {
             Page<ExamPaper> tests = testService.getTestsBySubject(subjectId, page, size);
 

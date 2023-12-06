@@ -38,12 +38,14 @@ public class ClassesController {
             return "/login";
         }
 
-        List<Subject> subjects = subjectService.getSubjectOfTeacher((Long) session.getAttribute("id"));
+        Long teacherId = (Long) session.getAttribute("id");
+
+        List<Subject> subjects = subjectService.getSubjectOfTeacher(teacherId);
         List<String> schedules = new ArrayList<>();
         List<Integer> students = new ArrayList<>();
 
         subjects.forEach(subject -> {
-            String schedule = subjectService.getScheduleOfTeacher(subject.getId());
+            String schedule = subjectService.getScheduleOfTeacher(subject.getId(), teacherId);
             Integer student = subjectService.findStudentInSubject((subject.getId()));
 
             schedules.add(schedule);

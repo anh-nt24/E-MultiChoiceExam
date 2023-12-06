@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -34,9 +35,18 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
+
+    @Value("${upload.directory}")
+    private String uploadDirectory;
     @Autowired
     AccountRepository accountRepository;
     @Autowired AccountService accountService;
+
+    @Autowired
+    StudentService studentService;
+
+    @Autowired
+    TeacherService teacherService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -242,37 +252,86 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/register-account", method = RequestMethod.POST)
-    public String registerAccount(Model model, HttpSession session,
-                                  @RequestParam("image") MultipartFile image,
-                                  @RequestParam("name") String name, @RequestParam("email") String email,
-                                  @RequestParam("password") String password, @RequestParam("birth") LocalDate birth,
-                                  @RequestParam("workplace") String workplace, @RequestParam("role") String role,
-                                  @RequestParam("address") String address, @RequestParam("phone") String phone) throws IOException {
+    public String registerAccount(
+            Model model, HttpSession session,
+            @RequestParam("image") MultipartFile image,
+            @RequestParam("name") String name, @RequestParam("email") String email,
+            @RequestParam("password") String password, @RequestParam("birth") LocalDate birth,
+            @RequestParam("workplace") String workplace, @RequestParam("role") String role,
+            @RequestParam("address") String address, @RequestParam("phone") String phone,
+            @RequestParam(value = "degree", required = false) String degree,
+            @RequestParam(value = "edbg", required = false) String edbg,
+            @RequestParam(value = "field", required = false) String field,
+            @RequestParam(value = "position", required = false) String position,
+            @RequestParam(value = "faculty", required = false) String faculty,
+            @RequestParam(value = "studentid", required = false) String studentid,
+            @RequestParam(value = "year", required = false) Integer year,
+            @RequestParam(value = "major", required = false) String major
+    ) throws IOException {
         if (session.getAttribute("role") != null && !session.getAttribute("role").equals("admin")) {
             return "redirect:/login";
         }
         try {
             String fileName = StringUtils.cleanPath(image.getOriginalFilename());
 
-            String uploadDir = "src" + File.separator + "main" + File.separator + "resources" + File.separator + "static" + File.separator + "uploads";
-            Path uploadPath = Paths.get(uploadDir);
+//            String uploadDir = "src" + File.separator + "main" + File.separator + "resources" + File.separator + "static" + File.separator + "uploads";
+            Path uploadPath = Paths.get(uploadDirectory);
 
             if (!Files.exists(uploadPath)) {
                 Files.createDirectories(uploadPath);
             }
+
+            String uniqueFileName = "default-avatar.jpg";
             try (InputStream inputStream = image.getInputStream()) {
-                String uniqueFileName = generateUniqueFileName(fileName);
+                uniqueFileName = generateUniqueFileName(fileName);
                 Path filePath = uploadPath.resolve(uniqueFileName);
                 Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
             } catch (IOException ioe) {
                 throw new IOException("Could not save image file: " + fileName, ioe);
             }
-            String imagePath = "/uploads/" + fileName;
+            String imagePath = uniqueFileName;
             password = passwordEncoder.encode(password);
             Account account = new Account(email, password, name, address, workplace, phone, birth, imagePath, true, role);
-            accountService.save(account);
+//            Account savedAccount = accountService.save(account);
+            if (degree != null) {
+                Teacher teacher = new Teacher();
+//                teacher.setId(savedAccount.getId());
+                teacher.setEmail(email);
+                teacher.setPassword(password);
+                teacher.setName(name);
+                teacher.setAddress(address);
+                teacher.setWorkplace(workplace);
+                teacher.setPhone(phone);
+                teacher.setDoB(birth);
+                teacher.setAvatar(imagePath);
+                teacher.setIsActive(true);
+                teacher.setRole(role);
+                teacher.setDegree(degree);
+                teacher.setEducationalBackground(edbg);
+                teacher.setFaculty(faculty);
+                teacher.setField(field);
+                teacher.setPosition(position);
+                teacherService.saveTeacher(teacher);
+            } else if (studentid != null) {
+                Student student = new Student();
+                student.setEmail(email);
+                student.setPassword(password);
+                student.setName(name);
+                student.setAddress(address);
+                student.setWorkplace(workplace);
+                student.setPhone(phone);
+                student.setDoB(birth);
+                student.setAvatar(imagePath);
+                student.setIsActive(true);
+                student.setRole(role);
+                student.setMajor(major);
+                student.setStudentId(studentid);
+                student.setEnrollment_year(year);
+                studentService.saveStudent(student);
+            }
             return "redirect:/admin/user-management";
         } catch (Exception e) {
+            e.printStackTrace();
             model.addAttribute("error", "An error occurred during registration. Please try again.");
             return "error";
         }
@@ -284,7 +343,8 @@ public class AdminController {
     }
     @RequestMapping(value = "/update-user-status/{id}", method = RequestMethod.POST)
     public String update(Model model, HttpSession session,
-                         @PathVariable Long id, @RequestParam("image") MultipartFile image,
+                         @PathVariable Long id,
+                         @RequestParam("image") MultipartFile image,
                          @RequestParam("name") String name, @RequestParam("email") String email,
                          @RequestParam("password") String password, @RequestParam("birth") LocalDate birth,
                          @RequestParam("workplace") String workplace, @RequestParam("role") String role,

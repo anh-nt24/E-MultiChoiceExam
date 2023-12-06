@@ -12,7 +12,7 @@
     <span id="semester">hi</span>
 </div>
 <div class="text-center">
-    <img width="200px" style="border-radius: 50%" class="img-fluid img-circle" src="/resources/default-avatar.jpg">
+    <img width="200px" style="border-radius: 50%" class="img-fluid img-circle" th:src="'/resources/' + ${avatar}">
     <h3 style="color: var(--main-bg-color)" th:text="${name}" class="pt-3 text-bold"></h3>
 </div>
 

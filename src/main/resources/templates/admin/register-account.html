@@ -12,6 +12,7 @@
     <title>ADD USER</title>
     <th:block id="home-static-resources">
         <script type="text/javascript" th:src="@{/javascript/home.js}"></script>
+        <script type="text/javascript" th:src="@{/javascript/register.js}"></script>
         <link rel="stylesheet" type="text/css" th:href="@{/css/admin.css}"/>
         <link rel="stylesheet" type="text/css" th:href="@{/css/paper.css}"/>
     </th:block>
@@ -57,14 +58,17 @@
                     <div class="form-group">
                         <label for="image">Avatar:</label>
                         <input type="file" class="form-control-file"  onchange="readURL(this);" id="image" name="image" accept="image/png, image/jpeg" required>
-                        <img id="blah" src="http://placehold.it/180" alt="your image" />
+                        <img id="blah" width="180px" height="180px" src="http://placehold.it/180" alt="your image" />
                     </div>
                     <div class="form-group">
                         <label for="role">Role:</label>
-                        <select class="form-control" id="role" name="role" required>
+                        <select onchange="showField()" class="form-control" id="role" name="role" required>
+                            <option disabled value="*" selected>Select a role</option>
                             <option value="teacher">Teacher</option>
                             <option value="student">Student</option>
                         </select>
+                    </div>
+                    <div id="field">
                     </div>
                     <button type="submit" class="btn btn-primary">Add</button>
                 </form>
@@ -76,17 +80,5 @@
 <div id="home-footer" th:replace="~{/fragments/app-fragments :: footer}">
     Footer
 </div>
-<script>
-    function readURL(input) {
-      if (input.files && input.files[0]) {
-        var reader = new FileReader();
-
-        reader.onload = function (e) {
-          $('#blah').attr('src', e.target.result);
-        };
-        reader.readAsDataURL(input.files[0]);
-      }
-    }
-</script>
 </body>
 </html>

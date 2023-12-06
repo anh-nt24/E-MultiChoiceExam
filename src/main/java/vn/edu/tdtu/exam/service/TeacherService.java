@@ -17,12 +17,14 @@ public class TeacherService {
     @Autowired
     private TeacherRepository teacherRepository;
 
-    public Account add(AccountDTO accountDTO) {
-//        Account account = new Account();
-//        account.setEmail(accountDTO.getEmail());
-//        account.setPassword(accountDTO.getPassword());
-//        return accountRepository.save(account);
-        return null;
+    public Boolean saveTeacher(Teacher teacher) {
+        try {
+            teacherRepository.save(teacher);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public Teacher getTeacher(Long id) {

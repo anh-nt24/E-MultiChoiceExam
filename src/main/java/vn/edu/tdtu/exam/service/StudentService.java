@@ -103,4 +103,14 @@ public class StudentService {
     public  List<Student> getListStudent(Long id) {
         return studentRepository.findListStudent(id);
     }
+
+    public Boolean saveStudent(Student student) {
+        try {
+            studentRepository.save(student);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

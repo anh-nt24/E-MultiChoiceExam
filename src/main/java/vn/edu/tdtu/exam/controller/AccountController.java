@@ -92,6 +92,7 @@ public class AccountController {
         model.addAttribute("degree", teacher.getDegree());
         model.addAttribute("eduBg", educational);
         model.addAttribute("research", teacher.getField());
+        model.addAttribute("avatar", teacher.getAvatar());
         return model;
     }
     private Model getStudent(Model model, Long id) {
@@ -104,6 +105,7 @@ public class AccountController {
         model.addAttribute("workplace", student.getWorkplace());
         model.addAttribute("major", student.getMajor());
         model.addAttribute("enrollment_year", student.getEnrollment_year());
+        model.addAttribute("avatar", student.getAvatar());
         return model;
     }
 

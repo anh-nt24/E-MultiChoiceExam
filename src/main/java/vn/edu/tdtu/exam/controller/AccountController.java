@@ -140,7 +140,7 @@ public class AccountController {
         }
         Account user = accountService.getUserByEmail(email);
         String jwtToken = tokenManager.generateJwtToken(user);
-        System.out.println(jwtToken);
+
         session.setAttribute("id", user.getId());
         session.setAttribute("jwt", jwtToken);
         session.setAttribute("role", user.getRole());

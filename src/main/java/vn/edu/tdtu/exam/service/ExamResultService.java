@@ -7,13 +7,15 @@ import vn.edu.tdtu.exam.entity.ExamResult;
 import vn.edu.tdtu.exam.entity.Student;
 import vn.edu.tdtu.exam.repository.ExamResultRepository;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-@Service
+@Service("ExamResultService")
 public class ExamResultService {
     @Autowired
     private ExamResultRepository examResultRepository;
@@ -85,5 +87,9 @@ public class ExamResultService {
 
     public List<Double> getScoresTestId(Long testId) {
         return examResultRepository.findScoresByExamPaperId(testId);
+    }
+    public String scoreFormat(double score){
+        NumberFormat formatter = new DecimalFormat("#0.00");
+        return formatter.format(score);
     }
 }

@@ -84,7 +84,7 @@ public class ExamController {
         Student student = studentService.getStudentById(studentId);
 
         List<Question> questions = questionService.getQuestionByExamPaper(examPaper);
-        Double scorePerQuestion = questions.size()/10.0;
+        double scorePerQuestion = 10.0/questions.size();
 
             //formData: {questionId= [AnswerId]}
             //formData: {1=[2], 2=[7], 4=[14], 5=[18], 6=[23]}
@@ -97,7 +97,6 @@ public class ExamController {
             if(optionService.checkTrueOptionByQuestion(question, Long.valueOf(formData.get(questionId).get(0))))
                 numberOfCorrectAnswer++;
         }
-        System.out.println(numberOfCorrectAnswer);
 
         //Check number of attempt
         List<ExamResult> check = examResultService.getExamResultByExamPaperAndStudent(examPaper, student);

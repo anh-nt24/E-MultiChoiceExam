@@ -105,7 +105,7 @@
                                     <tr>
                                         <td><strong>Grades</strong></td>
     
-                                        <td class = "in4" th:text="${result.score}">7.0</td>
+                                        <td class = "in4" th:text="${@ExamResultService.scoreFormat(result.score)}">7.0</td>
                                     </tr>
                                 </tbody>
                             </table>

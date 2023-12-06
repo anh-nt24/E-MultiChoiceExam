@@ -2,6 +2,7 @@ package vn.edu.tdtu.exam.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
@@ -59,7 +60,10 @@ public class AdminController {
 
 // ------------------------- Danh sách sinh viên dự thi + Export file csv ----------------------
     @GetMapping("/list-exam")
-    public String examList(Model model) {
+    public String examList(Model model, HttpSession session) {
+        if (session.getAttribute("role") != null && !session.getAttribute("role").equals("admin")) {
+            return "redirect:/login";
+        }
         List<StudentSubject> studentSubjects = studentSubjectService.findByBanned(false);
         List<Subject> subject = subjectService.findAllSubject();
         model.addAttribute("st", studentSubjects);
@@ -67,7 +71,10 @@ public class AdminController {
         return "admin/list-exam";
     }
     @GetMapping("/list-exam/filter")
-    public String filter(Model model, @RequestParam(required = false) String subject) {
+    public String filter(Model model, @RequestParam(required = false) String subject, HttpSession session) {
+        if (session.getAttribute("role") != null && !session.getAttribute("role").equals("admin")) {
+            return "redirect:/login";
+        }
         model.addAttribute("choSubject", subject);
         List<StudentSubject> studentSubjects;
 
@@ -109,19 +116,28 @@ public class AdminController {
 
 // ------------------------- Quản lý kế hoạch thi --------------------------
     @GetMapping("/plans-exam")
-    public String plansExam(Model model) {
+    public String plansExam(Model model, HttpSession session) {
+        if (session.getAttribute("role") != null && !session.getAttribute("role").equals("admin")) {
+            return "redirect:/login";
+        }
         List<Exam> examsPlans = examService.getAllExams();
         model.addAttribute("plans", examsPlans);
         return "admin/plans-exam";
     }
 
     @GetMapping("/add-plan")
-    public String addPlan(){
+    public String addPlan(HttpSession session){
+        if (session.getAttribute("role") != null && !session.getAttribute("role").equals("admin")) {
+            return "redirect:/login";
+        }
         return "admin/add-plan";
     }
 
     @RequestMapping(value = "/add-plan", method = RequestMethod.POST)
-    public String addPlan(Model model, @RequestParam("name") String name, @RequestParam("date") LocalDateTime date){
+    public String addPlan(Model model, @RequestParam("name") String name, @RequestParam("date") LocalDateTime date, HttpSession session){
+        if (session.getAttribute("role") != null && !session.getAttribute("role").equals("admin")) {
+            return "redirect:/login";
+        }
         Exam exam = new Exam(name, date);
         examService.save(exam);
         return "redirect:/admin/plans-exam";
@@ -141,7 +157,11 @@ public class AdminController {
 
     @RequestMapping(value = "/update-plan/{id}", method = RequestMethod.POST)
     public String updatePlan(Model model, @PathVariable Long id,
-                             @RequestParam("name") String name, @RequestParam("date") LocalDateTime date){
+                             @RequestParam("name") String name, @RequestParam("date") LocalDateTime date,
+                             HttpSession session){
+        if (session.getAttribute("role") != null && !session.getAttribute("role").equals("admin")) {
+            return "redirect:/login";
+        }
         Optional<Exam> optionalExam = examService.findById(id);
         if(optionalExam.isPresent()){
             Exam exam = optionalExam.get();
@@ -155,14 +175,20 @@ public class AdminController {
     }
 // ------------------------- Quản lý yêu cầu khôi phục mật khẩu --------------------------
     @GetMapping("/reset-password")
-    public String resetPassword(Model model) {
+    public String resetPassword(Model model, HttpSession session) {
+        if (session.getAttribute("role") != null && !session.getAttribute("role").equals("admin")) {
+            return "redirect:/login";
+        }
         List<ResetPassword> resetPasswords = resetPasswordService.findByStatus("not");
         model.addAttribute("reset", resetPasswords);
         return "admin/reset-password";
     }
 
     @PostMapping("/reset-password/send")
-    public String sendResetPassword(@RequestParam("email") String email) {
+    public String sendResetPassword(@RequestParam("email") String email, HttpSession session) {
+        if (session.getAttribute("role") != null && !session.getAttribute("role").equals("admin")) {
+            return "redirect:/login";
+        }
         String newPassword = generateRandomPassword();
 
         sendEmail(email, newPassword);
@@ -195,22 +221,32 @@ public class AdminController {
 
 // ------------------------- Quản lý các tài khoản người dùng ---------------------------
     @GetMapping("/user-management")
-    public String userManagement(Model model) {
+    public String userManagement(Model model, HttpSession session) {
+        if (session.getAttribute("role") != null && !session.getAttribute("role").equals("admin")) {
+            return "redirect:/login";
+        }
         List<Account> userList = accountRepository.findAll();
         model.addAttribute("userList", userList);
         return "admin/user-management";
     }
     @GetMapping("/register-account")
-    public String addUser() {
+    public String addUser(HttpSession session) {
+        if (session.getAttribute("role") != null && !session.getAttribute("role").equals("admin")) {
+            return "redirect:/login";
+        }
         return "admin/register-account";
     }
 
     @RequestMapping(value = "/register-account", method = RequestMethod.POST)
-    public String registerAccount(Model model, @RequestParam("image") MultipartFile image,
+    public String registerAccount(Model model, HttpSession session,
+                                  @RequestParam("image") MultipartFile image,
                                   @RequestParam("name") String name, @RequestParam("email") String email,
                                   @RequestParam("password") String password, @RequestParam("birth") LocalDate birth,
                                   @RequestParam("workplace") String workplace, @RequestParam("role") String role,
                                   @RequestParam("address") String address, @RequestParam("phone") String phone) throws IOException {
+        if (session.getAttribute("role") != null && !session.getAttribute("role").equals("admin")) {
+            return "redirect:/login";
+        }
         try {
             String fileName = StringUtils.cleanPath(image.getOriginalFilename());
 
@@ -242,12 +278,17 @@ public class AdminController {
         return timestamp + "_" + fileName;
     }
     @RequestMapping(value = "/update-user-status/{id}", method = RequestMethod.POST)
-    public String update(Model model, @PathVariable Long id, @RequestParam("image") MultipartFile image,
+    public String update(Model model, HttpSession session,
+                         @PathVariable Long id, @RequestParam("image") MultipartFile image,
                          @RequestParam("name") String name, @RequestParam("email") String email,
                          @RequestParam("password") String password, @RequestParam("birth") LocalDate birth,
                          @RequestParam("workplace") String workplace, @RequestParam("role") String role,
                          @RequestParam("address") String address, @RequestParam("phone") String phone,
                          @RequestParam("active") Boolean active) throws IOException {
+
+        if (session.getAttribute("role") != null && !session.getAttribute("role").equals("admin")) {
+            return "redirect:/login";
+        }
 
         Optional<Account> optionalAccount = accountService.findById(id);
 
@@ -295,7 +336,10 @@ public class AdminController {
         }
     }
     @GetMapping("/update-user-status/{id}")
-    public String updateAccount(Model model, HttpServletRequest request, @PathVariable Long id){
+    public String updateAccount(Model model, HttpServletRequest request, @PathVariable Long id, HttpSession session){
+        if (session.getAttribute("role") != null && !session.getAttribute("role").equals("admin")) {
+            return "redirect:/login";
+        }
         Optional<Account> optionalAccount = accountService.findById(id);
         if (optionalAccount.isPresent()) {
             Account account = optionalAccount.get();

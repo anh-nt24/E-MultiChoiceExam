@@ -131,7 +131,11 @@ public class AccountController {
             redirectAttributes.addFlashAttribute("flashType", "failed");
             return "redirect:/login";
         } catch (Exception e) {
-            e.printStackTrace();
+            if (e.getMessage().toLowerCase().contains("password")) {
+                redirectAttributes.addFlashAttribute("flashMessage", "Incorrect email or password");
+                redirectAttributes.addFlashAttribute("flashType", "failed");
+                return "redirect:/login";
+            }
             return "500";
         }
         Account user = accountService.getUserByEmail(email);

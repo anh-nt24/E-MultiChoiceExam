@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -36,6 +37,9 @@ public class AdminController {
     @Autowired
     AccountRepository accountRepository;
     @Autowired AccountService accountService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     ResetPasswordService resetPasswordService;
@@ -264,6 +268,7 @@ public class AdminController {
                 throw new IOException("Could not save image file: " + fileName, ioe);
             }
             String imagePath = "/uploads/" + fileName;
+            password = passwordEncoder.encode(password);
             Account account = new Account(email, password, name, address, workplace, phone, birth, imagePath, true, role);
             accountService.save(account);
             return "redirect:/admin/user-management";
